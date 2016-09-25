@@ -87,14 +87,13 @@ const App = React.createClass({
                                    renderScene={ this._renderScene }
                                    onDidFocus={this.itemChangedFocus}
                                    navigationBar={<NavBar
-                                    activeRoute={this.props.activeRoute}
-                                    thisUser={this.props.thisUser}
-                                    setNav={navigator} /> }
+                                    activeRoute={this.props.Route}
+                                    thisUser={this.props.RequestUser} /> }
                         />
                     </View>
                 );
             }
-            return <Login login={this.props.actions.login} error={this.props.error}/>;
+            return <Login login={this.props.actions.login} error={this.props.Error}/>;
         }
         // Should replace this with a splash art.
         return null;

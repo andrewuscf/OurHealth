@@ -1,0 +1,114 @@
+'use strict';
+
+import React, { Component } from 'react';
+import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
+import _ from 'lodash';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+import {getRoute} from '../Routes';
+
+var NavBar = React.createClass({
+
+    _onPress(routeName) {
+        const index = _.findIndex(this.props.navigator.state.routeStack, {name: routeName});
+        if (index != -1) {
+            this.props.navigator.jumpTo(this.props.navigator.state.routeStack[index]);
+        } else {
+            this.props.navigator.push(getRoute(routeName));
+        }
+    },
+
+    isActiveRoute(routeName){
+        return routeName == this.props.activeRoute;
+    },
+
+    render: function () {
+        return (
+            <View style={styles.primaryBar}>
+                <TouchableOpacity style={styles.buttonWrap} onPress={this._onPress.bind(null, 'Today')}>
+                    <View style={styles.button}>
+                        <Icon name="trello" size={20}
+                              color={ (!this.isActiveRoute('Today')) ? iconColor : iconColorActive }/>
+                        <Text style={ (!this.isActiveRoute('Today')) ? styles.text : styles.textActive }>Today</Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.buttonWrap} onPress={this._onPress.bind(null, 'Feed')}>
+                    <View style={styles.button}>
+                        <Icon name="stack-overflow" size={20}
+                              color={ (!this.isActiveRoute('Feed')) ? iconColor : iconColorActive }/>
+                        <Text style={ (!this.isActiveRoute('Feed')) ? styles.text : styles.textActive }>Feed</Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.buttonWrap} onPress={this.props.openModal}>
+                    <View style={[styles.createButton, {backgroundColor: this.props.checkInColor}]}>
+                        <Text style={styles.createText}>+</Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.buttonWrap} onPress={this._onPress.bind(null, 'People')}>
+                    <View style={styles.button}>
+                        <Icon name="smile-o" size={20}
+                              color={ (!this.isActiveRoute('People')) ? iconColor : iconColorActive }/>
+                        <Text style={ (!this.isActiveRoute('People')) ? styles.text : styles.textActive }>People</Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.buttonWrap} onPress={this._onPress.bind(null, 'Me')}>
+                    <View style={styles.button}>
+                        <Icon name="heart-o" size={20}
+                              color={ (!this.isActiveRoute('Me')) ? iconColor : iconColorActive }/>
+                        <Text style={ (!this.isActiveRoute('Me')) ? styles.text : styles.textActive }>Me</Text>
+                    </View>
+                </TouchableOpacity>
+            </View>
+        );
+    }
+});
+
+var iconColor = '#b1aea5';
+var iconColorActive = '#ffa272';
+
+var styles = StyleSheet.create({
+    primaryBar: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        height: 47,
+        backgroundColor: 'white',
+        borderColor: '#e1e3df',
+        borderTopWidth: 1
+    },
+
+    text: {
+        color: iconColor,
+        marginTop: 1,
+        fontSize: 10,
+    },
+    textActive: {
+        color: iconColorActive,
+        marginTop: 1,
+        fontSize: 10,
+    },
+    buttonWrap: {
+        alignItems: 'center',
+        flex: 0.2
+    },
+    createButton: {
+        borderRadius: 18,
+        width: 36,
+        height: 36,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    createText: {
+        fontWeight: '700',
+        fontSize: 20,
+        color: 'white',
+        marginBottom: 2
+    },
+    button: {
+        alignItems: 'center',
+        alignSelf: 'stretch'
+    }
+});
+
+
+export default NavBar;
