@@ -1,7 +1,7 @@
 'use strict';
 
-import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
+import React, {Component} from 'react';
+import {StyleSheet, View, TouchableOpacity, Text, Image} from 'react-native';
 import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -25,18 +25,16 @@ var NavBar = React.createClass({
     render: function () {
         return (
             <View style={styles.primaryBar}>
-                <TouchableOpacity style={styles.buttonWrap} onPress={this._onPress.bind(null, 'Today')}>
+                <TouchableOpacity style={styles.buttonWrap} onPress={this._onPress.bind(null, 'Home')}>
                     <View style={styles.button}>
-                        <Icon name="trello" size={20}
-                              color={ (!this.isActiveRoute('Today')) ? iconColor : iconColorActive }/>
-                        <Text style={ (!this.isActiveRoute('Today')) ? styles.text : styles.textActive }>Today</Text>
+                        <Icon name="th-list" size={20}
+                              color={ (!this.isActiveRoute('Home')) ? iconColor : iconColorActive }/>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonWrap} onPress={this._onPress.bind(null, 'Feed')}>
+                <TouchableOpacity style={styles.buttonWrap} onPress={this._onPress.bind(null, 'Calendar')}>
                     <View style={styles.button}>
-                        <Icon name="stack-overflow" size={20}
-                              color={ (!this.isActiveRoute('Feed')) ? iconColor : iconColorActive }/>
-                        <Text style={ (!this.isActiveRoute('Feed')) ? styles.text : styles.textActive }>Feed</Text>
+                        <Icon name="calendar-check-o" size={20}
+                              color={ (!this.isActiveRoute('Calendar')) ? iconColor : iconColorActive }/>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonWrap} onPress={this.props.openModal}>
@@ -44,18 +42,16 @@ var NavBar = React.createClass({
                         <Text style={styles.createText}>+</Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonWrap} onPress={this._onPress.bind(null, 'People')}>
+                <TouchableOpacity style={styles.buttonWrap} onPress={this._onPress.bind(null, 'Messages')}>
                     <View style={styles.button}>
-                        <Icon name="smile-o" size={20}
-                              color={ (!this.isActiveRoute('People')) ? iconColor : iconColorActive }/>
-                        <Text style={ (!this.isActiveRoute('People')) ? styles.text : styles.textActive }>People</Text>
+                        <Icon name="comment-o" size={20}
+                              color={ (!this.isActiveRoute('Messages')) ? iconColor : iconColorActive }/>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonWrap} onPress={this._onPress.bind(null, 'Me')}>
+                <TouchableOpacity style={styles.buttonWrap} onPress={this._onPress.bind(null, 'Profile')}>
                     <View style={styles.button}>
-                        <Icon name="heart-o" size={20}
-                              color={ (!this.isActiveRoute('Me')) ? iconColor : iconColorActive }/>
-                        <Text style={ (!this.isActiveRoute('Me')) ? styles.text : styles.textActive }>Me</Text>
+                        <Icon name="user" size={20}
+                              color={ (!this.isActiveRoute('Profile')) ? iconColor : iconColorActive }/>
                     </View>
                 </TouchableOpacity>
             </View>

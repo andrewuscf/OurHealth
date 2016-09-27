@@ -88,7 +88,8 @@ const App = React.createClass({
                                    onDidFocus={this.itemChangedFocus}
                                    navigationBar={<NavBar
                                     activeRoute={this.props.Route}
-                                    thisUser={this.props.RequestUser} /> }
+                                    thisUser={this.props.RequestUser}
+                                    checkInColor="red"/> }
                         />
                     </View>
                 );
@@ -103,7 +104,6 @@ const App = React.createClass({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#edebe6',
         marginTop: (Platform.OS === 'ios') ? 20 : 0
     }
 });
