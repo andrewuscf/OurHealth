@@ -11,3 +11,11 @@ export const LOAD_REQUEST_USER = 'LOAD_REQUEST_USER';
 
 
 export const API_ERROR = 'API_ERROR';
+
+
+
+
+
+// Home Constants
+export const LOAD_WORKERS = 'LOAD_WORKERS';
+export const LOAD_CLIENTS = 'LOAD_CLIENTS';

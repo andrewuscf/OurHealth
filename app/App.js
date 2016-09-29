@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
 });
 
 const stateToProps = (state) => {
-    return state;
+    return state.Global;
 };
 
 const dispatchToProps = (dispatch) => {

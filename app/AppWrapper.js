@@ -1,15 +1,23 @@
 'use strict';
 
 import React, {Component} from 'react';
-import {createStore, applyMiddleware} from 'redux';
+import {createStore, applyMiddleware, combineReducers} from 'redux';
 import {Provider} from 'react-redux';
 import thunk from 'redux-thunk';
 
 import App from './App';
-import rootReducer from './reducers/GlobalReducers';
+
+import Global from './reducers/GlobalReducers';
+import Home from './reducers/HomeReducers';
+
+const reducers = combineReducers({
+    Global,
+    Home
+});
+
 
 const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
-const store = createStoreWithMiddleware(rootReducer);
+const store = createStoreWithMiddleware(reducers);
 
 
 const AppWrapper = React.createClass({

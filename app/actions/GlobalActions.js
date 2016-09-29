@@ -51,7 +51,7 @@ export function getRequestUser(url = `${API_ENDPOINT}user/me/`, refresh = false)
         if (refresh) {
             dispatch(refreshPage());
         }
-        return fetch(url, fetchData('GET', null, getState().UserToken))
+        return fetch(url, fetchData('GET', null, getState().Global.UserToken))
             .then((response) => response.json())
             .then((responseJson) => {
                 return dispatch({type: types.LOAD_REQUEST_USER, request_user: responseJson});

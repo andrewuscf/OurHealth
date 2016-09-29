@@ -5,10 +5,21 @@ import {StyleSheet, Text, View} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
-import * as GlobalActions from '../actions/GlobalActions';
+import * as HomeActions from '../actions/HomeActions';
 
 
 const Today = React.createClass({
+
+    componentDidUpdate(prevProps) {
+        if (this.props.RequestUser  != prevProps.RequestUser) {
+            // Get workers if current user is client and vice verus.
+            if (this.props.RequestUser.profile.type == 'Client') {
+                // this.props.actions.loadWorkers();
+            } else {
+                // this.props.actions.loadClients();
+            }
+        }
+    },
 
     render() {
         return (
@@ -27,12 +38,15 @@ const styles = StyleSheet.create({
 });
 
 const stateToProps = (state) => {
-    return state;
+    return {
+        RequestUser: state.Global.RequestUser,
+        ...state.Home
+    };
 };
 
 const dispatchToProps = (dispatch) => {
     return {
-        actions: bindActionCreators(GlobalActions, dispatch)
+        actions: bindActionCreators(HomeActions, dispatch)
     }
 };
 
