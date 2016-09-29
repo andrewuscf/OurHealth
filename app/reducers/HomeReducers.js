@@ -10,14 +10,16 @@ import moment from 'moment';
 const initialState = {
     Workers: [],
     Clients: [],
+    WorkersNext: null
 };
 
 export default function AppReducers(state = initialState, action = null) {
     switch (action.type) {
-        case constants.SET_ACTIVE_ROUTE:
+        case constants.LOAD_WORKERS:
             return {
                 ...state,
-                Route: action.route
+                Workers: state.Workers.concat(action.response.results),
+                WorkersNext: action.response.next
             };
 
 
