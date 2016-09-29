@@ -31,14 +31,21 @@ const Today = React.createClass({
         });
     },
 
-    componentDidUpdate(prevProps) {
-        if (this.props.RequestUser  != prevProps.RequestUser) {
-            // Get workers if current user is client and vice verus.
-            if (this.props.RequestUser.profile.type == 'Client' && this.state.position) {
-                this.props.actions.loadWorkers(this.state.position);
-            } else {
-                // this.props.actions.loadClients();
-            }
+    getUsers() {
+        // Get workers if current user is client and vice verus.
+        if (this.props.RequestUser.profile.type == 'Client') {
+            this.props.actions.loadWorkers(this.state.position, true);
+        } else {
+            // this.props.actions.loadClients();
+        }
+    },
+
+    componentDidUpdate(prevProps, prevState) {
+        if (this.state.position != prevState.position && this.props.RequestUser) {
+            this.getUsers();
+        }
+        if (this.props.RequestUser != prevProps.RequestUser && this.state.position) {
+            this.getUsers();
         }
     },
 

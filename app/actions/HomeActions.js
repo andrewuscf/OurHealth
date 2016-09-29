@@ -1,7 +1,7 @@
 'use strict';
 
 import * as types from './ActionTypes';
-import {fetchData, API_ENDPOINT} from './Utils';
+import {fetchData, API_ENDPOINT, refreshPage} from './Utils';
 
 
 export function loadWorkers(position, refresh = false) {
@@ -17,6 +17,7 @@ export function loadWorkers(position, refresh = false) {
         return fetch(url, fetchData('GET', null, getState().Global.UserToken, null, data))
             .then((response) => response.json())
             .then((responseJson) => {
+                console.log(responseJson);
                 return dispatch({type: types.LOAD_WORKERS, response: responseJson});
             })
             .catch((error) => {

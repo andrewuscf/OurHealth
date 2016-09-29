@@ -2,6 +2,8 @@
 
 export const API_ENDPOINT = 'http://localhost:8000/api/v1/';
 
+import {REFRESHING} from './ActionTypes';
+
 
 export function fetchData(method, body = null, token = null, headers = null, getData = null) {
     let data = {
@@ -25,4 +27,8 @@ export function fetchData(method, body = null, token = null, headers = null, get
     }
 
     return data;
+}
+
+export function refreshPage() {
+    return {type: REFRESHING}
 }

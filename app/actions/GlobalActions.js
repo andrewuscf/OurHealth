@@ -1,7 +1,7 @@
 'use strict';
 
 import * as types from './ActionTypes';
-import {fetchData, API_ENDPOINT} from './Utils';
+import {fetchData, API_ENDPOINT, refreshPage} from './Utils';
 import {AsyncStorage} from 'react-native';
 
 
@@ -20,10 +20,6 @@ export function setTokenInRedux(token, FromAPI = false) {
 export function removeToken(token) {
     AsyncStorage.removeItem('USER_TOKEN');
     return {type: types.REMOVE_TOKEN}
-}
-
-export function refreshPage() {
-    return {type: types.REFRESHING}
 }
 
 export function login(email, pass) {
