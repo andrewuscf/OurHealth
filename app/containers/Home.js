@@ -1,11 +1,19 @@
 'use strict';
 
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {
+    StyleSheet,
+    Text,
+    View,
+    ListView,
+    RefreshControl
+} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
 import * as HomeActions from '../actions/HomeActions';
+
+import WorkerBox from '../components/WorkerBox';
 
 
 const Today = React.createClass({
@@ -15,7 +23,6 @@ const Today = React.createClass({
             position: null
         }
     },
-
 
     componentDidMount() {
         navigator.geolocation.getCurrentPosition(
@@ -34,7 +41,7 @@ const Today = React.createClass({
     getUsers() {
         // Get workers if current user is client and vice verus.
         if (this.props.RequestUser.profile.type == 'Client') {
-            this.props.actions.loadWorkers(this.state.position, true);
+            this.props.actions.loadWorkers(this.state.position);
         } else {
             // this.props.actions.loadClients();
         }
@@ -49,11 +56,20 @@ const Today = React.createClass({
         }
     },
 
+    refresh() {
+        this.props.actions.loadWorkers(this.state.position, true);
+    },
+
     render() {
+        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        const dataSource = ds.cloneWithRows(this.props.Workers);
         return (
-            <View style={styles.mainContainer}>
-                <Text>Home</Text>
-            </View>
+            <ListView
+                refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this.refresh}/>}
+                style={styles.container} enableEmptySections={true}
+                dataSource={dataSource} onEndReached={this.onEndReached} onEndReachedThreshold={50}
+                renderRow={(worker, i) => <WorkerBox key={i} worker={worker} />}
+            />
         );
     }
 });
