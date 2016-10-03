@@ -8,24 +8,10 @@ const HireFooter = React.createClass({
         workerId: React.PropTypes.number.isRequired
     },
 
-    getInitialState() {
-        return {
-            isModalOpen: false
-        }
-    },
-
-    openModal() {
-        this.setState({isModalOpen: true});
-    },
-
-    closeModal() {
-        this.setState({isModalOpen: false});
-    },
-
 
     render() {
         return (
-            <TouchableOpacity style={styles.newCommentSection}>
+            <TouchableOpacity style={styles.newCommentSection} onPress={this.props.openHireModal}>
                 <Text style={styles.text}>Hire</Text>
             </TouchableOpacity>
         )
@@ -42,7 +28,6 @@ const styles = StyleSheet.create({
         color: 'white',
         alignSelf: 'center'
     }
-
 });
 
 export default HireFooter;

@@ -35,7 +35,10 @@ const Profile = React.createClass({
                         <Text style={[styles.center, styles.userName]}>{user.first_name} {user.last_name}</Text>
                     </View>
                 </ScrollView>
-                {user.type == '2' || user.type == 2 ? <HireFooter workerId={user.id}/> : null}
+                {user.type == '2' || user.type == 2 ?
+                    <TouchableOpacity style={styles.newCommentSection} onPress={this.props.openHireModal}>
+                        <Text style={styles.text}>Hire</Text>
+                    </TouchableOpacity> : null}
             </View>
         );
     }
