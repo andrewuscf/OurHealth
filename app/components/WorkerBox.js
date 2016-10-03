@@ -14,8 +14,18 @@ const CommentBox = React.createClass({
         console.log(worker);
         return (
             <View style={styles.container}>
-                <AvatarImage image={worker.user.profile.avatar} />
-                <Text>{worker.user.first_name} {worker.user.last_name}</Text>
+                <View style={styles.inner}>
+                    <AvatarImage image={worker.user.profile.avatar}/>
+                    <View style={styles.details}>
+                        <Text style={styles.bold}>{worker.user.first_name} {worker.user.last_name}</Text>
+                        <Text style={styles.small}><Text style={styles.bold}>Hours: </Text>{worker.user.profile.hours_available}</Text>
+                        <Text style={styles.small}>
+                            <Text><Text style={styles.bold}>Cred: </Text>1</Text>
+                            <Text style={styles.safeSpace}><Text style={styles.bold}>Cred: </Text>1</Text>
+                        </Text>
+                    </View>
+                    {worker.user.profile.is_available ? <View style={styles.greenDot}/> : null}
+                </View>
             </View>
         )
     }
@@ -23,7 +33,34 @@ const CommentBox = React.createClass({
 
 const styles = StyleSheet.create({
     container: {
+        borderBottomWidth: .5,
+        borderBottomColor: 'grey'
+    },
+    inner: {
+        flex: 1,
+        flexDirection: 'row',
         margin: 15,
+    },
+    details : {
+        flex: 1,
+        flexDirection: 'column',
+        paddingLeft: 10,
+        paddingTop: 5
+    },
+    greenDot: {
+        width: 7,
+        height: 7,
+        borderRadius: 50,
+        backgroundColor: 'green',
+    },
+    small: {
+        fontSize: 11
+    },
+    bold: {
+        fontWeight: 'bold'
+    },
+    safeSpace: {
+        paddingLeft: 5
     }
 });
 
