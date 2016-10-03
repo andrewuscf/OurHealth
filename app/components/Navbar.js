@@ -1,6 +1,6 @@
 'use strict';
 
-import React, {Component} from 'react';
+import React from 'react';
 import {StyleSheet, View, TouchableOpacity, Text, Image} from 'react-native';
 import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome';

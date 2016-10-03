@@ -8,6 +8,20 @@ const HireFooter = React.createClass({
         workerId: React.PropTypes.number.isRequired
     },
 
+    getInitialState() {
+        return {
+            isModalOpen: false
+        }
+    },
+
+    openModal() {
+        this.setState({isModalOpen: true});
+    },
+
+    closeModal() {
+        this.setState({isModalOpen: false});
+    },
+
 
     render() {
         return (
@@ -21,14 +35,12 @@ const HireFooter = React.createClass({
 const styles = StyleSheet.create({
     newCommentSection: {
         padding: 5,
-        alignItems: 'center',
-        justifyContent: 'center',
         backgroundColor: 'green'
     },
     text: {
         fontSize: 20,
-        color: 'white'
-        // alignSelf: 'center'
+        color: 'white',
+        alignSelf: 'center'
     }
 
 });
