@@ -34,7 +34,7 @@ const CommentBox = React.createClass({
 const styles = StyleSheet.create({
     container: {
         borderBottomWidth: .5,
-        borderBottomColor: 'grey'
+        borderBottomColor: 'rgba(0,0,0,.15)'
     },
     inner: {
         flex: 1,
