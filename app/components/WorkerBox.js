@@ -1,24 +1,32 @@
 'use strict';
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, StyleSheet, Image, TouchableHighlight} from 'react-native';
+
 
 import AvatarImage from './AvatarImage';
 
 const CommentBox = React.createClass({
     propTypes: {
-        worker: React.PropTypes.object.isRequired
+        worker: React.PropTypes.object.isRequired,
+        loadProfile: React.PropTypes.func.isRequired,
+        _redirect: React.PropTypes.func.isRequired,
+    },
+
+    _toProfile() {
+        this.props.loadProfile(this.props.worker.user);
+        this.props._redirect('Profile');
     },
 
     render() {
         const worker = this.props.worker;
-        console.log(worker);
         return (
-            <View style={styles.container}>
+            <TouchableHighlight style={styles.container} onPress={this._toProfile}>
                 <View style={styles.inner}>
                     <AvatarImage image={worker.user.profile.avatar}/>
                     <View style={styles.details}>
                         <Text style={styles.bold}>{worker.user.first_name} {worker.user.last_name}</Text>
-                        <Text style={styles.small}><Text style={styles.bold}>Hours: </Text>{worker.user.profile.hours_available}</Text>
+                        <Text style={styles.small}><Text
+                            style={styles.bold}>Hours: </Text>{worker.user.profile.hours_available}</Text>
                         <Text style={styles.small}>
                             <Text><Text style={styles.bold}>Cred: </Text>1</Text>
                             <Text style={styles.safeSpace}><Text style={styles.bold}>Cred: </Text>1</Text>
@@ -26,7 +34,7 @@ const CommentBox = React.createClass({
                     </View>
                     {worker.user.profile.is_available ? <View style={styles.greenDot}/> : null}
                 </View>
-            </View>
+            </TouchableHighlight>
         )
     }
 });
@@ -41,7 +49,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         margin: 15,
     },
-    details : {
+    details: {
         flex: 1,
         flexDirection: 'column',
         paddingLeft: 10,

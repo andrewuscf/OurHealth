@@ -10,8 +10,11 @@ import {
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import _ from 'lodash';
 
 import * as HomeActions from '../actions/HomeActions';
+
+import {getRoute} from '../Routes';
 
 import WorkerBox from '../components/WorkerBox';
 
@@ -60,6 +63,15 @@ const Today = React.createClass({
         this.props.actions.loadWorkers(this.state.position, true);
     },
 
+    _redirect(routeName) {
+        const index = _.findIndex(this.props.navigator.state.routeStack, {name: routeName});
+        if (index != -1) {
+            this.props.navigator.jumpTo(this.props.navigator.state.routeStack[index]);
+        } else {
+            this.props.navigator.push(getRoute(routeName));
+        }
+    },
+
     render() {
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         const dataSource = ds.cloneWithRows(this.props.Workers);
@@ -68,7 +80,8 @@ const Today = React.createClass({
                 refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this.refresh}/>}
                 style={styles.container} enableEmptySections={true}
                 dataSource={dataSource} onEndReached={this.onEndReached} onEndReachedThreshold={50}
-                renderRow={(worker, i) => <WorkerBox key={i} worker={worker} />}
+                renderRow={(worker, i) => <WorkerBox key={i} 
+                worker={worker} loadProfile={this.props.actions.loadProfile} _redirect={this._redirect} />}
             />
         );
     }

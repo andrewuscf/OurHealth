@@ -20,3 +20,8 @@ export function loadWorkers(position, refresh = false) {
             });
     }
 }
+
+
+export function loadProfile(user) {
+    return {type: types.LOAD_PROFILE, user: user}
+}

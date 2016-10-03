@@ -9,10 +9,12 @@ import App from './App';
 
 import Global from './reducers/GlobalReducers';
 import Home from './reducers/HomeReducers';
+import Profile from './reducers/ProfileReducers';
 
 const reducers = combineReducers({
     Global,
-    Home
+    Home,
+    Profile
 });
 
 
