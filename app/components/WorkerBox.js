@@ -24,7 +24,9 @@ const CommentBox = React.createClass({
                 <View style={styles.inner}>
                     <AvatarImage image={worker.user.profile.avatar}/>
                     <View style={styles.details}>
-                        <Text style={styles.bold}>{worker.user.first_name} {worker.user.last_name}</Text>
+                        <Text style={styles.bold}>{worker.user.first_name} {worker.user.last_name}
+                            {worker.user.profile.is_available ? <View style={styles.greenDot}/> : null}
+                        </Text>
                         <Text style={styles.small}><Text
                             style={styles.bold}>Hours: </Text>{worker.user.profile.hours_available}</Text>
                         <Text style={styles.small}>
@@ -32,7 +34,6 @@ const CommentBox = React.createClass({
                             <Text style={styles.safeSpace}><Text style={styles.bold}>Cred: </Text>1</Text>
                         </Text>
                     </View>
-                    {worker.user.profile.is_available ? <View style={styles.greenDot}/> : null}
                 </View>
             </TouchableHighlight>
         )
