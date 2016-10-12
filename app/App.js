@@ -98,7 +98,8 @@ const App = React.createClass({
                     </View>
                 );
             }
-            return <Login login={this.props.actions.login} error={this.props.Error}/>;
+            return <Login login={this.props.actions.login} resetPassword={this.props.actions.resetPassword}
+                          error={this.props.Error}/>;
         }
         // Should replace this with a splash art.
         return null;
@@ -119,7 +120,7 @@ const styles = StyleSheet.create({
         left: 0
     },
     hireModal: {
-        flex:1,
+        flex: 1,
         backgroundColor: "#3B5998"
     },
 });

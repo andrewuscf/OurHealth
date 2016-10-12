@@ -5,6 +5,7 @@ export const REFRESHING = 'REFRESHING';
 
 export const SET_TOKEN = 'SET_TOKEN';
 export const REMOVE_TOKEN = 'REMOVE_TOKEN';
+export const REST_PASSWORD = 'REST_PASSWORD';
 
 
 export const LOAD_REQUEST_USER = 'LOAD_REQUEST_USER';

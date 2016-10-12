@@ -57,3 +57,19 @@ export function getUser(url = `${API_ENDPOINT}user/me/`, refresh = false) {
             });
     }
 }
+
+
+
+export function resetPassword(email) {
+    return (dispatch, getState) => {
+        const data = JSON.stringify({email: email});
+        return fetch( `${API_ENDPOINT}auth/password/reset/`, fetchData('POST', data, getState().Global.UserToken))
+            .then((response) => console.log(response))
+            .then((responseJson) => {
+                return dispatch({type: types.REST_PASSWORD});
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+}
