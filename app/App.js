@@ -61,12 +61,6 @@ const App = React.createClass({
     },
 
 
-    componentDidUpdate(prevProps, prevState) {
-        if (prevProps.UserToken != this.props.UserToken) {
-            this.props.actions.getRequestUser();
-        }
-    },
-
     componentWillMount() {
         AsyncStorage.getItem('USER_TOKEN', (err, result) => {
             if (result) {

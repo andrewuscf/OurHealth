@@ -42,7 +42,7 @@ export function login(email, pass) {
 }
 
 
-export function getRequestUser(url = `${API_ENDPOINT}user/me/`, refresh = false) {
+export function getUser(url = `${API_ENDPOINT}user/me/`, refresh = false) {
     return (dispatch, getState) => {
         if (refresh) {
             dispatch(refreshPage());
