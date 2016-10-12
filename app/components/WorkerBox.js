@@ -2,10 +2,10 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image, TouchableHighlight} from 'react-native';
 
-
 import AvatarImage from './AvatarImage';
+import TriangleCorner from './TriangleCorner';
 
-const CommentBox = React.createClass({
+const WorkerBox = React.createClass({
     propTypes: {
         worker: React.PropTypes.object.isRequired,
         loadProfile: React.PropTypes.func.isRequired,
@@ -22,11 +22,9 @@ const CommentBox = React.createClass({
         return (
             <TouchableHighlight style={styles.container} onPress={this._toProfile}>
                 <View style={styles.inner}>
-                    <AvatarImage image={worker.user.profile.avatar}/>
-                    <View style={styles.details}>
-                        <Text style={styles.bold}>{worker.user.first_name} {worker.user.last_name}
-                            {worker.user.profile.is_available ? <View style={styles.greenDot}/> : null}
-                        </Text>
+                    <AvatarImage image={worker.user.profile.avatar} style={styles.pushDown}/>
+                    <View style={[styles.details, styles.pushDown]}>
+                        <Text style={styles.bold}>{worker.user.first_name} {worker.user.last_name}</Text>
                         <Text style={styles.small}><Text
                             style={styles.bold}>Hours: </Text>{worker.user.profile.hours_available}</Text>
                         <Text style={styles.small}>
@@ -34,6 +32,8 @@ const CommentBox = React.createClass({
                             <Text style={styles.safeSpace}><Text style={styles.bold}>Cred: </Text>1</Text>
                         </Text>
                     </View>
+                    <TriangleCorner
+                        style={worker.user.profile.is_available ? {borderTopColor: 'green'} : {borderTopColor: 'red'}}/>
                 </View>
             </TouchableHighlight>
         )
@@ -48,7 +48,11 @@ const styles = StyleSheet.create({
     inner: {
         flex: 1,
         flexDirection: 'row',
-        margin: 15,
+        marginBottom: 15,
+        marginLeft: 15,
+    },
+    pushDown: {
+        marginTop: 15
     },
     details: {
         flex: 1,
@@ -73,4 +77,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default CommentBox;
+export default WorkerBox;

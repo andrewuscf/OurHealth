@@ -16,6 +16,8 @@ var NavBar = React.createClass({
         } else {
             this.props.navigator.push(getRoute(routeName));
         }
+        // if (routeName == 'Profile')
+        //     this.props.loadProfile();
     },
 
     isActiveRoute(routeName){

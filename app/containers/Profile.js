@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
 });
 
 const stateToProps = (state) => {
+    console.log(state);
     return {
         ...state.Profile
     };
