@@ -12,27 +12,41 @@ const Login = React.createClass({
         return {
             email: null,
             password: null,
-            forgotCreds: false
+            username: null,
+            forgotCreds: false,
+            signUp: false
         }
     },
 
-    toggleForgotCreds: function () {
+    toggleForgotCreds() {
         this.setState({
-            forgotCreds: !this.state.forgotCreds
+            forgotCreds: !this.state.forgotCreds,
+            signUp: false
         });
     },
 
-    onPress: function () {
+    toggleSignUp() {
+        this.setState({
+            forgotCreds: false,
+            signUp: !this.state.signUp
+        });
+    },
+
+    onPress() {
         // sign in + forgot credentials
-        if (!this.state.forgotCreds) {
-            if (this.state.email && this.state.password) {
-                this.props.login(this.state.email, this.state.password)
-            }
-        } else {
+        if (this.state.forgotCreds) {
             if (this.state.email) {
                 alert('Send reset for ' + this.state.email);
                 this.props.resetPassword(this.state.email);
                 this.toggleForgotCreds();
+            }
+        } else if (this.state.signUp) {
+            if (this.state.email && this.state.password && this.state.username) {
+                this.props.register(this.state.email, this.state.password, this.state.username)
+            }
+        } else {
+            if (this.state.username && this.state.password) {
+                this.props.login(this.state.email, this.state.password)
             }
         }
     },
@@ -49,33 +63,54 @@ const Login = React.createClass({
         })
     },
 
+    onChangeUsername(text) {
+        this.setState({
+            username: text
+        })
+    },
+
+
+
     render() {
         return (
             <View style={styles.container}>
                 <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
                     {(this.props.error) ? <Text>{this.props.error}</Text> : null}
                     <View style={styles.inputWrap}>
+                        <TextInput ref="username" style={styles.textInput} autoCapitalize='none'
+                                   keyboardType='default'
+                                   autoCorrect={false}
+                                   placeholderTextColor='#4d4d4d' onChangeText={this.onChangeUsername}
+                                   value={this.state.username}
+                                   placeholder="Username"/>
+                    </View>
+
+                    {(this.state.signUp) ? <View style={styles.inputWrap}>
                         <TextInput ref="email" style={styles.textInput} autoCapitalize='none'
                                    keyboardType='email-address'
+                                   autoCorrect={false}
                                    placeholderTextColor='#4d4d4d' onChangeText={this.onChangeEmail}
                                    value={this.state.email}
                                    placeholder="Email"/>
-                    </View>
+                    </View> : null}
+
                     {(!this.state.forgotCreds) ? <View style={styles.inputWrap}>
                         <TextInput ref="password" style={styles.textInput} autoCapitalize='none' secureTextEntry={true}
+                                   autoCorrect={false}
                                    placeholderTextColor='#4d4d4d' onChangeText={this.onChangePassword}
                                    value={this.state.password}
                                    placeholder="Password"/>
                     </View> : null}
+
                     <TouchableHighlight style={styles.button} onPress={this.onPress} underlayColor='#99d9f4'>
                         <Text style={styles.buttonText}>{(!this.state.forgotCreds) ? 'SIGN IN' : 'RESET'}</Text>
                     </TouchableHighlight>
                 </ScrollView>
                 <View style={styles.extraButtons}>
-                    <TouchableOpacity style={styles.buttonForgot} onPress={this.toggleForgotCreds}>
+                    <TouchableOpacity style={styles.bottomButtons} onPress={this.toggleForgotCreds}>
                         <Text style={styles.buttonForgotText}>{(!this.state.forgotCreds) ? 'Forgot?' : 'Cancel'}</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.signUpButton}>
+                    <TouchableOpacity style={styles.bottomButtons} onPress={this.toggleSignUp}>
                         <Text style={styles.buttonForgotText}>Sign up</Text>
                     </TouchableOpacity>
                 </View>
@@ -146,13 +181,7 @@ const styles = StyleSheet.create({
         left: 0,
         flexDirection: 'row'
     },
-    buttonForgot: {
-        flex: 2,
-        backgroundColor: '#00BFFF',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    signUpButton: {
+    bottomButtons: {
         flex: 2,
         backgroundColor: '#00BFFF',
         alignItems: 'center',

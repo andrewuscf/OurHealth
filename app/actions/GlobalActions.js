@@ -26,7 +26,7 @@ export function login(email, pass) {
     const body = JSON.stringify({username: email, password: pass});
 
     return dispatch => {
-        return fetch(`${API_ENDPOINT}token-auth/`, fetchData('POST', body))
+        return fetch(`${API_ENDPOINT}auth/token/`, fetchData('POST', body))
             .then((response) => response.json())
             .then((responseJson) => {
                 if (responseJson.token) {
@@ -63,10 +63,24 @@ export function getUser(url = `${API_ENDPOINT}user/me/`, refresh = false) {
 export function resetPassword(email) {
     return (dispatch, getState) => {
         const data = JSON.stringify({email: email});
-        return fetch( `${API_ENDPOINT}auth/password/reset/`, fetchData('POST', data, getState().Global.UserToken))
-            .then((response) => console.log(response))
+        return fetch( `${API_ENDPOINT}auth/password/reset/`, fetchData('POST', data))
+            .then((response) => response.json())
             .then((responseJson) => {
                 return dispatch({type: types.REST_PASSWORD});
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+}
+
+export function register(email, password, username) {
+    return (dispatch, getState) => {
+        const data = JSON.stringify({email: email, password: password, username: username});
+        return fetch( `${API_ENDPOINT}auth/register/`, fetchData('POST', data))
+            .then((response) => console.log(response))
+            .then((responseJson) => {
+                return dispatch({type: types.REGISTER_USER});
             })
             .catch((error) => {
                 console.log(error);
