@@ -59,11 +59,10 @@ export function getUser(url = `${API_ENDPOINT}user/me/`, refresh = false) {
 }
 
 
-
 export function resetPassword(email) {
     return (dispatch, getState) => {
         const data = JSON.stringify({email: email});
-        return fetch( `${API_ENDPOINT}auth/password/reset/`, fetchData('POST', data))
+        return fetch(`${API_ENDPOINT}auth/password/reset/`, fetchData('POST', data))
             .then((response) => response.json())
             .then((responseJson) => {
                 return dispatch({type: types.REST_PASSWORD});
@@ -74,13 +73,19 @@ export function resetPassword(email) {
     }
 }
 
-export function register(email, password, username) {
+export function register(email, password, first_name, last_name) {
     return (dispatch, getState) => {
-        const data = JSON.stringify({email: email, password: password, username: username});
-        return fetch( `${API_ENDPOINT}auth/register/`, fetchData('POST', data))
-            .then((response) => console.log(response))
+        const data = JSON.stringify({email: email, password: password, first_name: first_name, last_name: last_name});
+        return fetch(`${API_ENDPOINT}auth/register/`, fetchData('POST', data))
+            .then((response) => response.json())
             .then((responseJson) => {
-                return dispatch({type: types.REGISTER_USER});
+                let message;
+                if (responseJson.email) {
+                    message = 'Verify your account email address';
+                    if (responseJson.email.constructor === Array)
+                        message = responseJson.email[0];
+                }
+                return dispatch({type: types.REGISTER_USER, message: message});
             })
             .catch((error) => {
                 console.log(error);

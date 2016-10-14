@@ -53,6 +53,11 @@ export default function AppReducers(state = initialState, action = null) {
                 Error: action.error
             };
 
+        case constants.REGISTER_USER:
+            return {
+                ...state,
+                Error: action.message
+            };
 
         default:
             return state

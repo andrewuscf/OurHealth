@@ -12,7 +12,8 @@ const Login = React.createClass({
         return {
             email: null,
             password: null,
-            username: null,
+            first_name: null,
+            last_name: null,
             forgotCreds: false,
             signUp: false
         }
@@ -37,16 +38,16 @@ const Login = React.createClass({
         if (this.state.forgotCreds) {
             if (this.state.email) {
                 alert('Send reset for ' + this.state.email);
-                this.props.resetPassword(this.state.email);
+                this.props.resetPassword(this.state.email.toLowerCase());
                 this.toggleForgotCreds();
             }
         } else if (this.state.signUp) {
-            if (this.state.email && this.state.password && this.state.username) {
-                this.props.register(this.state.email, this.state.password, this.state.username)
+            if (this.state.email && this.state.password && this.state.first_name && this.state.last_name) {
+                this.props.register(this.state.email.toLowerCase(), this.state.password, this.state.first_name, this.state.last_name)
             }
         } else {
             if (this.state.username && this.state.password) {
-                this.props.login(this.state.email, this.state.password)
+                this.props.login(this.state.email.toLowerCase(), this.state.password)
             }
         }
     },
@@ -63,9 +64,15 @@ const Login = React.createClass({
         })
     },
 
-    onChangeUsername(text) {
+    onChangeFirst(text) {
         this.setState({
-            username: text
+            first_name: text
+        })
+    },
+
+    onChangeLast(text) {
+        this.setState({
+            last_name: text
         })
     },
 
@@ -76,23 +83,33 @@ const Login = React.createClass({
             <View style={styles.container}>
                 <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
                     {(this.props.error) ? <Text>{this.props.error}</Text> : null}
-                    <View style={styles.inputWrap}>
-                        <TextInput ref="username" style={styles.textInput} autoCapitalize='none'
+
+                    {(this.state.signUp) ?<View style={styles.inputWrap}>
+                        <TextInput ref="first" style={styles.textInput} autoCapitalize='words'
                                    keyboardType='default'
                                    autoCorrect={false}
-                                   placeholderTextColor='#4d4d4d' onChangeText={this.onChangeUsername}
-                                   value={this.state.username}
-                                   placeholder="Username"/>
-                    </View>
+                                   placeholderTextColor='#4d4d4d' onChangeText={this.onChangeFirst}
+                                   value={this.state.first_name}
+                                   placeholder="First Name"/>
+                    </View> : null}
 
-                    {(this.state.signUp) ? <View style={styles.inputWrap}>
+                    {(this.state.signUp) ?<View style={styles.inputWrap}>
+                        <TextInput ref="last" style={styles.textInput} autoCapitalize='words'
+                                   keyboardType='default'
+                                   autoCorrect={false}
+                                   placeholderTextColor='#4d4d4d' onChangeText={this.onChangeLast}
+                                   value={this.state.last_name}
+                                   placeholder="Last Name"/>
+                    </View> : null}
+
+                    <View style={styles.inputWrap}>
                         <TextInput ref="email" style={styles.textInput} autoCapitalize='none'
                                    keyboardType='email-address'
                                    autoCorrect={false}
                                    placeholderTextColor='#4d4d4d' onChangeText={this.onChangeEmail}
                                    value={this.state.email}
                                    placeholder="Email"/>
-                    </View> : null}
+                    </View>
 
                     {(!this.state.forgotCreds) ? <View style={styles.inputWrap}>
                         <TextInput ref="password" style={styles.textInput} autoCapitalize='none' secureTextEntry={true}
