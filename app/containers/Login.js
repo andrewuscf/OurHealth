@@ -46,7 +46,7 @@ const Login = React.createClass({
                 this.props.register(this.state.email.toLowerCase(), this.state.password, this.state.first_name, this.state.last_name)
             }
         } else {
-            if (this.state.username && this.state.password) {
+            if (this.state.email && this.state.password) {
                 this.props.login(this.state.email.toLowerCase(), this.state.password)
             }
         }
