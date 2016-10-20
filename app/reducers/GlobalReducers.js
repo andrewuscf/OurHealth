@@ -26,7 +26,8 @@ export default function AppReducers(state = initialState, action = null) {
         case constants.SET_TOKEN:
             return {
                 ...state,
-                UserToken: action.token
+                UserToken: action.token,
+                Error: null
             };
 
         case constants.REMOVE_TOKEN:
@@ -57,6 +58,12 @@ export default function AppReducers(state = initialState, action = null) {
             return {
                 ...state,
                 Error: action.message
+            };
+        
+        case constants.CLEAR_API_ERROR:
+            return {
+                ...state,
+                Error: null
             };
 
         default:

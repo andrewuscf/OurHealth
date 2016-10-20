@@ -31,12 +31,23 @@ export function login(email, pass) {
             .then((responseJson) => {
                 if (responseJson.token) {
                     return dispatch(setTokenInRedux(responseJson.token, true));
-                } else {
-                    return dispatch({type: types.API_ERROR, error: 'Incorrect Email or Password'});
+                }
+                if (responseJson.non_field_errors) {
+                    return dispatch({
+                        type: types.API_ERROR, error: JSON.stringify({
+                            title: 'Incorrect Email or Password',
+                            text: 'Please Try Again'
+                        })
+                    });
                 }
             })
             .catch((error) => {
-                console.log(error);
+                return dispatch({
+                    type: types.API_ERROR, error: JSON.stringify({
+                        title: 'Request could not be performed.',
+                        text: 'Please try again later.'
+                    })
+                });
             });
     }
 }
@@ -91,4 +102,8 @@ export function register(email, password, first_name, last_name) {
                 console.log(error);
             });
     }
+}
+
+export function clearAPIError() {
+    return {type: types.CLEAR_API_ERROR}
 }

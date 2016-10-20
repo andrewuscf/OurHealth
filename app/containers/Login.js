@@ -1,11 +1,24 @@
 'use strict';
 
 import React, {Component} from 'react';
-import {ScrollView, View, Image, Text, StyleSheet, TouchableOpacity, TouchableHighlight, TextInput} from 'react-native';
+import {
+    ScrollView,
+    View,
+    Image,
+    Text,
+    StyleSheet,
+    TouchableOpacity,
+    TouchableHighlight,
+    TextInput,
+    Alert
+} from 'react-native';
 
 const Login = React.createClass({
     propTypes: {
-        login: React.PropTypes.func.isRequired
+        login: React.PropTypes.func.isRequired,
+        clearAPIError: React.PropTypes.func.isRequired,
+        resetPassword: React.PropTypes.func.isRequired,
+        register: React.PropTypes.func.isRequired,
     },
 
     getInitialState() {
@@ -52,6 +65,20 @@ const Login = React.createClass({
         }
     },
 
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.error) {
+            const error = JSON.parse(this.props.error);
+            Alert.alert(
+                error.title,
+                error.text,
+                [
+                    {text: 'OK', onPress: () => this.props.clearAPIError()},
+                ]
+            )
+        }
+
+    },
+
     onChangeEmail(text) {
         this.setState({
             email: text
@@ -77,14 +104,12 @@ const Login = React.createClass({
     },
 
 
-
     render() {
         return (
             <View style={styles.container}>
                 <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-                    {(this.props.error) ? <Text>{this.props.error}</Text> : null}
 
-                    {(this.state.signUp) ?<View style={styles.inputWrap}>
+                    {(this.state.signUp) ? <View style={styles.inputWrap}>
                         <TextInput ref="first" style={styles.textInput} autoCapitalize='words'
                                    keyboardType='default'
                                    autoCorrect={false}
@@ -93,7 +118,7 @@ const Login = React.createClass({
                                    placeholder="First Name"/>
                     </View> : null}
 
-                    {(this.state.signUp) ?<View style={styles.inputWrap}>
+                    {(this.state.signUp) ? <View style={styles.inputWrap}>
                         <TextInput ref="last" style={styles.textInput} autoCapitalize='words'
                                    keyboardType='default'
                                    autoCorrect={false}

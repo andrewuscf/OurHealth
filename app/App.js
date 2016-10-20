@@ -100,6 +100,7 @@ const App = React.createClass({
             }
             return <Login login={this.props.actions.login} resetPassword={this.props.actions.resetPassword}
                           register={this.props.actions.register}
+                          clearAPIError={this.props.actions.clearAPIError}
                           error={this.props.Error}/>;
         }
         // Should replace this with a splash art.
