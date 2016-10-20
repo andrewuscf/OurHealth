@@ -23,6 +23,3 @@ export const LOAD_WORKERS = 'LOAD_WORKERS';
 export const LOAD_CLIENTS = 'LOAD_CLIENTS';
 
 
-
-//Redirect Constants
-export const LOAD_PROFILE = 'LOAD_PROFILE';

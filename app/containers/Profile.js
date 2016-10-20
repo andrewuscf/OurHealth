@@ -6,6 +6,8 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import {fetchData, API_ENDPOINT} from '../actions/Utils';
+
 import * as ProfileActions from '../actions/ProfileActions';
 
 import AvatarImage from '../components/AvatarImage';
@@ -13,34 +15,49 @@ import HireFooter from '../components/HireFooter';
 
 
 const Profile = React.createClass({
+    propTypes: {
+        user: React.PropTypes.object.isRequired
+    },
+    
+    getInitialState() {
+        return {
+            user: this.props.user
+        }
+    },
+
 
     _back() {
         this.props.navigator.pop();
     },
 
     render() {
-        const user = this.props.User;
+        const user = this.state.user;
         console.log(user)
-        return (
-            <View style={styles.mainContainer}>
-                <ScrollView ref='scrollView' keyboardDismissMode='interactive'
-                            style={styles.mainContainer} contentContainerStyle={styles.contentContainerStyle}>
-                    <View style={styles.backNav}>
-                        <TouchableOpacity onPress={this._back} style={styles.backNavButton}>
-                            <Icon name="angle-left" size={28} color='#d4d4d4'/>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.mainContent}>
-                        <AvatarImage image={user.profile.avatar} style={styles.avatar}/>
-                        <Text style={[styles.center, styles.userName]}>{user.first_name} {user.last_name}</Text>
-                    </View>
-                </ScrollView>
-                {user.type == '2' || user.type == 2 ?
-                    <TouchableOpacity style={styles.newCommentSection} onPress={this.props.openHireModal}>
-                        <Text style={styles.text}>Hire</Text>
-                    </TouchableOpacity> : null}
-            </View>
-        );
+        if (user) {
+            return (
+                <View style={styles.mainContainer}>
+                    <ScrollView ref='scrollView' keyboardDismissMode='interactive'
+                                style={styles.mainContainer} contentContainerStyle={styles.contentContainerStyle}>
+                        <View style={styles.backNav}>
+                            <TouchableOpacity onPress={this._back} style={styles.backNavButton}>
+                                <Icon name="angle-left" size={28} color='#d4d4d4'/>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.mainContent}>
+                            <AvatarImage image={user.profile.avatar} style={styles.avatar}/>
+                            <Text style={[styles.center, styles.userName]}>{user.first_name} {user.last_name}</Text>
+                        </View>
+                    </ScrollView>
+                    {user.type == '2' || user.type == 2 ?
+                        <TouchableOpacity style={styles.newCommentSection} onPress={this.props.openHireModal}>
+                            <Text style={styles.text}>Hire</Text>
+                        </TouchableOpacity> : null}
+                </View>
+            );
+        } else {
+            return <View>Loading...</View>
+        }
+        
     }
 });
 
@@ -78,9 +95,8 @@ const styles = StyleSheet.create({
 });
 
 const stateToProps = (state) => {
-    console.log(state);
     return {
-        ...state.Profile
+        RequestUser: state.Global.RequestUser
     };
 };
 

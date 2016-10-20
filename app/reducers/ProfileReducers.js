@@ -13,11 +13,6 @@ const initialState = {
 
 export default function AppReducers(state = initialState, action = null) {
     switch (action.type) {
-        case constants.LOAD_PROFILE:
-            return {
-                ...state,
-                User: action.user
-            };
 
 
 

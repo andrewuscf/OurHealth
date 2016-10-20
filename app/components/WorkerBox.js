@@ -8,13 +8,11 @@ import TriangleCorner from './TriangleCorner';
 const WorkerBox = React.createClass({
     propTypes: {
         worker: React.PropTypes.object.isRequired,
-        loadProfile: React.PropTypes.func.isRequired,
         _redirect: React.PropTypes.func.isRequired,
     },
 
     _toProfile() {
-        this.props.loadProfile(this.props.worker.user);
-        this.props._redirect('Profile');
+        this.props._redirect('Profile', {user: this.props.worker.user});
     },
 
     render() {

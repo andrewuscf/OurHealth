@@ -75,7 +75,6 @@ const Login = React.createClass({
                 ]
             )
         }
-
     },
 
     onChangeEmail(text) {

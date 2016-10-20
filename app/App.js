@@ -45,12 +45,13 @@ const App = React.createClass({
         var SceneComponent = route.component;
         switch (route.name) {
             case 'Profile':
-                return <SceneComponent openHireModal={this.openHireModal} navigator={ nav } route={route}/>;
+                return <SceneComponent openHireModal={this.openHireModal} navigator={ nav }
+                                       route={route} {...route.passProps}/>;
             // case 'CreatePoll':
             //     return <SceneComponent createPoll={this.props.actions.createPoll} navigator={ nav }
             //                            route={route}/>;
             default :
-                return <SceneComponent navigator={ nav } route={route}/>;
+                return <SceneComponent navigator={ nav } route={route} {...route.passProps}/>;
 
         }
 
@@ -88,7 +89,7 @@ const App = React.createClass({
                                    onDidFocus={this.itemChangedFocus}
                                    navigationBar={<NavBar
                                        activeRoute={this.props.Route}
-                                       thisUser={this.props.RequestUser}
+                                       RequestUser={this.props.RequestUser}
                                        checkInColor="red"/> }
                         />
                         <Modal style={[styles.modal, styles.hireModal]} backdrop={false} ref={"modal1"}

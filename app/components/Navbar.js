@@ -2,7 +2,6 @@
 
 import React from 'react';
 import {StyleSheet, View, TouchableOpacity, Text, Image} from 'react-native';
-import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {getRoute} from '../Routes';
@@ -10,14 +9,11 @@ import {getRoute} from '../Routes';
 var NavBar = React.createClass({
 
     _onPress(routeName) {
-        const index = _.findIndex(this.props.navigator.state.routeStack, {name: routeName});
-        if (index != -1) {
-            this.props.navigator.jumpTo(this.props.navigator.state.routeStack[index]);
-        } else {
-            this.props.navigator.push(getRoute(routeName));
+        if (routeName == 'Profile'){
+            this.props.navigator.push(getRoute(routeName, {user: this.props.RequestUser}));
+            return;
         }
-        // if (routeName == 'Profile')
-        //     this.props.loadProfile();
+        this.props.navigator.push(getRoute(routeName));
     },
 
     isActiveRoute(routeName){
