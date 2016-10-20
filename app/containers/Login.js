@@ -65,7 +65,6 @@ const Login = React.createClass({
     },
 
     componentDidUpdate(prevProps, prevState) {
-        console.log(this.props.error)
         if (this.props.error) {
             const error = JSON.parse(this.props.error);
             Alert.alert(
