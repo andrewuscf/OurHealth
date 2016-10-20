@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import _ from 'lodash';
 import {StyleSheet, View, TouchableOpacity, Text, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -9,11 +10,24 @@ import {getRoute} from '../Routes';
 var NavBar = React.createClass({
 
     _onPress(routeName) {
-        if (routeName == 'Profile'){
-            this.props.navigator.push(getRoute(routeName, {user: this.props.RequestUser}));
-            return;
+        let index;
+        if (routeName == 'Profile') {
+            index = _.findIndex(this.props.navigator.state.routeStack, {
+                name: routeName,
+                passProps: {user: this.props.RequestUser}
+            });
+        } else {
+            index = _.findIndex(this.props.navigator.state.routeStack, {name: routeName});
         }
-        this.props.navigator.push(getRoute(routeName));
+        if (index != -1) {
+            this.props.navigator.jumpTo(this.props.navigator.state.routeStack[index]);
+        } else {
+            if (routeName == 'Profile') {
+                this.props.navigator.push(getRoute(routeName, {user: this.props.RequestUser}));
+                return;
+            }
+            this.props.navigator.push(getRoute(routeName));
+        }
     },
 
     isActiveRoute(routeName){
@@ -37,7 +51,7 @@ var NavBar = React.createClass({
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonWrap} onPress={this.props.openModal}>
                     <View style={[styles.createButton, {backgroundColor: this.props.checkInColor}]}>
-                        <Text style={styles.createText}>+</Text>
+                        <Icon name="check" size={20} color='#fff' />
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonWrap} onPress={this._onPress.bind(null, 'Messages')}>
@@ -86,9 +100,8 @@ var styles = StyleSheet.create({
         flex: 0.2
     },
     createButton: {
-        borderRadius: 18,
-        width: 36,
-        height: 36,
+        width: 50,
+        flex: 1,
         alignItems: 'center',
         justifyContent: 'center'
     },
