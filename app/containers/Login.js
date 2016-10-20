@@ -50,7 +50,6 @@ const Login = React.createClass({
         // sign in + forgot credentials
         if (this.state.forgotCreds) {
             if (this.state.email) {
-                alert('Send reset for ' + this.state.email);
                 this.props.resetPassword(this.state.email.toLowerCase());
                 this.toggleForgotCreds();
             }
@@ -66,6 +65,7 @@ const Login = React.createClass({
     },
 
     componentDidUpdate(prevProps, prevState) {
+        console.log(this.props.error)
         if (this.props.error) {
             const error = JSON.parse(this.props.error);
             Alert.alert(

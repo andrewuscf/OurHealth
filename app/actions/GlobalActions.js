@@ -74,13 +74,23 @@ export function resetPassword(email) {
     return (dispatch, getState) => {
         const data = JSON.stringify({email: email});
         return fetch(`${API_ENDPOINT}auth/password/reset/`, fetchData('POST', data))
-            .then((response) => response.json())
-            .then((responseJson) => {
-                return dispatch({type: types.REST_PASSWORD});
+            .then((response) => {
+                if (response.status == 204) {
+                    return dispatch({
+                        type: types.REST_PASSWORD, message: {
+                            title: 'Reset password sent',
+                            text: 'Please check your email for the reset password link'
+                        }
+                    });
+                } else {
+                    return dispatch({
+                        type: types.API_ERROR, error: JSON.stringify({
+                            title: 'Request could not be performed.',
+                            text: 'Please try again later.'
+                        })
+                    });
+                }
             })
-            .catch((error) => {
-                console.log(error);
-            });
     }
 }
 
@@ -92,14 +102,25 @@ export function register(email, password, first_name, last_name) {
             .then((responseJson) => {
                 let message;
                 if (responseJson.email) {
-                    message = 'Verify your account email address';
+                    message = {
+                        title: 'Email verification required',
+                        text: 'Please check your email in order to verify your account'
+                    };
                     if (responseJson.email.constructor === Array)
-                        message = responseJson.email[0];
+                        message = {
+                            title: responseJson.email[0],
+                            text: 'Please use another email or log into your account.'
+                        };
                 }
-                return dispatch({type: types.REGISTER_USER, message: message});
+                return dispatch({type: types.REGISTER_USER, message: JSON.stringify(message)});
             })
             .catch((error) => {
-                console.log(error);
+                return dispatch({
+                    type: types.API_ERROR, error: JSON.stringify({
+                        title: 'Request could not be performed.',
+                        text: 'Please try again later.'
+                    })
+                });
             });
     }
 }
