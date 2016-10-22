@@ -77,10 +77,10 @@ export function resetPassword(email) {
             .then((response) => {
                 if (response.status == 204) {
                     return dispatch({
-                        type: types.REST_PASSWORD, message: {
+                        type: types.API_ERROR, error: JSON.stringify({
                             title: 'Reset password sent',
                             text: 'Please check your email for the reset password link'
-                        }
+                        })
                     });
                 } else {
                     return dispatch({
@@ -94,10 +94,10 @@ export function resetPassword(email) {
     }
 }
 
-export function register(email, password, first_name, last_name) {
+export function register(data) {
     return (dispatch, getState) => {
-        const data = JSON.stringify({email: email, password: password, first_name: first_name, last_name: last_name});
-        return fetch(`${API_ENDPOINT}auth/register/`, fetchData('POST', data))
+        let JSONDATA = JSON.stringify(data);
+        return fetch(`${API_ENDPOINT}auth/register/`, fetchData('POST', JSONDATA))
             .then((response) => response.json())
             .then((responseJson) => {
                 let message;

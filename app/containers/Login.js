@@ -28,7 +28,8 @@ const Login = React.createClass({
             first_name: null,
             last_name: null,
             forgotCreds: false,
-            signUp: false
+            signUp: false,
+            type: null
         }
     },
 
@@ -54,8 +55,16 @@ const Login = React.createClass({
                 this.toggleForgotCreds();
             }
         } else if (this.state.signUp) {
-            if (this.state.email && this.state.password && this.state.first_name && this.state.last_name) {
-                this.props.register(this.state.email.toLowerCase(), this.state.password, this.state.first_name, this.state.last_name)
+            if (this.state.email && this.state.password && this.state.first_name && this.state.last_name && this.state.type) {
+                const data = {
+                    email: this.state.email.toLowerCase(),
+                    password: this.state.password,
+                    first_name: this.state.first_name,
+                    last_name: this.state.last_name,
+                    type: this.state.type
+                };
+                this.props.register(data);
+                this.resetComponent();
             }
         } else {
             if (this.state.email && this.state.password) {
@@ -73,8 +82,20 @@ const Login = React.createClass({
                 [
                     {text: 'OK', onPress: () => this.props.clearAPIError()},
                 ]
-            )
+            );
         }
+    },
+
+    resetComponent() {
+        this.setState({
+            email: null,
+            password: null,
+            first_name: null,
+            last_name: null,
+            forgotCreds: false,
+            signUp: false,
+            type: null
+        });
     },
 
     onChangeEmail(text) {
@@ -99,6 +120,12 @@ const Login = React.createClass({
         this.setState({
             last_name: text
         })
+    },
+
+    selectType(num) {
+        this.setState({
+            type: num
+        });
     },
 
 
@@ -142,6 +169,19 @@ const Login = React.createClass({
                                    placeholder="Password"/>
                     </View> : null}
 
+                    {(this.state.signUp) ?
+                        <View style={{flexDirection: 'row'}}>
+                            <TouchableOpacity onPress={this.selectType.bind(null, 1)}
+                                              style={[styles.typeButtons, this.state.type == 1 ? styles.selectedType: styles.notSelected]}>
+                                <Text style={this.state.type == 1 ? styles.selectedText: styles.notSelectedText}>Find
+                                    Care</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={this.selectType.bind(null, 2)}
+                                              style={[styles.typeButtons, this.state.type == 2 ? styles.selectedType: styles.notSelected]}>
+                                <Text style={this.state.type == 2 ? styles.selectedText: styles.notSelectedText}>CareGiver</Text>
+                            </TouchableOpacity>
+                        </View> : null}
+
                     <TouchableHighlight style={styles.button} onPress={this.onPress} underlayColor='#99d9f4'>
                         <Text style={styles.buttonText}>{(!this.state.forgotCreds) ? 'SIGN IN' : 'RESET'}</Text>
                     </TouchableHighlight>
@@ -151,7 +191,7 @@ const Login = React.createClass({
                         <Text style={styles.buttonForgotText}>{(!this.state.forgotCreds) ? 'Forgot?' : 'Cancel'}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.bottomButtons} onPress={this.toggleSignUp}>
-                        <Text style={styles.buttonForgotText}>Sign up</Text>
+                        <Text style={styles.buttonForgotText}>{(this.state.signUp) ? 'Cancel' : 'Sign up'}</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -193,9 +233,35 @@ const styles = StyleSheet.create({
         padding: 3,
         height: 20
     },
+    typeButtons: {
+        flex: 2,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingBottom: 10,
+        paddingTop: 10
+    },
+    notSelected: {
+        borderWidth: 1,
+        borderColor: 'grey',
+    },
+    selectedType: {
+        backgroundColor: '#00BFFF'
+    },
+    selectedText: {
+        color: 'white',
+        fontSize: 14
+        // fontFamily: 'OpenSans-Bold',
+        // textDecorationLine: 'none'
+    },
+    notSelectedText: {
+        color: 'grey',
+        fontSize: 14
+        // fontFamily: 'OpenSans-Bold',
+        // textDecorationLine: 'none'
+    },
     buttonText: {
         color: 'white',
-        fontSize: 15,
+        fontSize: 15
         // fontFamily: 'OpenSans-Bold',
     },
     button: {
