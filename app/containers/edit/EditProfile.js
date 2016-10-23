@@ -1,24 +1,39 @@
 'use strict';
 
 import React from 'react';
-import {StyleSheet, Text, View, TouchableOpacity, ScrollView} from 'react-native';
+import {
+    StyleSheet,
+    Text,
+    View,
+    TouchableOpacity,
+    ScrollView,
+    TextInput,
+    Dimensions
+} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
 import DatePicker from 'react-native-datepicker';
+import CameraRollPicker from 'react-native-camera-roll-picker';
 
 import {fetchData, API_ENDPOINT} from '../../actions/Utils';
 
 import * as ProfileActions from '../../actions/ProfileActions';
 
 import AvatarImage from '../../components/AvatarImage';
+import {EMPTY_AVATAR} from '../../assets/constants';
+
+var {height: deviceHeight, width: deviceWidth} = Dimensions.get('window');
 
 
 const Profile = React.createClass({
     getInitialState() {
         return {
-            birthday: null
+            birthday: null,
+            phone_number: null,
+            showRoll: false,
+            previewImage: null
         }
     },
 
@@ -28,18 +43,49 @@ const Profile = React.createClass({
         }
     },
 
+    getSelectedImages(images) {
+        this.setState({
+            previewImage: images[0],
+        });
+        this.toggleRoll();
+        this.refs._scrollView.scrollTo({y: 0,false});
+    },
+
+    toggleRoll() {
+        console.log('hit');
+        this.setState({
+            showRoll: !this.state.showRoll,
+        });
+    },
+
 
     _back() {
         this.props.navigator.pop();
     },
 
+    _onPhoneChange(number) {
+        this.setState({
+            phone_number: number
+        })
+    },
+
     render() {
+        const rollPickerWidth = deviceWidth - 20;
         const user = this.props.RequestUser;
         console.log(user)
         if (user) {
+            let userImage = EMPTY_AVATAR;
+            if (user.profile.avatar) {
+                userImage = user.profile.avatar;
+            }
             return (
                 <View style={styles.mainContainer}>
-                    <ScrollView ref='scrollView' keyboardDismissMode='interactive'
+                    {this.state.showRoll ?
+                        <CameraRollPicker imageMargin={2} containerWidth={rollPickerWidth}
+                                          callback={this.getSelectedImages} maximum={1} selected={[]}/>
+                        : null
+                    }
+                    <ScrollView ref='_scrollView' keyboardDismissMode='interactive'
                                 style={styles.mainContainer} contentContainerStyle={styles.contentContainerStyle}>
                         {this.props.RequestUser.profile.completed ? <View style={styles.backNav}>
                             <TouchableOpacity onPress={this._back} style={styles.backNavButton}>
@@ -47,7 +93,7 @@ const Profile = React.createClass({
                             </TouchableOpacity>
                         </View> : null}
                         <View style={styles.mainContent}>
-                            <AvatarImage image={user.profile.avatar} style={styles.avatar}/>
+                            <AvatarImage image={userImage} style={styles.avatar} redirect={this.toggleRoll}/>
                             <View style={styles.userName}>
                                 <Text style={[styles.userNameText]}>
                                     {user.first_name} {user.last_name}
@@ -69,12 +115,20 @@ const Profile = React.createClass({
                                     confirmBtnText="Confirm"
                                     cancelBtnText="Cancel"
                                     customStyles={DatePickerStyle}
-                                    onDateChange={(birthday) => {this.setState({birthday: birthday})}}
+                                    onDateChange={(birthday) => {
+                                        this.setState({birthday: birthday})
+                                    }}
                                 />
                             </View>
                             <View style={styles.section}>
                                 <Text>Phone Number</Text>
-
+                                <TextInput ref="phone_number" style={styles.textInput}
+                                           underlineColorAndroid='transparent'
+                                           keyboardType="phone-pad"
+                                           maxLength={10}
+                                           placeholderTextColor='#4d4d4d' onChangeText={this._onPhoneChange}
+                                           value={this.state.phone_number}
+                                           placeholder="Add Phone Number"/>
                             </View>
                         </View>
                     </ScrollView>
@@ -143,7 +197,16 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: "400",
         paddingTop: 15
-    }
+    },
+    textInput: {
+        flex: 1,
+        height: 35,
+        color: 'black',
+        backgroundColor: 'transparent',
+        paddingTop: 2,
+        fontSize: 17,
+        textAlignVertical: 'top',
+    },
 });
 
 const stateToProps = (state) => {

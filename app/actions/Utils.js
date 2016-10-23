@@ -1,6 +1,8 @@
 'use strict';
 
-export const API_ENDPOINT = 'http://localhost:8000/api/v1/';
+export const SITE = 'http://localhost:8000/';
+
+export const API_ENDPOINT = `${SITE}api/v1/`;
 
 import {REFRESHING} from './ActionTypes';
 
