@@ -18,7 +18,7 @@ import {getRoute} from '../Routes';
 import WorkerBox from '../components/WorkerBox';
 
 
-const Today = React.createClass({
+const Home = React.createClass({
 
     getInitialState() {
         return {
@@ -101,4 +101,4 @@ const dispatchToProps = (dispatch) => {
     }
 };
 
-export default connect(stateToProps, dispatchToProps)(Today);
+export default connect(stateToProps, dispatchToProps)(Home);

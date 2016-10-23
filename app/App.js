@@ -19,6 +19,7 @@ import * as GlobalActions from './actions/GlobalActions';
 
 import Login from './containers/Login';
 import Home from './containers/Home';
+import EditProfile from './containers/edit/EditProfile';
 
 import NavBar from './components/Navbar';
 
@@ -79,30 +80,37 @@ const App = React.createClass({
     render() {
         if (!this.state.splashArt) {
             if (this.props.UserToken) {
-                return (
-                    <View style={styles.container}>
-                        <Navigator initialRoute={{component: Home, name: 'Home'}}
-                                   ref={(nav) => {
+                if (this.props.RequestUser && this.props.RequestUser.profile.completed) {
+                    return (
+                        <View style={styles.container}>
+                            <Navigator initialRoute={{component: Home, name: 'Home'}}
+                                       ref={(nav) => {
                                        navigator = nav;
                                    }}
-                                   renderScene={ this._renderScene }
-                                   onDidFocus={this.itemChangedFocus}
-                                   navigationBar={<NavBar
+                                       renderScene={ this._renderScene }
+                                       onDidFocus={this.itemChangedFocus}
+                                       navigationBar={<NavBar
                                        activeRoute={this.props.Route}
                                        RequestUser={this.props.RequestUser}
                                        checkInColor="red"/> }
-                        />
-                        <Modal style={[styles.modal, styles.hireModal]} backdrop={false} ref={"modal1"}
-                               swipeToClose={true}>
-                            <Text style={styles.text}>Basic modal</Text>
-                        </Modal>
-                    </View>
-                );
+                            />
+                            <Modal style={[styles.modal, styles.hireModal]} backdrop={false} ref={"modal1"}
+                                   swipeToClose={true}>
+                                <Text style={styles.text}>Basic modal</Text>
+                            </Modal>
+                        </View>
+                    );
+                } else {
+                    return <View style={styles.container}><EditProfile /></View>
+                }
+
             }
-            return <Login login={this.props.actions.login} resetPassword={this.props.actions.resetPassword}
-                          register={this.props.actions.register}
-                          clearAPIError={this.props.actions.clearAPIError}
-                          error={this.props.Error}/>;
+            return <View style={styles.container}>
+                <Login login={this.props.actions.login}
+                       resetPassword={this.props.actions.resetPassword}
+                       register={this.props.actions.register}
+                       clearAPIError={this.props.actions.clearAPIError}
+                       error={this.props.Error}/></View>;
         }
         // Should replace this with a splash art.
         return null;
