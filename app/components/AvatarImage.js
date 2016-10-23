@@ -38,7 +38,7 @@ var styles = StyleSheet.create({
     avatar: {
         height: 50,
         width: 50,
-        borderRadius: 25
+        // borderRadius: 25
     }
 });
 
