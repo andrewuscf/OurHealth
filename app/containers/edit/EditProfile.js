@@ -23,6 +23,7 @@ import * as ProfileActions from '../../actions/ProfileActions';
 
 import AvatarImage from '../../components/AvatarImage';
 import {EMPTY_AVATAR} from '../../assets/constants';
+import SelectInput from '../../components/SelectInput';
 
 var {height: deviceHeight, width: deviceWidth} = Dimensions.get('window');
 
@@ -33,13 +34,21 @@ const Profile = React.createClass({
             birthday: null,
             phone_number: null,
             showRoll: false,
-            previewImage: null
+            showEditName: false,
+            previewImage: null,
+            average_rate: null,
+            first_name: null,
+            last_name: null,
         }
     },
 
     componentDidUpdate(prevProps) {
         if (!prevProps.RequestUser && this.props.RequestUser) {
-            this.setState({birthday: moment(this.props.RequestUser.profile.date_of_birth).format('MM-DD-YYYY')})
+            this.setState({
+                birthday: moment(this.props.RequestUser.profile.date_of_birth).format('MM-DD-YYYY'),
+                first_name: this.props.RequestUser.first_name,
+                last_name: this.props.RequestUser.last_name
+            })
         }
     },
 
@@ -48,13 +57,19 @@ const Profile = React.createClass({
             previewImage: images[0],
         });
         this.toggleRoll();
-        this.refs._scrollView.scrollTo({y: 0,false});
+        this.refs._scrollView.scrollTo({y: 0, false});
     },
 
     toggleRoll() {
         console.log('hit');
         this.setState({
             showRoll: !this.state.showRoll,
+        });
+    },
+
+    _onEditName() {
+        this.setState({
+            showEditName: !this.state.showEditName,
         });
     },
 
@@ -69,13 +84,43 @@ const Profile = React.createClass({
         })
     },
 
+    _onAverageChange(number) {
+        this.setState({
+            average_rate: number
+        })
+    },
+
+    _onFirstChange(text) {
+        this.setState({
+            first_name: text
+        })
+    },
+
+    _onLastChange(text) {
+        this.setState({
+            last_name: text
+        })
+    },
+
+    _onSubmit(){
+        console.log('hit')
+    },
+
     render() {
         const rollPickerWidth = deviceWidth - 20;
         const user = this.props.RequestUser;
+        // Hours available options
+        var hoursOptions = [
+            ['As Needed', 3],
+            ['More than 30 hrs/week', 1],
+            ['Less than 30 hrs/week', 2]
+        ];
         console.log(user)
         if (user) {
             let userImage = EMPTY_AVATAR;
-            if (user.profile.avatar) {
+            if (this.state.previewImage) {
+                userImage = this.state.previewImage.uri
+            } else if (user.profile.avatar) {
                 userImage = user.profile.avatar;
             }
             return (
@@ -94,14 +139,37 @@ const Profile = React.createClass({
                         </View> : null}
                         <View style={styles.mainContent}>
                             <AvatarImage image={userImage} style={styles.avatar} redirect={this.toggleRoll}/>
-                            <View style={styles.userName}>
+                            {!this.state.showEditName ?<View style={styles.userName}>
                                 <Text style={[styles.userNameText]}>
                                     {user.first_name} {user.last_name}
                                 </Text>
-                                <TouchableOpacity style={styles.userNameEdit}>
+                                <TouchableOpacity style={styles.userNameEdit} onPress={this._onEditName}>
                                     <Icon name="pencil" size={14} color='black'/>
                                 </TouchableOpacity>
-                            </View>
+                            </View>: null}
+                            {this.state.showEditName ?
+                                <View style={styles.section}>
+                                    <TextInput style={styles.textInput}
+                                               underlineColorAndroid='transparent'
+                                               autoCapitalize='words'
+                                               keyboardType='default'
+                                               autoCorrect={false}
+                                               placeholderTextColor='#4d4d4d'
+                                               onChangeText={this._onFirstChange}
+                                               value={this.state.first_name}
+                                               placeholder="First Name"/>
+                                    <TextInput style={styles.textInput}
+                                               underlineColorAndroid='transparent'
+                                               autoCapitalize='words'
+                                               keyboardType='default'
+                                               autoCorrect={false}
+                                               placeholderTextColor='#4d4d4d'
+                                               onChangeText={this._onLastChange}
+                                               value={this.state.last_name}
+                                               placeholder="Last Name"/>
+                                </View>
+                                : null
+                            }
                             <View style={styles.section}>
                                 <Text>Birthday</Text>
                                 <DatePicker
@@ -130,6 +198,26 @@ const Profile = React.createClass({
                                            value={this.state.phone_number}
                                            placeholder="Add Phone Number"/>
                             </View>
+                            {user.type == 'Worker' ?
+                                <View style={styles.section}>
+                                    <Text>Average Rate($)</Text>
+                                    <TextInput ref="average_rate" style={styles.textInput}
+                                               underlineColorAndroid='transparent'
+                                               keyboardType="phone-pad"
+                                               maxLength={3}
+                                               placeholderTextColor='#4d4d4d' onChangeText={this._onAverageChange}
+                                               value={this.state.average_rate}
+                                               placeholder="Add Average Rate"/>
+                                    <View style={styles.section}>
+                                        <Text>Hours Available</Text>
+                                        <SelectInput ref='hours_available' options={hoursOptions}/>
+                                    </View>
+                                </View>
+                                : null
+                            }
+                            <TouchableOpacity style={styles.button} onPress={this._onSubmit} underlayColor='#99d9f4'>
+                                <Text style={styles.buttonText}>Save</Text>
+                            </TouchableOpacity>
                         </View>
                     </ScrollView>
                 </View>
@@ -176,10 +264,11 @@ const styles = StyleSheet.create({
     avatar: {
         alignSelf: 'center',
         height: 100,
-        width: 100
+        width: 100,
+        borderRadius: 50
     },
     section: {
-        marginTop: 30
+        marginTop: 20
     },
     userName: {
         flex: 1,
@@ -207,6 +296,22 @@ const styles = StyleSheet.create({
         fontSize: 17,
         textAlignVertical: 'top',
     },
+    buttonText: {
+        color: 'white',
+        fontSize: 15
+        // fontFamily: 'OpenSans-Bold',
+    },
+    button: {
+        marginTop: 80,
+        backgroundColor: '#00BFFF',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 30,
+        paddingRight: 30,
+        borderRadius: 21
+    }
 });
 
 const stateToProps = (state) => {
