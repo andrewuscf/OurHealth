@@ -22,3 +22,6 @@ export const LOAD_WORKERS = 'LOAD_WORKERS';
 export const LOAD_CLIENTS = 'LOAD_CLIENTS';
 
 
+// Profile Constants
+export const UPDATE_PROFILE = 'UPDATE_PROFILE';
+export const UPDATE_USER = 'UPDATE_USER';

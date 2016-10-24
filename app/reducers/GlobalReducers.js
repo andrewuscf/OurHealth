@@ -66,6 +66,21 @@ export default function AppReducers(state = initialState, action = null) {
                 Error: null
             };
 
+        case constants.UPDATE_USER:
+            return {
+                ...state,
+                RequestUser: action.request_user
+            };
+
+        case constants.UPDATE_PROFILE:
+            return {
+                ...state,
+                RequestUser: {
+                    ...state.RequestUser,
+                    profile: action.profile
+                }
+            };
+
         default:
             return state
     }

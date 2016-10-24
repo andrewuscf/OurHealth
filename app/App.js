@@ -8,7 +8,8 @@ import {
     Navigator,
     AsyncStorage,
     BackAndroid,
-    Platform
+    Platform,
+    Alert
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -62,6 +63,19 @@ const App = React.createClass({
         this.props.actions.setActiveRoute(route.name);
     },
 
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.error) {
+            const error = JSON.parse(this.props.error);
+            Alert.alert(
+                error.title,
+                error.text,
+                [
+                    {text: 'OK', onPress: () => this.props.actions.clearAPIError()},
+                ]
+            );
+        }
+    },
+
 
     componentWillMount() {
         AsyncStorage.getItem('USER_TOKEN', (err, result) => {
@@ -109,7 +123,6 @@ const App = React.createClass({
                 <Login login={this.props.actions.login}
                        resetPassword={this.props.actions.resetPassword}
                        register={this.props.actions.register}
-                       clearAPIError={this.props.actions.clearAPIError}
                        error={this.props.Error}/></View>;
         }
         // Should replace this with a splash art.

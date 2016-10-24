@@ -47,7 +47,9 @@ const Profile = React.createClass({
             this.setState({
                 birthday: moment(this.props.RequestUser.profile.date_of_birth).format('MM-DD-YYYY'),
                 first_name: this.props.RequestUser.first_name,
-                last_name: this.props.RequestUser.last_name
+                last_name: this.props.RequestUser.last_name,
+                average_rate: this.props.RequestUser.profile.average_rate.toString(),
+                phone_number: this.props.RequestUser.profile.phone_number,
             })
         }
     },
@@ -61,7 +63,6 @@ const Profile = React.createClass({
     },
 
     toggleRoll() {
-        console.log('hit');
         this.setState({
             showRoll: !this.state.showRoll,
         });
@@ -102,8 +103,35 @@ const Profile = React.createClass({
         })
     },
 
+    checkAllRequired() {
+        return !!(this.state.birthday && this.state.phone_number && this.state.previewImage && this.state.first_name && this.state.last_name);
+    },
+
     _onSubmit(){
-        console.log('hit')
+        if (this.checkAllRequired()) {
+            let profileData = new FormData();
+            profileData.append("avatar", {
+                ...this.state.previewImage,
+                url: this.state.previewImage.uri,
+                name: 'image.jpg',
+                type: 'multipart/form-data'
+            });
+            profileData.append("birthday", this.state.birthday);
+            profileData.append("phone_number", this.state.phone_number);
+            if (this.state.average_rate)
+                profileData.append("average_rate", parseInt(this.state.average_rate));
+            if (this.refs.hours_available.state.value)
+                profileData.append("hours_available", this.refs.hours_available.state.value);
+            // If user name updated then also update user model.
+            if (this.state.first_name != this.props.RequestUser.first_name || this.state.last_name != this.props.RequestUser.last_name) {
+                let userData = {
+                    first_name: this.state.first_name,
+                    last_name: this.state.last_name
+                };
+                this.props.actions.updateUser(userData);
+            }
+            this.props.actions.updateProfile(profileData);
+        }
     },
 
     render() {
@@ -115,7 +143,6 @@ const Profile = React.createClass({
             ['More than 30 hrs/week', 1],
             ['Less than 30 hrs/week', 2]
         ];
-        console.log(user)
         if (user) {
             let userImage = EMPTY_AVATAR;
             if (this.state.previewImage) {
@@ -139,14 +166,14 @@ const Profile = React.createClass({
                         </View> : null}
                         <View style={styles.mainContent}>
                             <AvatarImage image={userImage} style={styles.avatar} redirect={this.toggleRoll}/>
-                            {!this.state.showEditName ?<View style={styles.userName}>
+                            {!this.state.showEditName ? <View style={styles.userName}>
                                 <Text style={[styles.userNameText]}>
                                     {user.first_name} {user.last_name}
                                 </Text>
                                 <TouchableOpacity style={styles.userNameEdit} onPress={this._onEditName}>
                                     <Icon name="pencil" size={14} color='black'/>
                                 </TouchableOpacity>
-                            </View>: null}
+                            </View> : null}
                             {this.state.showEditName ?
                                 <View style={styles.section}>
                                     <TextInput style={styles.textInput}
@@ -204,7 +231,7 @@ const Profile = React.createClass({
                                     <TextInput ref="average_rate" style={styles.textInput}
                                                underlineColorAndroid='transparent'
                                                keyboardType="phone-pad"
-                                               maxLength={3}
+                                               maxLength={6}
                                                placeholderTextColor='#4d4d4d' onChangeText={this._onAverageChange}
                                                value={this.state.average_rate}
                                                placeholder="Add Average Rate"/>

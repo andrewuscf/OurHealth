@@ -9,14 +9,12 @@ import {
     StyleSheet,
     TouchableOpacity,
     TouchableHighlight,
-    TextInput,
-    Alert
+    TextInput
 } from 'react-native';
 
 const Login = React.createClass({
     propTypes: {
         login: React.PropTypes.func.isRequired,
-        clearAPIError: React.PropTypes.func.isRequired,
         resetPassword: React.PropTypes.func.isRequired,
         register: React.PropTypes.func.isRequired,
     },
@@ -70,19 +68,6 @@ const Login = React.createClass({
             if (this.state.email && this.state.password) {
                 this.props.login(this.state.email.toLowerCase(), this.state.password)
             }
-        }
-    },
-
-    componentDidUpdate(prevProps, prevState) {
-        if (this.props.error) {
-            const error = JSON.parse(this.props.error);
-            Alert.alert(
-                error.title,
-                error.text,
-                [
-                    {text: 'OK', onPress: () => this.props.clearAPIError()},
-                ]
-            );
         }
     },
 
@@ -172,13 +157,13 @@ const Login = React.createClass({
                     {(this.state.signUp) ?
                         <View style={{flexDirection: 'row'}}>
                             <TouchableOpacity onPress={this.selectType.bind(null, 1)}
-                                              style={[styles.typeButtons, this.state.type == 1 ? styles.selectedType: styles.notSelected]}>
-                                <Text style={this.state.type == 1 ? styles.selectedText: styles.notSelectedText}>Find
+                                              style={[styles.typeButtons, this.state.type == 1 ? styles.selectedType : styles.notSelected]}>
+                                <Text style={this.state.type == 1 ? styles.selectedText : styles.notSelectedText}>Find
                                     Care</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={this.selectType.bind(null, 2)}
-                                              style={[styles.typeButtons, this.state.type == 2 ? styles.selectedType: styles.notSelected]}>
-                                <Text style={this.state.type == 2 ? styles.selectedText: styles.notSelectedText}>CareGiver</Text>
+                                              style={[styles.typeButtons, this.state.type == 2 ? styles.selectedType : styles.notSelected]}>
+                                <Text style={this.state.type == 2 ? styles.selectedText : styles.notSelectedText}>CareGiver</Text>
                             </TouchableOpacity>
                         </View> : null}
 

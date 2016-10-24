@@ -8,13 +8,15 @@ import moment from 'moment';
 
 
 const initialState = {
-    User: null,
 };
 
 export default function AppReducers(state = initialState, action = null) {
     switch (action.type) {
-
-
+        // case constants.UPDATE_PROFILE:
+        //     return {
+        //         ...state,
+        //         Route: action.route
+        //     };
 
         default:
             return state
