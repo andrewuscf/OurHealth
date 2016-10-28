@@ -24,11 +24,12 @@ import * as ProfileActions from '../../actions/ProfileActions';
 import AvatarImage from '../../components/AvatarImage';
 import {EMPTY_AVATAR} from '../../assets/constants';
 import SelectInput from '../../components/SelectInput';
+import SubmitButton from '../../components/SubmitButton';
 
 var {height: deviceHeight, width: deviceWidth} = Dimensions.get('window');
 
 
-const Profile = React.createClass({
+const EditProfile = React.createClass({
     getInitialState() {
         return {
             birthday: null,
@@ -51,6 +52,14 @@ const Profile = React.createClass({
                 average_rate: this.props.RequestUser.profile.average_rate.toString(),
                 phone_number: this.props.RequestUser.profile.phone_number,
             })
+        }
+    },
+
+    asyncActions(start){
+        if (start) {
+            this.refs.postbutton.setState({busy:true});
+        } else {
+            this.refs.postbutton.setState({busy:false});
         }
     },
 
@@ -116,7 +125,7 @@ const Profile = React.createClass({
                 name: 'image.jpg',
                 type: 'multipart/form-data'
             });
-            profileData.append("birthday", this.state.birthday);
+            profileData.append("date_of_birth", moment(Date.parse(this.state.birthday)).format('YYYY-MM-DD'));
             profileData.append("phone_number", this.state.phone_number);
             if (this.state.average_rate)
                 profileData.append("average_rate", parseInt(this.state.average_rate));
@@ -130,7 +139,7 @@ const Profile = React.createClass({
                 };
                 this.props.actions.updateUser(userData);
             }
-            this.props.actions.updateProfile(profileData);
+            this.props.actions.updateProfile(profileData, this.asyncActions);
         }
     },
 
@@ -206,7 +215,6 @@ const Profile = React.createClass({
                                     placeholder="select date"
                                     format="MM-DD-YYYY"
                                     minDate="01-01-1930"
-                                    maxDate={moment().format('MM-DD-YYYY')}
                                     confirmBtnText="Confirm"
                                     cancelBtnText="Cancel"
                                     customStyles={DatePickerStyle}
@@ -242,9 +250,8 @@ const Profile = React.createClass({
                                 </View>
                                 : null
                             }
-                            <TouchableOpacity style={styles.button} onPress={this._onSubmit} underlayColor='#99d9f4'>
-                                <Text style={styles.buttonText}>Save</Text>
-                            </TouchableOpacity>
+                            <SubmitButton buttonStyle={styles.button}
+                                          textStyle={styles.submitText} onPress={this._onSubmit} ref='postbutton' text='Save' />
                         </View>
                     </ScrollView>
                 </View>
@@ -338,7 +345,20 @@ const styles = StyleSheet.create({
         paddingLeft: 30,
         paddingRight: 30,
         borderRadius: 21
-    }
+    },
+    submitButton: {
+        backgroundColor: '#43c279',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 40,
+        width: 75,
+        borderRadius: 21
+    },
+    submitText: {
+        color: 'white',
+        fontSize: 15,
+        // fontFamily: 'OpenSans-Bold',
+    },
 });
 
 const stateToProps = (state) => {
@@ -353,4 +373,4 @@ const dispatchToProps = (dispatch) => {
     }
 };
 
-export default connect(stateToProps, dispatchToProps)(Profile);
+export default connect(stateToProps, dispatchToProps)(EditProfile);

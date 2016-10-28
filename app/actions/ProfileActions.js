@@ -23,7 +23,8 @@ export function updateUser(data) {
     }
 }
 
-export function updateProfile(data) {
+export function updateProfile(data, asyncActions) {
+    asyncActions(true);
     const headers = {
         'Content-Type': 'multipart/form-data',
     };
@@ -32,9 +33,13 @@ export function updateProfile(data) {
             fetchData('PATCH', data, getState().Global.UserToken, headers))
             .then((response) => response.json())
             .then((responseJson) => {
+                console.log(responseJson)
+                asyncActions(false);
                 return dispatch({type: types.UPDATE_PROFILE, profile: responseJson});
             })
             .catch((error) => {
+                asyncActions(false);
+                console.log(error);
                 return dispatch({
                     type: types.API_ERROR, error: JSON.stringify({
                         title: 'Request could not be performed.',
