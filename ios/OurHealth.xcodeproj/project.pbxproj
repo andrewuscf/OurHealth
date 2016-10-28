@@ -25,6 +25,8 @@
 		1E0CE3F0A948438283B44EFA /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D43AB2A816F4492FB4911CB2 /* Ionicons.ttf */; };
 		226BC08A04134A0BB30CE6DF /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5AFFF9A637B746AA8B6F92E6 /* MaterialIcons.ttf */; };
 		3A77B550C8254CFB9B369DB7 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 742CF3FB4B604845929DDBEC /* Entypo.ttf */; };
+		493E713A1DC327F10089D5BE /* libRCTBackgroundGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 493E71391DC327D10089D5BE /* libRCTBackgroundGeolocation.a */; };
+		499098D11DC329F700845924 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 499098D01DC329F700845924 /* libsqlite3.tbd */; };
 		49A87C181DBD73920023F63C /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A87C0D1DBD73800023F63C /* libRCTCameraRoll.a */; };
 		4DC3935A337442C58BE57437 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AC83BB446CDF4B01A7FAD3B9 /* EvilIcons.ttf */; };
 		67756DC2BF004FF4B51F3FB6 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 11E4C46D892145AC9084CF6A /* libRNVectorIcons.a */; };
@@ -106,6 +108,13 @@
 			remoteGlobalIDString = 5DBEB1501B18CEA900B34395;
 			remoteInfo = RNVectorIcons;
 		};
+		493E71381DC327D10089D5BE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 493E71341DC327D10089D5BE /* RCTBackgroundGeolocation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 418F75461D02DC3D0045FEA0;
+			remoteInfo = RCTBackgroundGeolocation;
+		};
 		49A87C0C1DBD73800023F63C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 49A87C071DBD737F0023F63C /* RCTCameraRoll.xcodeproj */;
@@ -152,6 +161,8 @@
 		145A779164F1419EBDA6CAFF /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		1AE2EB7F0BD140E6819B8995 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
+		493E71341DC327D10089D5BE /* RCTBackgroundGeolocation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBackgroundGeolocation.xcodeproj; path = "../node_modules/react-native-mauron85-background-geolocation/ios/RCTBackgroundGeolocation.xcodeproj"; sourceTree = "<group>"; };
+		499098D01DC329F700845924 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		49A87C071DBD737F0023F63C /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
 		5AFFF9A637B746AA8B6F92E6 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		5E3E98CAED68452296E16F78 /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
@@ -177,6 +188,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				499098D11DC329F700845924 /* libsqlite3.tbd in Frameworks */,
+				493E713A1DC327F10089D5BE /* libRCTBackgroundGeolocation.a in Frameworks */,
 				49A87C181DBD73920023F63C /* libRCTCameraRoll.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
@@ -298,6 +311,22 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		493E71351DC327D10089D5BE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				493E71391DC327D10089D5BE /* libRCTBackgroundGeolocation.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		499098CF1DC329F700845924 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				499098D01DC329F700845924 /* libsqlite3.tbd */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		49A87C081DBD737F0023F63C /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -317,6 +346,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				493E71341DC327D10089D5BE /* RCTBackgroundGeolocation.xcodeproj */,
 				49A87C071DBD737F0023F63C /* RCTCameraRoll.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -349,6 +379,7 @@
 				00E356EF1AD99517003FC87E /* OurHealthTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				9B4ACB5023934A8DB599472A /* Resources */,
+				499098CF1DC329F700845924 /* Frameworks */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -447,6 +478,10 @@
 				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
 					ProjectRef = 00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */;
+				},
+				{
+					ProductGroup = 493E71351DC327D10089D5BE /* Products */;
+					ProjectRef = 493E71341DC327D10089D5BE /* RCTBackgroundGeolocation.xcodeproj */;
 				},
 				{
 					ProductGroup = 49A87C081DBD737F0023F63C /* Products */;
@@ -563,6 +598,13 @@
 			fileType = archive.ar;
 			path = libRNVectorIcons.a;
 			remoteRef = 20C6A0A91DA20307005BB0DB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		493E71391DC327D10089D5BE /* libRCTBackgroundGeolocation.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTBackgroundGeolocation.a;
+			remoteRef = 493E71381DC327D10089D5BE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		49A87C0D1DBD73800023F63C /* libRCTCameraRoll.a */ = {
@@ -684,7 +726,10 @@
 				INFOPLIST_FILE = OurHealthTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OurHealth.app/OurHealth";
 			};
@@ -698,7 +743,10 @@
 				INFOPLIST_FILE = OurHealthTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OurHealth.app/OurHealth";
 			};
@@ -715,6 +763,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../node_modules/react-native/React/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
+					"$(SRCROOT)/../node_modules/react-native-mauron85-background-geolocation/ios/RCTBackgroundGeolocation",
 				);
 				INFOPLIST_FILE = OurHealth/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -738,6 +787,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../node_modules/react-native/React/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
+					"$(SRCROOT)/../node_modules/react-native-mauron85-background-geolocation/ios/RCTBackgroundGeolocation",
 				);
 				INFOPLIST_FILE = OurHealth/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -790,6 +840,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../node_modules/react-native/React/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
+					"$(SRCROOT)/../node_modules/react-native-mauron85-background-geolocation/ios/RCTBackgroundGeolocation",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -831,6 +882,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../node_modules/react-native/React/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
+					"$(SRCROOT)/../node_modules/react-native-mauron85-background-geolocation/ios/RCTBackgroundGeolocation",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
