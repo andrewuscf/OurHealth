@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
 
 import * as HomeActions from '../actions/HomeActions';
 
@@ -22,47 +23,57 @@ const Home = React.createClass({
 
     getInitialState() {
         return {
-            position: null
+            location: null
         }
     },
 
-    componentDidMount() {
-    //     navigator.geolocation.getCurrentPosition(
-    //         (position) => {
-    //             this.setState({position: position});
-    //         },
-    //         (error) => console.log(JSON.stringify(error)),
-    //         {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-    //     );
-    //
-    //     this.watchID = navigator.geolocation.watchPosition((position) => {
-    //         this.setState({position: position});
-    //     });
+    componentWillMount() {
+        BackgroundGeolocation.configure({
+            desiredAccuracy: 10,
+            stationaryRadius: 50,
+            distanceFilter: 50,
+            locationTimeout: 30,
+            notificationTitle: 'Background tracking',
+            notificationText: 'enabled',
+            debug: true,
+            startOnBoot: false,
+            stopOnTerminate: false,
+            locationProvider: BackgroundGeolocation.provider.ANDROID_ACTIVITY_PROVIDER,
+            interval: 10000,
+            fastestInterval: 5000,
+            activitiesInterval: 10000,
+            stopOnStillActivity: false,
+        });
+        BackgroundGeolocation.on('location', (location) => {
+            //handle your locations here
+            this.getUsers(location);
+            this.setState({location: location})
+        });
+        BackgroundGeolocation.on('stationary', (stationaryLocation) => {
+            //handle stationary locations here
+            console.log(stationaryLocation)
+        });
+        BackgroundGeolocation.on('error', (error) => {
+            console.log('[ERROR] BackgroundGeolocation error:', error);
+        });
+
+        BackgroundGeolocation.start(() => {
+            console.log('[DEBUG] BackgroundGeolocation started successfully');
+        });
     },
 
-    getUsers(refresh = false) {
+    getUsers(location, refresh = false) {
         // Get workers if current user is client and vice verus.
         if (this.props.RequestUser.type == 'Client') {
-            this.props.actions.loadWorkers(this.state.position, refresh);
+            this.props.actions.loadWorkers(location, refresh);
         } else {
             // this.props.actions.loadClients();
         }
     },
 
-    componentDidUpdate(prevProps, prevState) {
-        // Initial with position
-        if (!prevState.position  && this.state.position && this.props.RequestUser) {
-            this.getUsers();
-        }
-        // Get when user location changes.
-        // if (this.props.RequestUser != prevProps.RequestUser && this.state.position) {
-        //     console.log('hit');
-        //     this.getUsers();
-        // }
-    },
 
     refresh() {
-        getUsers(true);
+        this.getUsers(this.state.location, true);
     },
 
     onEndReached() {
