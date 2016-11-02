@@ -46,7 +46,7 @@ const Home = React.createClass({
         });
         BackgroundGeolocation.on('location', (location) => {
             //handle your locations here
-            this.getUsers(location);
+            // this.getUsers(location);
             this.setState({location: location})
         });
         BackgroundGeolocation.on('stationary', (stationaryLocation) => {

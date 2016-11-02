@@ -23,8 +23,6 @@ const WorkerBox = React.createClass({
                     <AvatarImage image={worker.user.profile.avatar} style={styles.pushDown}/>
                     <View style={[styles.details, styles.pushDown]}>
                         <Text style={styles.bold}>{worker.user.first_name} {worker.user.last_name}</Text>
-                        <Text style={styles.small}><Text
-                            style={styles.bold}>Hours: </Text>{worker.user.profile.hours_available}</Text>
                         <Text style={styles.small}>
                             <Text><Text style={styles.bold}>Cred: </Text>1</Text>
                             <Text style={styles.safeSpace}><Text style={styles.bold}>Cred: </Text>1</Text>

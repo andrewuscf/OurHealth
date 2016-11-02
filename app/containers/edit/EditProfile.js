@@ -37,7 +37,7 @@ const EditProfile = React.createClass({
             showRoll: false,
             showEditName: false,
             previewImage: null,
-            average_rate: null,
+            requested_rate: null,
             first_name: null,
             last_name: null,
         }
@@ -49,7 +49,7 @@ const EditProfile = React.createClass({
                 birthday: moment(this.props.RequestUser.profile.date_of_birth).format('MM-DD-YYYY'),
                 first_name: this.props.RequestUser.first_name,
                 last_name: this.props.RequestUser.last_name,
-                average_rate: (this.props.RequestUser.profile.average_rate) ? this.props.RequestUser.profile.average_rate.toString() : null,
+                requested_rate: (this.props.RequestUser.profile.requested_rate) ? this.props.RequestUser.profile.requested_rate.toString() : null,
                 phone_number: this.props.RequestUser.profile.phone_number
             })
         }
@@ -96,7 +96,7 @@ const EditProfile = React.createClass({
 
     _onAverageChange(number) {
         this.setState({
-            average_rate: number
+            requested_rate: number
         })
     },
 
@@ -131,10 +131,8 @@ const EditProfile = React.createClass({
             }
             profileData.append("date_of_birth", moment(Date.parse(this.state.birthday)).format('YYYY-MM-DD'));
             profileData.append("phone_number", this.state.phone_number);
-            if (this.state.average_rate)
-                profileData.append("average_rate", parseInt(this.state.average_rate));
-            if (this.refs.hours_available && this.refs.hours_available.state.value)
-                profileData.append("hours_available", this.refs.hours_available.state.value);
+            if (this.state.requested_rate)
+                profileData.append("requested_rate", parseInt(this.state.requested_rate));
             // If user name updated then also update user model.
             if (this.state.first_name != this.props.RequestUser.first_name || this.state.last_name != this.props.RequestUser.last_name) {
                 let userData = {
@@ -151,11 +149,6 @@ const EditProfile = React.createClass({
         const rollPickerWidth = deviceWidth - 20;
         const user = this.props.RequestUser;
         // Hours available options
-        var hoursOptions = [
-            ['As Needed', 3],
-            ['More than 30 hrs/week', 1],
-            ['Less than 30 hrs/week', 2]
-        ];
         if (user) {
             let userImage = EMPTY_AVATAR;
             if (this.state.previewImage) {
@@ -240,17 +233,13 @@ const EditProfile = React.createClass({
                             {user.type == 'Worker' ?
                                 <View style={styles.section}>
                                     <Text>Average Rate($)</Text>
-                                    <TextInput ref="average_rate" style={styles.textInput}
+                                    <TextInput ref="requested_rate" style={styles.textInput}
                                                underlineColorAndroid='transparent'
                                                keyboardType="phone-pad"
                                                maxLength={6}
                                                placeholderTextColor='#4d4d4d' onChangeText={this._onAverageChange}
-                                               value={this.state.average_rate}
+                                               value={this.state.requested_rate}
                                                placeholder="Add Average Rate"/>
-                                    <View style={styles.section}>
-                                        <Text>Hours Available</Text>
-                                        <SelectInput ref='hours_available' options={hoursOptions}/>
-                                    </View>
                                 </View>
                                 : null
                             }
