@@ -49,17 +49,17 @@ const EditProfile = React.createClass({
                 birthday: moment(this.props.RequestUser.profile.date_of_birth).format('MM-DD-YYYY'),
                 first_name: this.props.RequestUser.first_name,
                 last_name: this.props.RequestUser.last_name,
-                average_rate: this.props.RequestUser.profile.average_rate.toString(),
-                phone_number: this.props.RequestUser.profile.phone_number,
+                average_rate: (this.props.RequestUser.profile.average_rate) ? this.props.RequestUser.profile.average_rate.toString() : null,
+                phone_number: this.props.RequestUser.profile.phone_number
             })
         }
     },
 
     asyncActions(start){
         if (start) {
-            this.refs.postbutton.setState({busy:true});
+            this.refs.postbutton.setState({busy: true});
         } else {
-            this.refs.postbutton.setState({busy:false});
+            this.refs.postbutton.setState({busy: false});
         }
     },
 
@@ -79,7 +79,7 @@ const EditProfile = React.createClass({
 
     _onEditName() {
         this.setState({
-            showEditName: !this.state.showEditName,
+            showEditName: !this.state.showEditName
         });
     },
 
@@ -113,23 +113,27 @@ const EditProfile = React.createClass({
     },
 
     checkAllRequired() {
-        return !!(this.state.birthday && this.state.phone_number && this.state.previewImage && this.state.first_name && this.state.last_name);
+        return !!(this.state.birthday && this.state.phone_number &&
+        (this.state.previewImage || this.props.RequestUser.profile.avatar) &&
+        this.state.first_name && this.state.last_name);
     },
 
     _onSubmit(){
         if (this.checkAllRequired()) {
             let profileData = new FormData();
-            profileData.append("avatar", {
-                ...this.state.previewImage,
-                url: this.state.previewImage.uri,
-                name: 'image.jpg',
-                type: 'multipart/form-data'
-            });
+            if (this.state.previewImage) {
+                profileData.append("avatar", {
+                    ...this.state.previewImage,
+                    url: this.state.previewImage.uri,
+                    name: 'image.jpg',
+                    type: 'multipart/form-data'
+                });
+            }
             profileData.append("date_of_birth", moment(Date.parse(this.state.birthday)).format('YYYY-MM-DD'));
             profileData.append("phone_number", this.state.phone_number);
             if (this.state.average_rate)
                 profileData.append("average_rate", parseInt(this.state.average_rate));
-            if (this.refs.hours_available.state.value)
+            if (this.refs.hours_available && this.refs.hours_available.state.value)
                 profileData.append("hours_available", this.refs.hours_available.state.value);
             // If user name updated then also update user model.
             if (this.state.first_name != this.props.RequestUser.first_name || this.state.last_name != this.props.RequestUser.last_name) {
@@ -251,7 +255,8 @@ const EditProfile = React.createClass({
                                 : null
                             }
                             <SubmitButton buttonStyle={styles.button}
-                                          textStyle={styles.submitText} onPress={this._onSubmit} ref='postbutton' text='Save' />
+                                          textStyle={styles.submitText} onPress={this._onSubmit} ref='postbutton'
+                                          text='Save'/>
                         </View>
                     </ScrollView>
                 </View>
