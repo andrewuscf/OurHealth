@@ -5,6 +5,7 @@ import {
     ScrollView,
     View,
     Text,
+    TextInput,
     TouchableOpacity,
     StyleSheet,
     Dimensions
@@ -35,11 +36,9 @@ var SubNav = React.createClass({
             startTime: null,
             endTime: null,
             days: [],
-            daysToAdd: [{date:moment()}]
+            daysToAdd: [{date: moment()}],
+            rate: null
         }
-    },
-    componentDidMount: function () {
-
     },
 
     asyncActions(start){
@@ -50,8 +49,14 @@ var SubNav = React.createClass({
         // }
     },
 
+    componentDidUpdate(prevProps, prevState) {
+        if (this.state.selectedDate != prevState.selectedDate) {
+            this.onRepeatChange(this.refs.repeat.state.value)
+        }
+    },
+
     onDateSelect(date) {
-        this.setState({selectedDate: moment(date)})
+        this.setState({selectedDate: moment(date)});
     },
 
     onRepeatChange(value) {
@@ -64,7 +69,11 @@ var SubNav = React.createClass({
         ];
         // Used to remove nulls from array.
         daysToAdd = _.compact(daysToAdd);
-        this.setState({daysToAdd:daysToAdd})
+        this.setState({daysToAdd: daysToAdd})
+    },
+
+    onRateChange(rate){
+        this.setState({rate: rate});
     },
 
 
@@ -76,68 +85,83 @@ var SubNav = React.createClass({
             ['3 Weeks', 3]
         ];
         return (
-            <ScrollView style={styles.flexCenter} contentContainerStyle={styles.contentContainerStyle}>
-                <Calendar
-                    scrollEnabled={true}              // False disables swiping. Default: False
-                    showControls={true}               // False hides prev/next buttons. Default: False
-                    showEventIndicators={true}        // False hides event indicators. Default:False
-                    titleFormat={'MMMM YYYY'}         // Format for displaying current month. Default: 'MMMM YYYY'
-                    onDateSelect={(date) => this.onDateSelect(date)} // Callback after date selection
-                    events={this.state.daysToAdd}
-                    selectedDate={this.state.selectedDate}       // Day to be selected
-                    weekStart={0}
-                    customStyle={calendarElementStyle} // Customize any pre-defined styles
-                />
-                {this.state.selectedDate ?
-                    <View style={styles.dateCard}>
-                        <View style={styles.repeatTop}>
-                            <Text>Repeat:</Text>
-                            <SelectInput ref='repeat' options={repeatOptions} onChange={this.onRepeatChange}/>
+            <View style={styles.flexCenter}>
+                <View style={styles.backNav}>
+                    <TouchableOpacity activeOpacity={1} onPress={this.props.closeModal} style={styles.backNavButton}>
+                        <Icon name="arrow-left" size={17} color='#d4d4d4' />
+                        <Text style={styles.title}>Search Nurses</Text>
+                    </TouchableOpacity>
+                </View>
+                <ScrollView style={styles.scrollStyle} contentContainerStyle={styles.contentContainerStyle}>
+                    <Text style={{padding:5}}>How much would you like to pay per hour?</Text>
+                    <TextInput ref="rate" style={styles.textInput}
+                               keyboardType='numeric'
+                               autoCorrect={false}
+                               placeholderTextColor='#4d4d4d' onChangeText={this.onRateChange}
+                               value={this.state.rate}
+                               placeholder="Please enter a $ amount."/>
+                    <Calendar
+                        scrollEnabled={true}              // False disables swiping. Default: False
+                        showControls={true}               // False hides prev/next buttons. Default: False
+                        showEventIndicators={true}        // False hides event indicators. Default:False
+                        titleFormat={'MMMM YYYY'}         // Format for displaying current month. Default: 'MMMM YYYY'
+                        onDateSelect={(date) => this.onDateSelect(date)} // Callback after date selection
+                        events={this.state.daysToAdd}
+                        selectedDate={this.state.selectedDate}       // Day to be selected
+                        weekStart={0}
+                        customStyle={calendarElementStyle} // Customize any pre-defined styles
+                    />
+                    {this.state.selectedDate ?
+                        <View style={styles.dateCard}>
+                            <View style={styles.repeatTop}>
+                                <Text>Repeat:</Text>
+                                <SelectInput ref='repeat' options={repeatOptions} onChange={this.onRepeatChange}/>
+                            </View>
+                            <View style={styles.timePickers}>
+                                <DatePicker style={{flex: 2}}
+                                            mode="time"
+                                            placeholder="Start Time"
+                                            confirmBtnText="Confirm"
+                                            cancelBtnText="Cancel"
+                                            format="hh:mm A"
+                                            date={this.state.startTime}
+                                            showIcon={false}
+                                            onDateChange={(startTime) => {
+                                                this.setState({startTime: startTime})
+                                            }}
+                                />
+                                <DatePicker style={{flex: 2}}
+                                            mode="time"
+                                            placeholder="End Time"
+                                            confirmBtnText="Confirm"
+                                            cancelBtnText="Cancel"
+                                            format="hh:mm A"
+                                            date={this.state.endTime}
+                                            showIcon={false}
+                                            onDateChange={(endTime) => {
+                                                this.setState({endTime: endTime})
+                                            }}
+                                />
+                            </View>
+                            <Text>{this.state.selectedDate.format('dddd')}</Text>
+                            {this.state.daysToAdd.map((day, index) => {
+                                return (
+                                    <Text key={`date-${index}`}>{day.date.format('MMM D')} </Text>
+                                )
+                            })}
+                            <View style={styles.extraButtons}>
+                                <TouchableOpacity style={styles.bottomButtons}>
+                                    <Text style={styles.buttonText}>Cancel</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.bottomButtons}>
+                                    <Text style={styles.buttonText}>Add</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
-                        <View style={styles.timePickers}>
-                            <DatePicker style={{flex: 2}}
-                                        mode="time"
-                                        placeholder="Start Time"
-                                        confirmBtnText="Confirm"
-                                        cancelBtnText="Cancel"
-                                        format="hh:mm A"
-                                        date={this.state.startTime}
-                                        showIcon={false}
-                                        onDateChange={(startTime) => {
-                                            this.setState({startTime: startTime})
-                                        }}
-                            />
-                            <DatePicker style={{flex: 2}}
-                                        mode="time"
-                                        placeholder="End Time"
-                                        confirmBtnText="Confirm"
-                                        cancelBtnText="Cancel"
-                                        format="hh:mm A"
-                                        date={this.state.endTime}
-                                        showIcon={false}
-                                        onDateChange={(endTime) => {
-                                            this.setState({endTime: endTime})
-                                        }}
-                            />
-                        </View>
-                        <Text>{this.state.selectedDate.format('dddd')}</Text>
-                        {this.state.daysToAdd.map((day, index) =>{
-                            return (
-                                <Text key={`date-${index}`}>{day.date.format('MMM D')} </Text>
-                            )
-                        })}
-                        <View style={styles.extraButtons}>
-                            <TouchableOpacity style={styles.bottomButtons}>
-                                <Text style={styles.buttonText}>Cancel</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.bottomButtons}>
-                                <Text style={styles.buttonText}>Add</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                    : null
-                }
-            </ScrollView>
+                        : null
+                    }
+                </ScrollView>
+            </View>
         )
     }
 });
@@ -146,6 +170,35 @@ var SubNav = React.createClass({
 var styles = StyleSheet.create({
     flexCenter: {
         flex: 1,
+    },
+    backNav: {
+        borderColor: '#d4d4d4',
+        borderBottomWidth: 1
+    },
+    backNavButton: {
+        padding: 5,
+        paddingTop: 5,
+        paddingBottom: 5,
+        paddingLeft: 10,
+        flexDirection: 'row'
+    },
+    title: {
+        marginLeft: 25,
+        color: '#d4d4d4',
+        fontSize: 17
+    },
+    scrollStyle: {
+        paddingTop: 10
+    },
+    textInput: {
+        color: '#4d4d4e',
+        fontSize: 17,
+        // fontFamily: 'OpenSans-Semibold',
+        borderBottomWidth: 0,
+        borderBottomColor: '#4d4d4e',
+        backgroundColor: 'transparent',
+        padding: 5,
+        height: 40
     },
     dateCard: {
         borderWidth: 1,
@@ -180,10 +233,6 @@ var styles = StyleSheet.create({
 const DatePickerStyle = {
     dateTouch: {
         width: 42,
-        // borderWidth: 0,
-        // borderBottomWidth: 1,
-        // borderBottomColor: '#e1e3df',
-        // backgroundColor: 'transparent',
     }
 };
 
@@ -197,7 +246,13 @@ var calendarElementStyle = {
         color: 'black'
     },
     eventIndicator: {
-        backgroundColor: 'blue'
+        backgroundColor: '#00BFFF'
+    },
+    selectedDayCircle: {
+        backgroundColor: '#00BFFF'
+    },
+    currentDayCircle: {
+        backgroundColor: '#00BFFF'
     }
 };
 

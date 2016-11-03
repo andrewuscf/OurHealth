@@ -55,7 +55,8 @@ var NavBar = React.createClass({
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonWrap} onPress={this.props.openModal}>
                     <View style={[styles.createButton, isWorker ? {backgroundColor: this.props.checkInColor} : {
-                        borderWidth: 1,
+                        borderLeftWidth: 1,
+                        borderRightWidth: 1,
                         borderColor: '#b1aea5'
                     }]}>
                         {isWorker ?
