@@ -23,6 +23,7 @@ import Home from './containers/Home';
 import EditProfile from './containers/edit/EditProfile';
 
 import NavBar from './components/Navbar';
+import SearchModal from './components/SearchModal';
 
 
 var navigator;
@@ -47,8 +48,7 @@ const App = React.createClass({
         var SceneComponent = route.component;
         switch (route.name) {
             case 'Profile':
-                return <SceneComponent openHireModal={this.openHireModal} navigator={ nav }
-                                       route={route} {...route.passProps}/>;
+                return <SceneComponent navigator={ nav } route={route} {...route.passProps}/>;
             // case 'CreatePoll':
             //     return <SceneComponent createPoll={this.props.actions.createPoll} navigator={ nav }
             //                            route={route}/>;
@@ -86,32 +86,43 @@ const App = React.createClass({
         });
     },
 
-    openHireModal: function (id) {
+    openModal() {
         this.refs.modal1.open();
     },
 
+    closeModal() {
+        this.refs.modal1.close();
+    },
 
     render() {
         if (!this.state.splashArt) {
             if (this.props.UserToken) {
                 if (this.props.RequestUser && this.props.RequestUser.profile.completed) {
+                    const user = this.props.RequestUser;
                     return (
                         <View style={styles.container}>
                             <Navigator initialRoute={{component: Home, name: 'Home'}}
                                        ref={(nav) => {
-                                       navigator = nav;
-                                   }}
+                                           navigator = nav;
+                                       }}
                                        renderScene={ this._renderScene }
                                        onDidFocus={this.itemChangedFocus}
                                        navigationBar={<NavBar
-                                       activeRoute={this.props.Route}
-                                       RequestUser={this.props.RequestUser}
-                                       checkInColor="red"/> }
+                                           activeRoute={this.props.Route}
+                                           openModal={this.openModal}
+                                           RequestUser={this.props.RequestUser}
+                                           checkInColor="red"/> }
                             />
-                            <Modal style={[styles.modal, styles.hireModal]} backdrop={false} ref={"modal1"}
-                                   swipeToClose={true}>
-                                <Text style={styles.text}>Basic modal</Text>
-                            </Modal>
+                            {user.type == "Worker" ?
+                                <Modal style={[styles.modal, styles.hireModal]} backdrop={false} ref={"modal1"}
+                                       swipeToClose={true}>
+                                    <Text style={styles.text}>Worker Check In Modal</Text>
+                                </Modal> :
+                                <Modal style={[styles.modal, styles.hireModal]} backdrop={false} ref={"modal1"}
+                                       swipeToClose={true}>
+                                    <SearchModal closeModal={this.closeModal}/>
+                                </Modal>
+                            }
                         </View>
                     );
                 } else {

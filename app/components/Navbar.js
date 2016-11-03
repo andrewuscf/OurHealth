@@ -35,6 +35,10 @@ var NavBar = React.createClass({
     },
 
     render: function () {
+        const user = this.props.RequestUser;
+        let isWorker = false;
+        if (this.props.RequestUser.type == "Worker")
+            isWorker = true;
         return (
             <View style={styles.primaryBar}>
                 <TouchableOpacity style={styles.buttonWrap} onPress={this._onPress.bind(null, 'Home')}>
@@ -50,8 +54,14 @@ var NavBar = React.createClass({
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonWrap} onPress={this.props.openModal}>
-                    <View style={[styles.createButton, {backgroundColor: this.props.checkInColor}]}>
-                        <Icon name="check" size={20} color='#fff' />
+                    <View style={[styles.createButton, isWorker ? {backgroundColor: this.props.checkInColor} : {
+                        borderWidth: 1,
+                        borderColor: '#b1aea5'
+                    }]}>
+                        {isWorker ?
+                            <Icon name="check" size={20} color='#fff'/> :
+                            <Icon name="search" size={20} color='#b1aea5'/>
+                        }
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonWrap} onPress={this._onPress.bind(null, 'Messages')}>
