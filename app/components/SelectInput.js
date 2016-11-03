@@ -25,6 +25,9 @@ const SelectInput = React.createClass({
             value: value,
             selected: label
         });
+        if(this.props.onChange){
+            this.props.onChange(value);
+        }
         this.toggleOverlay();
     },
 

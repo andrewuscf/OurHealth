@@ -23,10 +23,9 @@ import * as ProfileActions from '../../actions/ProfileActions';
 
 import AvatarImage from '../../components/AvatarImage';
 import {EMPTY_AVATAR} from '../../assets/constants';
-import SelectInput from '../../components/SelectInput';
 import SubmitButton from '../../components/SubmitButton';
 
-var {height: deviceHeight, width: deviceWidth} = Dimensions.get('window');
+var {width: deviceWidth} = Dimensions.get('window');
 
 
 const EditProfile = React.createClass({

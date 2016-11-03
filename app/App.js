@@ -114,11 +114,11 @@ const App = React.createClass({
                                            checkInColor="red"/> }
                             />
                             {user.type == "Worker" ?
-                                <Modal style={[styles.modal, styles.hireModal]} backdrop={false} ref={"modal1"}
+                                <Modal style={[styles.modal]} backdrop={false} ref={"modal1"}
                                        swipeToClose={true}>
                                     <Text style={styles.text}>Worker Check In Modal</Text>
                                 </Modal> :
-                                <Modal style={[styles.modal, styles.hireModal]} backdrop={false} ref={"modal1"}
+                                <Modal style={[styles.modal]} backdrop={false} ref={"modal1"}
                                        swipeToClose={true}>
                                     <SearchModal closeModal={this.closeModal}/>
                                 </Modal>
@@ -152,11 +152,8 @@ const styles = StyleSheet.create({
         top: 0,
         bottom: 0,
         right: 0,
-        left: 0
-    },
-    hireModal: {
+        left: 0,
         flex: 1,
-        backgroundColor: "#3B5998"
     },
 });
 

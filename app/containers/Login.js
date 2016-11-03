@@ -205,18 +205,16 @@ const styles = StyleSheet.create({
         marginTop: 12,
         marginBottom: 12,
         paddingLeft: 3,
-        borderBottomWidth: 2,
-        borderBottomColor: '#e1e3df',
-        height: 20
+        height: 40
     },
     textInput: {
         color: '#4d4d4e',
         fontSize: 17,
         // fontFamily: 'OpenSans-Semibold',
-        borderWidth: 0,
+        // borderWidth: 0,
         backgroundColor: 'transparent',
         padding: 3,
-        height: 20
+        height: 40
     },
     typeButtons: {
         flex: 2,
