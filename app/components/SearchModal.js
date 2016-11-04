@@ -8,7 +8,8 @@ import {
     TextInput,
     TouchableOpacity,
     StyleSheet,
-    Dimensions
+    Dimensions,
+    Alert
 } from 'react-native';
 import _ from 'lodash';
 import moment from 'moment';
@@ -16,6 +17,7 @@ import Calendar from 'react-native-calendar';
 import DatePicker from 'react-native-datepicker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import DayBox from './DayBox';
 import SelectInput from './SelectInput';
 
 
@@ -37,7 +39,8 @@ var SubNav = React.createClass({
             endTime: null,
             days: [],
             daysToAdd: [{date: moment()}],
-            rate: null
+            rate: null,
+            addError: null
         }
     },
 
@@ -50,9 +53,24 @@ var SubNav = React.createClass({
     },
 
     componentDidUpdate(prevProps, prevState) {
-        if (this.state.selectedDate != prevState.selectedDate) {
+        if (this.state.selectedDate && this.state.selectedDate != prevState.selectedDate) {
             this.onRepeatChange(this.refs.repeat.state.value)
         }
+        if (this.state.addError) {
+            Alert.alert(
+                this.state.addError,
+                this.state.addError,
+                [
+                    {text: 'OK', onPress: () => this.clearAddError()},
+                ]
+            );
+        }
+    },
+
+    clearAddError() {
+        this.setState({
+            addError: null
+        })
     },
 
     onDateSelect(date) {
@@ -76,6 +94,62 @@ var SubNav = React.createClass({
         this.setState({rate: rate});
     },
 
+    _addDays() {
+        if (this.state.startTime && this.state.endTime) {
+            let startTime = moment(this.state.startTime, "hh:mm A");
+            let endTime = moment(this.state.endTime, "hh:mm A");
+
+            let daysToAdd = this.state.daysToAdd.map(day => {
+                    let endDate = day.date.clone();
+                    // If start time is pm and end time is am. Then end time is next day.
+                    if (startTime.get('hour') > 12 && endTime.get('hour') < 12) {
+                        endDate = endDate.add(1, 'days');
+                    }
+                    endDate.set('hour', endTime.get('hour')).set('minute', endTime.get('minute')).set('second', 0);
+                    let startDate = day.date.set('hour', startTime.get('hour')).set('minute', startTime.get('minute')).set('second', 0);
+                    return {
+                        ...day,
+                        start: startDate,
+                        end: endDate,
+                        hours: endDate.diff(startDate, 'hours')
+                    }
+                }
+            );
+            let hasOverHours = _.findIndex(daysToAdd, function (o) {
+                    return o.hours > 8
+                }) != -1;
+            let lessThanOneHour = _.findIndex(daysToAdd, function (o) {
+                    return o.hours < 1
+                }) != -1;
+            if (hasOverHours) {
+                this.setState({
+                    addError: 'Job must be 8 hours or less.',
+                });
+            } else if (lessThanOneHour) {
+                this.setState({
+                    addError: 'Job must be at least 1 hour long.',
+                });
+            } else {
+                this.setState({
+                    selectedDate: null,
+                    days: this.state.days.concat(daysToAdd),
+                    daysToAdd: [],
+                });
+            }
+        } else {
+            this.setState({
+                addError: 'Please add start time and end Time.',
+            });
+        }
+    },
+
+    _cancel() {
+        this.setState({
+            selectedDate: null,
+            daysToAdd: [],
+        })
+    },
+
 
     render: function () {
         var repeatOptions = [
@@ -84,38 +158,41 @@ var SubNav = React.createClass({
             ['2 Weeks', 2],
             ['3 Weeks', 3]
         ];
+        const acceptedDay = this.state.days.map((day, i) => {
+            return <DayBox key={i} day={day}/>;
+        });
         return (
             <View style={styles.flexCenter}>
                 <View style={styles.backNav}>
                     <TouchableOpacity activeOpacity={1} onPress={this.props.closeModal} style={styles.backNavButton}>
-                        <Icon name="arrow-left" size={17} color='#d4d4d4' />
+                        <Icon name="arrow-left" size={17} color='#d4d4d4'/>
                         <Text style={styles.title}>Search Nurses</Text>
                     </TouchableOpacity>
                 </View>
                 <ScrollView style={styles.scrollStyle} contentContainerStyle={styles.contentContainerStyle}>
-                    <Text style={{padding:5}}>How much would you like to pay per hour?</Text>
+                    <Text style={{padding: 5}}>How much would you like to pay per hour?</Text>
                     <TextInput ref="rate" style={styles.textInput}
                                keyboardType='numeric'
                                autoCorrect={false}
                                placeholderTextColor='#4d4d4d' onChangeText={this.onRateChange}
                                value={this.state.rate}
                                placeholder="Please enter a $ amount."/>
-                    <Calendar
-                        scrollEnabled={true}              // False disables swiping. Default: False
-                        showControls={true}               // False hides prev/next buttons. Default: False
-                        showEventIndicators={true}        // False hides event indicators. Default:False
-                        titleFormat={'MMMM YYYY'}         // Format for displaying current month. Default: 'MMMM YYYY'
-                        onDateSelect={(date) => this.onDateSelect(date)} // Callback after date selection
-                        events={this.state.daysToAdd}
-                        selectedDate={this.state.selectedDate}       // Day to be selected
-                        weekStart={0}
-                        customStyle={calendarElementStyle} // Customize any pre-defined styles
-                    />
                     {this.state.selectedDate ?
                         <View style={styles.dateCard}>
+                            <Calendar
+                                scrollEnabled={true}              // False disables swiping. Default: False
+                                showControls={true}               // False hides prev/next buttons. Default: False
+                                showEventIndicators={true}        // False hides event indicators. Default:False
+                                titleFormat={'MMMM YYYY'}         // Format for displaying current month. Default: 'MMMM YYYY'
+                                onDateSelect={(date) => this.onDateSelect(date)} // Callback after date selection
+                                events={this.state.daysToAdd}
+                                selectedDate={this.state.selectedDate}       // Day to be selected
+                                weekStart={0}
+                                customStyle={calendarElementStyle} // Customize any pre-defined styles
+                            />
                             <View style={styles.repeatTop}>
                                 <Text>Repeat:</Text>
-                                <SelectInput ref='repeat' options={repeatOptions} onChange={this.onRepeatChange}/>
+                                <SelectInput ref="repeat" options={repeatOptions} onChange={this.onRepeatChange}/>
                             </View>
                             <View style={styles.timePickers}>
                                 <DatePicker style={{flex: 2}}
@@ -153,13 +230,14 @@ var SubNav = React.createClass({
                                 <TouchableOpacity style={styles.bottomButtons}>
                                     <Text style={styles.buttonText}>Cancel</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={styles.bottomButtons}>
+                                <TouchableOpacity style={styles.bottomButtons} onPress={this._addDays}>
                                     <Text style={styles.buttonText}>Add</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
                         : null
                     }
+                    {acceptedDay}
                 </ScrollView>
             </View>
         )
