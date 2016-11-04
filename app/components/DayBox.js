@@ -30,15 +30,15 @@ const DayBox = React.createClass({
     render() {
         console.log(this.props.day)
         let endDay = '';
-        if (this.props.day.start.format('dddd') != this.props.day.end.format('dddd')) {
-            endDay = ` - ${this.props.day.end.format('dddd')}`
+        if (this.props.day.zonedStart.format('dddd') != this.props.day.zonedEnd.format('dddd')) {
+            endDay = ` - ${this.props.day.zonedEnd.format('dddd')}`
         }
         return (
             <View style={[styles.DayBox, this.props.style]}>
                 <View style={styles.boxDetail}>
-                    <Text style={styles.daysTitle}>{this.props.day.start.format('dddd') + endDay}</Text>
-                    <Text>{`Start: ${this.props.day.start.format('MMM Do YYYY, h:mm a')}`}</Text>
-                    <Text>{`End: ${this.props.day.end.format('MMM Do YYYY, h:mm a')}`}</Text>
+                    <Text style={styles.daysTitle}>{this.props.day.zonedStart.format('dddd') + endDay}</Text>
+                    <Text>{`Start: ${this.props.day.zonedStart.format('MMM Do YYYY, h:mm a')}`}</Text>
+                    <Text>{`End: ${this.props.day.zonedEnd.format('MMM Do YYYY, h:mm a')}`}</Text>
                 </View>
                 <TouchableOpacity style={styles.removeCircle}>
                     <Icon name="times-circle" size={25} color='red'/>

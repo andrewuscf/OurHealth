@@ -127,8 +127,13 @@ export function register(data) {
 
 export function createRequest(data) {
     return (dispatch, getState) => {
-        let JSONDATA = JSON.stringify(data);
-        return fetch(`${API_ENDPOINT}user/request/`, fetchData('POST', JSONDATA))
+        var location = getState().Global.Location;
+        let JSONDATA = JSON.stringify({
+            ...data,
+            lat: location.latitude,
+            long: location.longitude
+        });
+        return fetch(`${API_ENDPOINT}user/request/`, fetchData('POST', JSONDATA, getState().Global.UserToken))
             .then((response) => response.json())
             .then((responseJson) => {
                 console.log(responseJson)

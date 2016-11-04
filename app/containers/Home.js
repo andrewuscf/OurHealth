@@ -37,7 +37,7 @@ const Home = React.createClass({
 
 
     refresh() {
-        this.getUsers(this.state.location, true);
+        // this.getUsers(this.state.location, true);
     },
 
     onEndReached() {

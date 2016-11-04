@@ -159,7 +159,7 @@ const App = React.createClass({
                                 <Modal style={[styles.modal]} backdrop={false} ref={"modal1"}
                                        swipeToClose={false}>
                                     <SearchModal closeModal={this.closeModal}
-                                                 createRequest={this.props.actions.createRequest}/>
+                                                 createRequest={this.props.actions.createRequest} />
                                 </Modal>
                             }
                         </View>

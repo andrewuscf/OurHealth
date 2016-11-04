@@ -114,8 +114,10 @@ var SearchModal = React.createClass({
                     let startDate = day.date.set('hour', startTime.get('hour')).set('minute', startTime.get('minute')).set('second', 0);
                     return {
                         ...day,
-                        start: startDate,
-                        end: endDate,
+                        start: startDate.clone().utc().format("YYYY-MM-DD HH:mm:ssZ"),
+                        end: endDate.clone().utc().format("YYYY-MM-DD HH:mm:ssZ"),
+                        zonedStart: startDate,
+                        zonedEnd: endDate,
                         hours: endDate.diff(startDate, 'hours')
                     }
                 }
@@ -166,7 +168,10 @@ var SearchModal = React.createClass({
 
     _onSubmit() {
         if (this.isValid()){
-            this.props.createRequest();
+            this.props.createRequest({
+                days: this.state.days,
+                rate: this.state.rate
+            });
         }
     },
 
@@ -189,7 +194,7 @@ var SearchModal = React.createClass({
                         <Icon name="arrow-left" size={17} color='#00BFFF'/>
                         <Text style={[styles.cancel, styles.blueText]}>Cancel</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.topNavButton, styles.submitButton]}>
+                    <TouchableOpacity style={[styles.topNavButton, styles.submitButton]} onPress={this._onSubmit}>
                         <Text style={[styles.cancel, this.isValid() ? styles.blueText : null]}>Submit</Text>
                     </TouchableOpacity>
                 </View>
