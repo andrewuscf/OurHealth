@@ -125,10 +125,10 @@ export function register(data) {
     }
 }
 
-export function createSearch(data) {
+export function createRequest(data) {
     return (dispatch, getState) => {
         let JSONDATA = JSON.stringify(data);
-        return fetch(`${API_ENDPOINT}auth/register/`, fetchData('POST', JSONDATA))
+        return fetch(`${API_ENDPOINT}user/request/`, fetchData('POST', JSONDATA))
             .then((response) => response.json())
             .then((responseJson) => {
                 console.log(responseJson)
@@ -148,4 +148,8 @@ export function createSearch(data) {
 
 export function clearAPIError() {
     return {type: types.CLEAR_API_ERROR}
+}
+
+export function updateLocation(location) {
+    return {type: types.UPDATE_LOCATION, location: location}
 }

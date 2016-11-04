@@ -12,7 +12,8 @@ const initialState = {
     UserToken: '',
     Route: null,
     Refreshing: false,
-    Error: null
+    Error: null,
+    Location: null,
 };
 
 export default function AppReducers(state = initialState, action = null) {
@@ -79,6 +80,12 @@ export default function AppReducers(state = initialState, action = null) {
                     ...state.RequestUser,
                     profile: action.profile
                 }
+            };
+
+        case constants.UPDATE_LOCATION:
+            return {
+                ...state,
+                Location: action.location
             };
 
         default:

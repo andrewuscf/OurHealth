@@ -15,6 +15,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import _ from 'lodash';
 import Modal from 'react-native-modalbox';
+import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
 
 import * as GlobalActions from './actions/GlobalActions';
 
@@ -64,16 +65,53 @@ const App = React.createClass({
     },
 
     componentDidUpdate(prevProps, prevState) {
-        if (this.props.error) {
-            const error = JSON.parse(this.props.error);
+        if (this.props.Error) {
+            const Error = JSON.parse(this.props.Error);
             Alert.alert(
-                error.title,
-                error.text,
+                Error.title,
+                Error.text,
                 [
                     {text: 'OK', onPress: () => this.props.actions.clearAPIError()},
                 ]
             );
         }
+        if (!prevProps.RequestUser && this.props.RequestUser) {
+            this.setupLocationService();
+        }
+    },
+
+    setupLocationService() {
+        BackgroundGeolocation.configure({
+            desiredAccuracy: 10,
+            stationaryRadius: 50,
+            distanceFilter: 50,
+            locationTimeout: 30,
+            notificationTitle: 'Background tracking',
+            notificationText: 'enabled',
+            debug: true,
+            startOnBoot: false,
+            stopOnTerminate: false,
+            locationProvider: BackgroundGeolocation.provider.ANDROID_ACTIVITY_PROVIDER,
+            interval: 10000,
+            fastestInterval: 5000,
+            activitiesInterval: 10000,
+            stopOnStillActivity: false,
+        });
+        BackgroundGeolocation.on('location', (location) => {
+            //handle your locations here
+            this.props.actions.updateLocation(location);
+        });
+        // BackgroundGeolocation.on('stationary', (stationaryLocation) => {
+        //     //handle stationary locations here
+        //     console.log(stationaryLocation)
+        // });
+        BackgroundGeolocation.on('error', (error) => {
+            console.log('[ERROR] BackgroundGeolocation error:', error);
+        });
+
+        BackgroundGeolocation.start(() => {
+            console.log('[DEBUG] BackgroundGeolocation started successfully');
+        });
     },
 
 
@@ -120,7 +158,8 @@ const App = React.createClass({
                                 </Modal> :
                                 <Modal style={[styles.modal]} backdrop={false} ref={"modal1"}
                                        swipeToClose={false}>
-                                    <SearchModal closeModal={this.closeModal}/>
+                                    <SearchModal closeModal={this.closeModal}
+                                                 createRequest={this.props.actions.createRequest}/>
                                 </Modal>
                             }
                         </View>

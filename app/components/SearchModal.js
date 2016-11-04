@@ -30,6 +30,7 @@ var {width: deviceWidth} = Dimensions.get('window');
 var SearchModal = React.createClass({
     propTypes: {
         closeModal: React.PropTypes.func.isRequired,
+        createRequest: React.PropTypes.func.isRequired,
     },
 
     getInitialState: function () {
@@ -165,7 +166,7 @@ var SearchModal = React.createClass({
 
     _onSubmit() {
         if (this.isValid()){
-
+            this.props.createRequest();
         }
     },
 

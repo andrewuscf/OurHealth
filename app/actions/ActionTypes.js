@@ -9,6 +9,7 @@ export const REGISTER_USER = 'REGISTER_USER';
 
 
 export const LOAD_REQUEST_USER = 'LOAD_REQUEST_USER';
+export const UPDATE_LOCATION = 'UPDATE_LOCATION';
 
 export const CLEAR_API_ERROR = 'CLEAR_API_ERROR';
 export const API_ERROR = 'API_ERROR';
