@@ -119,7 +119,7 @@ const App = React.createClass({
                                     <Text style={styles.text}>Worker Check In Modal</Text>
                                 </Modal> :
                                 <Modal style={[styles.modal]} backdrop={false} ref={"modal1"}
-                                       swipeToClose={true}>
+                                       swipeToClose={false}>
                                     <SearchModal closeModal={this.closeModal}/>
                                 </Modal>
                             }

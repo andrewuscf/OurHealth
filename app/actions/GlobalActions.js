@@ -125,6 +125,27 @@ export function register(data) {
     }
 }
 
+export function createSearch(data) {
+    return (dispatch, getState) => {
+        let JSONDATA = JSON.stringify(data);
+        return fetch(`${API_ENDPOINT}auth/register/`, fetchData('POST', JSONDATA))
+            .then((response) => response.json())
+            .then((responseJson) => {
+                console.log(responseJson)
+                // return dispatch({type: types.REGISTER_USER, message: JSON.stringify(message)});
+            })
+            .catch((error) => {
+                console.log(error)
+                // return dispatch({
+                //     type: types.API_ERROR, error: JSON.stringify({
+                //         title: 'Request could not be performed.',
+                //         text: 'Please try again later.'
+                //     })
+                // });
+            });
+    }
+}
+
 export function clearAPIError() {
     return {type: types.CLEAR_API_ERROR}
 }

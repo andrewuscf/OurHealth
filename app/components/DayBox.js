@@ -35,12 +35,13 @@ const DayBox = React.createClass({
         }
         return (
             <View style={[styles.DayBox, this.props.style]}>
-                <View>
-                    <Text>{this.props.day.start.format('dddd') + endDay}</Text>
-                    <Text>{`${this.props.day.start.format('MMM Do YYYY, h:mm a')} - ${this.props.day.end.format('MMM Do YYYY, h:mm a')}`}</Text>
+                <View style={styles.boxDetail}>
+                    <Text style={styles.daysTitle}>{this.props.day.start.format('dddd') + endDay}</Text>
+                    <Text>{`Start: ${this.props.day.start.format('MMM Do YYYY, h:mm a')}`}</Text>
+                    <Text>{`End: ${this.props.day.end.format('MMM Do YYYY, h:mm a')}`}</Text>
                 </View>
                 <TouchableOpacity style={styles.removeCircle}>
-                    <Icon name="times-circle" size={20} color='black'/>
+                    <Icon name="times-circle" size={25} color='red'/>
                 </TouchableOpacity>
             </View>
         )
@@ -49,14 +50,21 @@ const DayBox = React.createClass({
 
 var styles = StyleSheet.create({
     DayBox: {
-        height: 50,
+        height: 60,
         borderWidth: 1,
         borderColor: '#b1aea5',
         width: deviceWidth,
         flexDirection: 'row'
     },
+    boxDetail: {
+        width: deviceWidth * .90
+    },
+    daysTitle: {
+        textDecorationLine: "underline",
+        textDecorationStyle: "solid",
+        textDecorationColor: "#000"
+    },
     removeCircle: {
-        paddingLeft: 10,
         alignSelf: 'center'
     }
 });
