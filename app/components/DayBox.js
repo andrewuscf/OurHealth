@@ -28,7 +28,6 @@ const DayBox = React.createClass({
 
 
     render() {
-        console.log(this.props.day)
         let endDay = '';
         if (this.props.day.zonedStart.format('dddd') != this.props.day.zonedEnd.format('dddd')) {
             endDay = ` - ${this.props.day.zonedEnd.format('dddd')}`
@@ -40,7 +39,7 @@ const DayBox = React.createClass({
                     <Text>{`Start: ${this.props.day.zonedStart.format('MMM Do YYYY, h:mm a')}`}</Text>
                     <Text>{`End: ${this.props.day.zonedEnd.format('MMM Do YYYY, h:mm a')}`}</Text>
                 </View>
-                <TouchableOpacity style={styles.removeCircle}>
+                <TouchableOpacity style={styles.removeCircle} onPress={this.props.cancel.bind(null, this.props.index)}>
                     <Icon name="times-circle" size={25} color='red'/>
                 </TouchableOpacity>
             </View>
@@ -53,8 +52,7 @@ var styles = StyleSheet.create({
         height: 60,
         borderWidth: 1,
         borderColor: '#b1aea5',
-        width: deviceWidth,
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
     boxDetail: {
         width: deviceWidth * .90

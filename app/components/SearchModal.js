@@ -111,7 +111,8 @@ var SearchModal = React.createClass({
                         endDate = endDate.add(1, 'days');
                     }
                     endDate.set('hour', endTime.get('hour')).set('minute', endTime.get('minute')).set('second', 0);
-                    let startDate = day.date.set('hour', startTime.get('hour')).set('minute', startTime.get('minute')).set('second', 0);
+                    let startDate = day.date.set('hour', startTime.get('hour'))
+                        .set('minute', startTime.get('minute')).set('second', 0);
                     return {
                         ...day,
                         start: startDate.clone().utc().format("YYYY-MM-DD HH:mm:ssZ"),
@@ -166,8 +167,14 @@ var SearchModal = React.createClass({
         });
     },
 
+    removeDay(index) {
+        this.setState({
+            days: this.state.days.slice(0, index).concat(this.state.days.slice(index + 1))
+        })
+    },
+
     _onSubmit() {
-        if (this.isValid()){
+        if (this.isValid()) {
             this.props.createRequest({
                 days: this.state.days,
                 rate: this.state.rate
@@ -184,7 +191,7 @@ var SearchModal = React.createClass({
             ['3 Weeks', 3]
         ];
         const acceptedDay = _.sortBy(this.state.days, ['start', 'end']).map((day, i) => {
-            return <DayBox key={i} day={day}/>;
+            return <DayBox key={i} day={day} cancel={this.removeDay} index={i}/>;
         });
         return (
             <ScrollView style={styles.flexCenter} contentContainerStyle={styles.contentContainerStyle}>
@@ -261,7 +268,9 @@ var SearchModal = React.createClass({
                             )
                         })}
                         <View style={styles.extraButtons}>
-                            <TouchableOpacity style={styles.bottomButtons} onPress={this._cancel}>
+                            <TouchableOpacity
+                                style={[styles.bottomButtons, {borderRightWidth: 1, borderRightColor: 'white'}]}
+                                onPress={this._cancel}>
                                 <Text style={styles.buttonText}>Cancel</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.bottomButtons} onPress={this._addDays}>
@@ -284,6 +293,7 @@ var SearchModal = React.createClass({
 var styles = StyleSheet.create({
     flexCenter: {
         flex: 1,
+        width: deviceWidth
     },
     nav: {
         borderColor: '#d4d4d4',
@@ -346,16 +356,16 @@ var styles = StyleSheet.create({
         flexDirection: 'row'
     },
     extraButtons: {
-        height: 20,
-        bottom: 0,
-        left: 0,
+        height: 40,
+        marginTop: 10,
         flexDirection: 'row'
     },
     bottomButtons: {
         flex: 2,
         backgroundColor: '#00BFFF',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        height: 40
     },
     buttonText: {
         color: 'white',

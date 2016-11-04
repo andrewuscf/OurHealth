@@ -186,13 +186,10 @@ const styles = StyleSheet.create({
         marginTop: (Platform.OS === 'ios') ? 20 : 0
     },
     modal: {
-        justifyContent: 'center',
-        alignItems: 'center',
         top: 0,
         bottom: 0,
         right: 0,
         left: 0,
-        flex: 1,
     },
 });
 
