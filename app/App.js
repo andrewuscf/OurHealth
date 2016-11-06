@@ -15,7 +15,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import _ from 'lodash';
 import Modal from 'react-native-modalbox';
-// import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
+import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
 
 import * as GlobalActions from './actions/GlobalActions';
 
@@ -81,37 +81,38 @@ const App = React.createClass({
     },
 
     setupLocationService() {
-        // BackgroundGeolocation.configure({
-        //     desiredAccuracy: 10,
-        //     stationaryRadius: 50,
-        //     distanceFilter: 50,
-        //     locationTimeout: 30,
-        //     notificationTitle: 'Background tracking',
-        //     notificationText: 'enabled',
-        //     debug: true,
-        //     startOnBoot: false,
-        //     stopOnTerminate: false,
-        //     locationProvider: BackgroundGeolocation.provider.ANDROID_ACTIVITY_PROVIDER,
-        //     interval: 10000,
-        //     fastestInterval: 5000,
-        //     activitiesInterval: 10000,
-        //     stopOnStillActivity: false,
+        // Need to change these settings before release!!!!
+        BackgroundGeolocation.configure({
+            desiredAccuracy: 10,
+            stationaryRadius: 50,
+            distanceFilter: 50,
+            locationTimeout: 30,
+            notificationTitle: 'Background tracking',
+            notificationText: 'enabled',
+            debug: true,
+            startOnBoot: false,
+            stopOnTerminate: false,
+            locationProvider: BackgroundGeolocation.provider.ANDROID_ACTIVITY_PROVIDER,
+            interval: 10000,
+            fastestInterval: 5000,
+            activitiesInterval: 10000,
+            stopOnStillActivity: false,
+        });
+        BackgroundGeolocation.on('location', (location) => {
+            //handle your locations here
+            this.props.actions.updateLocation(location);
+        });
+        // BackgroundGeolocation.on('stationary', (stationaryLocation) => {
+        //     //handle stationary locations here
+        //     console.log(stationaryLocation)
         // });
-        // BackgroundGeolocation.on('location', (location) => {
-        //     //handle your locations here
-        //     this.props.actions.updateLocation(location);
-        // });
-        // // BackgroundGeolocation.on('stationary', (stationaryLocation) => {
-        // //     //handle stationary locations here
-        // //     console.log(stationaryLocation)
-        // // });
-        // BackgroundGeolocation.on('error', (error) => {
-        //     console.log('[ERROR] BackgroundGeolocation error:', error);
-        // });
-        //
-        // BackgroundGeolocation.start(() => {
-        //     console.log('[DEBUG] BackgroundGeolocation started successfully');
-        // });
+        BackgroundGeolocation.on('error', (error) => {
+            console.log('[ERROR] BackgroundGeolocation error:', error);
+        });
+
+        BackgroundGeolocation.start(() => {
+            console.log('[DEBUG] BackgroundGeolocation started successfully');
+        });
     },
 
 
