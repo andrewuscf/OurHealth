@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ourhealth"
+    package="com.caretent"
     android:versionCode="1"
     android:versionName="1.0">
 

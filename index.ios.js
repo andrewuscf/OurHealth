@@ -1,6 +1,6 @@
 'use strict';
 
 import React, { AppRegistry } from 'react-native';
-import OurHealth from './app/AppWrapper';
+import CareTent from './app/AppWrapper';
 
-AppRegistry.registerComponent('OurHealth', () => OurHealth);
+AppRegistry.registerComponent('CareTent', () => CareTent);

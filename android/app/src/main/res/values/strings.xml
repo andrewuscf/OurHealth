@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">OurHealth</string>
+    <string name="app_name">CareTent</string>
     <string name="account_type">com.CareTent.account</string>
     <string name="content_authority">com.CareTent.authority</string>
 </resources>
