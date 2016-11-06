@@ -20,24 +20,7 @@ import WorkerBox from '../components/WorkerBox';
 
 const Home = React.createClass({
 
-    getInitialState() {
-        return {
-            location: null
-        }
-    },
-
-    getUsers(location, refresh = false) {
-        // Get workers if current user is client and vice verus.
-        if (this.props.RequestUser.type == 'Client') {
-            this.props.actions.loadWorkers(location, refresh);
-        } else {
-            // this.props.actions.loadClients();
-        }
-    },
-
-
     refresh() {
-        // this.getUsers(this.state.location, true);
     },
 
     onEndReached() {
@@ -50,24 +33,27 @@ const Home = React.createClass({
 
     render() {
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        const dataSource = ds.cloneWithRows(this.props.Workers);
-        return (
-            <ListView
-                refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this.refresh}/>}
-                style={styles.container} enableEmptySections={true}
-                dataSource={dataSource} onEndReached={this.onEndReached} onEndReachedThreshold={50}
-                renderRow={(worker, i) => <WorkerBox key={i}
+        const dataSource = ds.cloneWithRows(this.props.WorkRequests);
+        if (this.props.WorkRequests.length) {
+            return (
+                <ListView
+                    refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this.refresh}/>}
+                    style={styles.container} enableEmptySections={true}
+                    dataSource={dataSource} onEndReached={this.onEndReached} onEndReachedThreshold={50}
+                    renderRow={(worker, i) => <WorkerBox key={i}
                                                      worker={worker} _redirect={this._redirect}/>}
-            />
-        );
+                />
+            );
+        }
+        return <View><Text>You have to add a request in order to view nurses.</Text></View>
     }
 });
 
 
 const styles = StyleSheet.create({
     mainContainer: {
-        flex: 1,
-    },
+        flex: 1
+    }
 });
 
 const stateToProps = (state) => {

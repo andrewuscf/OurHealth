@@ -136,17 +136,15 @@ export function createRequest(data) {
         return fetch(`${API_ENDPOINT}user/request/`, fetchData('POST', JSONDATA, getState().Global.UserToken))
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson)
-                // return dispatch({type: types.REGISTER_USER, message: JSON.stringify(message)});
+                return dispatch({type: types.ADD_WORK_REQUEST, work_request: JSON.stringify(responseJson)});
             })
             .catch((error) => {
-                console.log(error)
-                // return dispatch({
-                //     type: types.API_ERROR, error: JSON.stringify({
-                //         title: 'Request could not be performed.',
-                //         text: 'Please try again later.'
-                //     })
-                // });
+                return dispatch({
+                    type: types.API_ERROR, error: JSON.stringify({
+                        title: 'Request could not be performed.',
+                        text: 'Please try again later.'
+                    })
+                });
             });
     }
 }

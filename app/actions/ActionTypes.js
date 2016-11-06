@@ -14,13 +14,8 @@ export const UPDATE_LOCATION = 'UPDATE_LOCATION';
 export const CLEAR_API_ERROR = 'CLEAR_API_ERROR';
 export const API_ERROR = 'API_ERROR';
 
-
-
-
-
 // Home Constants
-export const LOAD_WORKERS = 'LOAD_WORKERS';
-export const LOAD_CLIENTS = 'LOAD_CLIENTS';
+export const ADD_WORK_REQUEST = 'ADD_WORK_REQUEST';
 
 
 // Profile Constants
