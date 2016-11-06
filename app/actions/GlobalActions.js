@@ -125,7 +125,8 @@ export function register(data) {
     }
 }
 
-export function createRequest(data) {
+export function createRequest(data, asyncActions) {
+    asyncActions(true);
     return (dispatch, getState) => {
         var location = getState().Global.Location;
         let JSONDATA = JSON.stringify({
@@ -136,9 +137,11 @@ export function createRequest(data) {
         return fetch(`${API_ENDPOINT}user/request/`, fetchData('POST', JSONDATA, getState().Global.UserToken))
             .then((response) => response.json())
             .then((responseJson) => {
-                return dispatch({type: types.ADD_WORK_REQUEST, work_request: JSON.stringify(responseJson)});
+                asyncActions(false);
+                return dispatch({type: types.ADD_WORK_REQUEST, work_request: responseJson});
             })
             .catch((error) => {
+                asyncActions(false);
                 return dispatch({
                     type: types.API_ERROR, error: JSON.stringify({
                         title: 'Request could not be performed.',

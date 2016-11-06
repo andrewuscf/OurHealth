@@ -33,12 +33,11 @@ export function updateProfile(data, asyncActions) {
             fetchData('PATCH', data, getState().Global.UserToken, headers))
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson)
                 asyncActions(false);
                 return dispatch({type: types.UPDATE_PROFILE, profile: responseJson});
             })
             .catch((error) => {
-                asyncActions(false);
+                asyncActions(false);asyncActions(false);
                 console.log(error);
                 return dispatch({
                     type: types.API_ERROR, error: JSON.stringify({

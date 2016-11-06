@@ -39,7 +39,7 @@ const MiddleButton = React.createClass({
                 <View style={styles.wrapper}>
                     {this.state.busy ?
                         <View style={[styles.iconWrapper]}>
-                            <Image style={styles.icon} source={require('../assets/images/wait-white.gif')}/>
+                            <Image style={[styles.icon, this.props.iconStyle]} source={require('../assets/images/wait-white.gif')}/>
                         </View> :
                         <Text style={[this.props.textStyle]}>
                             {content}
@@ -63,13 +63,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff'
     },
     iconWrapper: {
-        position: 'absolute',
         top: 0,
         left: 0,
         right: 0,
-        bottom: 0,
-        justifyContent: 'center',
-        alignItems: 'center'
+        bottom: 0
     },
     icon: {
         width: 36,

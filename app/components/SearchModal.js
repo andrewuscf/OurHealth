@@ -34,7 +34,7 @@ var SearchModal = React.createClass({
         createRequest: React.PropTypes.func.isRequired,
     },
 
-    getInitialState: function () {
+    getInitialState() {
         return {
             selectedDate: moment(),
             startTime: null,
@@ -51,7 +51,8 @@ var SearchModal = React.createClass({
             this.refs.postbutton.setState({busy: true});
         } else {
             this.refs.postbutton.setState({busy: false});
-            this.closeSearchModal();
+            this.setState(this.getInitialState());
+            this.props.closeModal();
         }
     },
 
@@ -180,7 +181,7 @@ var SearchModal = React.createClass({
             this.props.createRequest({
                 days: this.state.days,
                 rate: this.state.rate
-            });
+            }, this.asyncActions);
         }
     },
 
@@ -307,9 +308,6 @@ var styles = StyleSheet.create({
     },
     topNavButton: {
         padding: 5,
-        paddingTop: 5,
-        paddingBottom: 5,
-        paddingLeft: 5,
         flexDirection: 'row'
     },
     cancelButton: {
