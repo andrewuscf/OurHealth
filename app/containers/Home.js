@@ -15,10 +15,16 @@ import * as HomeActions from '../actions/HomeActions';
 
 import {getRoute} from '../Routes';
 
-import WorkerBox from '../components/WorkerBox';
+import WorkRequestBox from '../components/WorkRequestBox';
 
 
 const Home = React.createClass({
+
+    componentDidMount() {
+        if (!this.props.WorkRequests.length) {
+            this.props.actions.getWorkRequests();
+        }
+    },
 
     refresh() {
     },
@@ -34,14 +40,14 @@ const Home = React.createClass({
     render() {
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         const dataSource = ds.cloneWithRows(this.props.WorkRequests);
+        console.log(this.props.WorkRequests)
         if (this.props.WorkRequests.length) {
             return (
                 <ListView
                     refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this.refresh}/>}
                     style={styles.container} enableEmptySections={true}
                     dataSource={dataSource} onEndReached={this.onEndReached} onEndReachedThreshold={50}
-                    renderRow={(worker, i) => <WorkerBox key={i}
-                                                     worker={worker} _redirect={this._redirect}/>}
+                    renderRow={(WorkRequest, i) => <WorkRequestBox key={i} WorkRequest={WorkRequest}/>}
                 />
             );
         }

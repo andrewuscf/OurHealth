@@ -19,6 +19,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import DayBox from './DayBox';
 import SelectInput from './SelectInput';
+import SubmitButton from './SubmitButton';
 
 
 import {getRoute} from '../Routes';
@@ -46,11 +47,12 @@ var SearchModal = React.createClass({
     },
 
     asyncActions(start){
-        // if (start) {
-        //     // indication of activity
-        // } else {
-        //     this.closeSearchModal();
-        // }
+        if (start) {
+            this.refs.postbutton.setState({busy: true});
+        } else {
+            this.refs.postbutton.setState({busy: false});
+            this.closeSearchModal();
+        }
     },
 
     componentDidUpdate(prevProps, prevState) {
@@ -201,9 +203,10 @@ var SearchModal = React.createClass({
                         <Icon name="arrow-left" size={17} color='#00BFFF'/>
                         <Text style={[styles.cancel, styles.blueText]}>Cancel</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.topNavButton, styles.submitButton]} onPress={this._onSubmit}>
-                        <Text style={[styles.cancel, this.isValid() ? styles.blueText : null]}>Submit</Text>
-                    </TouchableOpacity>
+                    <SubmitButton buttonStyle={[styles.topNavButton, styles.submitButton]}
+                                  textStyle={[styles.cancel, this.isValid() ? styles.blueText : null]}
+                                  onPress={this._onSubmit} ref='postbutton'
+                                  text='Submit'/>
                 </View>
                 <Text style={styles.mainTitle}>Search for a nurse</Text>
                 <View style={{padding: 15, paddingTop: 20}}>

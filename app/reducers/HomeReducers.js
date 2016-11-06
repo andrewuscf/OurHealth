@@ -9,6 +9,7 @@ import moment from 'moment';
 
 const initialState = {
     WorkRequests: [],
+    WorkRequestsNext: null,
     Refreshing: false
 };
 
@@ -24,6 +25,14 @@ export default function AppReducers(state = initialState, action = null) {
             return {
                 ...state,
                 WorkRequests: state.WorkRequests.concat(action.work_request),
+                Refreshing: false
+            };
+
+        case constants.LOAD_WORK_REQUESTS:
+            return {
+                ...state,
+                WorkRequests: (action.refresh) ? action.response.results :state.WorkRequests.concat(action.response.results),
+                WorkRequestsNext: action.response.next,
                 Refreshing: false
             };
 
