@@ -13,7 +13,6 @@ export function getWorkRequests(position, refresh = false) {
         return fetch(url, fetchData('GET', null, getState().Global.UserToken))
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson);
                 return dispatch({type: types.LOAD_WORK_REQUESTS, response: responseJson, refresh: refresh});
             })
             .catch((error) => {

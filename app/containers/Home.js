@@ -40,14 +40,13 @@ const Home = React.createClass({
     render() {
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         const dataSource = ds.cloneWithRows(this.props.WorkRequests);
-        console.log(this.props.WorkRequests)
         if (this.props.WorkRequests.length) {
             return (
                 <ListView
                     refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this.refresh}/>}
                     style={styles.container} enableEmptySections={true}
                     dataSource={dataSource} onEndReached={this.onEndReached} onEndReachedThreshold={50}
-                    renderRow={(WorkRequest, i) => <WorkRequestBox key={i} WorkRequest={WorkRequest}/>}
+                    renderRow={(WorkRequest, i) => <WorkRequestBox key={i} WorkRequest={WorkRequest} _redirect={this._redirect}/>}
                 />
             );
         }

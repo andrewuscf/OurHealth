@@ -12,24 +12,24 @@ const WorkerBox = React.createClass({
     },
 
     _toProfile() {
-        this.props._redirect('Profile', {user: this.props.worker.user});
+        this.props._redirect('Profile', {user: this.props.worker});
     },
 
     render() {
         const worker = this.props.worker;
         return (
-            <TouchableHighlight style={styles.container} onPress={this._toProfile}>
+            <TouchableHighlight style={styles.container} onPress={this._toProfile} underlayColor='#99d9f4'>
                 <View style={styles.inner}>
-                    <AvatarImage image={worker.user.profile.avatar} style={styles.pushDown}/>
+                    <AvatarImage image={worker.profile.avatar} style={styles.pushDown}/>
                     <View style={[styles.details, styles.pushDown]}>
-                        <Text style={styles.bold}>{worker.user.first_name} {worker.user.last_name}</Text>
+                        <Text style={styles.bold}>{worker.first_name} {worker.last_name}</Text>
                         <Text style={styles.small}>
                             <Text><Text style={styles.bold}>Cred: </Text>1</Text>
                             <Text style={styles.safeSpace}><Text style={styles.bold}>Cred: </Text>1</Text>
                         </Text>
                     </View>
                     <TriangleCorner
-                        style={worker.user.profile.is_available ? {borderTopColor: 'green'} : {borderTopColor: 'red'}}/>
+                        style={worker.profile.is_available ? {borderTopColor: 'green'} : {borderTopColor: 'red'}}/>
                 </View>
             </TouchableHighlight>
         )
