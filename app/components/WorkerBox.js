@@ -1,6 +1,14 @@
 'use strict';
 import React from 'react';
-import {View, Text, StyleSheet, Image, TouchableHighlight} from 'react-native';
+import {
+    View,
+    Text,
+    StyleSheet,
+    Image,
+    TouchableHighlight,
+    TouchableOpacity
+} from 'react-native';
+import _ from 'lodash';
 
 import AvatarImage from './AvatarImage';
 import TriangleCorner from './TriangleCorner';
@@ -17,6 +25,7 @@ const WorkerBox = React.createClass({
 
     render() {
         const worker = this.props.worker;
+        console.log(this.props.notified);
         return (
             <TouchableHighlight style={styles.container} onPress={this._toProfile} underlayColor='#99d9f4'>
                 <View style={styles.inner}>
@@ -28,6 +37,13 @@ const WorkerBox = React.createClass({
                             <Text style={styles.safeSpace}><Text style={styles.bold}>Cred: </Text>1</Text>
                         </Text>
                     </View>
+                    {!_.isNil(this.props.notified) ?
+                        (!this.props.notified ?
+                        <TouchableOpacity><Text>Invite</Text></TouchableOpacity>
+                            : null
+                        )
+                        : null
+                    }
                     <TriangleCorner
                         style={worker.profile.is_available ? {borderTopColor: 'green'} : {borderTopColor: 'red'}}/>
                 </View>

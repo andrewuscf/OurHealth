@@ -8,6 +8,7 @@ import {
     TouchableHighlight,
     ListView
 } from 'react-native';
+import _ from 'lodash';
 
 import AvatarImage from './AvatarImage';
 import TriangleCorner from './TriangleCorner';
@@ -31,7 +32,7 @@ const WorkRequestBox = React.createClass({
 
     render() {
         const workRequest = this.props.WorkRequest;
-        console.log(workRequest.matches)
+        console.log(workRequest)
         let users = null;
         if (this.state.showUsers) {
             const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -39,7 +40,9 @@ const WorkRequestBox = React.createClass({
             users = <ListView
                 style={styles.container} enableEmptySections={true}
                 dataSource={dataSource} onEndReached={this.onEndReached} onEndReachedThreshold={50}
-                renderRow={(worker, i) => <WorkerBox key={i}  worker={worker} _redirect={this.props._redirect}/>}
+                renderRow={(worker, i) => <WorkerBox key={i}
+                notified={_.indexOf(workRequest.notified, worker.id) != -1}
+                worker={worker} _redirect={this.props._redirect}/>}
             />;
         }
         return (

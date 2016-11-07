@@ -134,7 +134,7 @@ export function createRequest(data, asyncActions) {
             lat: location.latitude,
             long: location.longitude
         });
-        return fetch(`${API_ENDPOINT}user/request/`, fetchData('POST', JSONDATA, getState().Global.UserToken))
+        return fetch(`${API_ENDPOINT}request/`, fetchData('POST', JSONDATA, getState().Global.UserToken))
             .then((response) => response.json())
             .then((responseJson) => {
                 asyncActions(false);
