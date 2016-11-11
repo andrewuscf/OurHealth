@@ -18,7 +18,6 @@ import DatePicker from 'react-native-datepicker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import DayBox from './DayBox';
-import SelectInput from './SelectInput';
 import SubmitButton from './SubmitButton';
 
 
@@ -32,17 +31,20 @@ var SearchModal = React.createClass({
     propTypes: {
         closeModal: React.PropTypes.func.isRequired,
         createRequest: React.PropTypes.func.isRequired,
+        updateAvailability: React.PropTypes.func.isRequired,
+        userType: React.PropTypes.string.isRequired
     },
 
     getInitialState() {
         return {
-            selectedDate: moment(),
+            selectedDate: null,
             startTime: null,
             endTime: null,
             days: [],
-            daysToAdd: [{date: moment()}],
+            daysToAdd: [],
             rate: null,
-            addError: null
+            addError: null,
+            showCalender: true
         }
     },
 
@@ -57,9 +59,6 @@ var SearchModal = React.createClass({
     },
 
     componentDidUpdate(prevProps, prevState) {
-        if (this.state.selectedDate && this.state.selectedDate != prevState.selectedDate) {
-            this.onRepeatChange(this.refs.repeat.state.value)
-        }
         if (this.state.addError) {
             Alert.alert(
                 this.state.addError,
@@ -72,7 +71,11 @@ var SearchModal = React.createClass({
     },
 
     isValid() {
-        return !!(this.state.days.length && this.state.rate);
+        if (this.props.userType == "Client") {
+            return (this.state.days.length && this.state.rate);
+        } else {
+            return (this.state.days.length);
+        }
     },
 
     clearAddError() {
@@ -81,21 +84,18 @@ var SearchModal = React.createClass({
         })
     },
 
-    onDateSelect(date) {
-        this.setState({selectedDate: moment(date)});
-    },
-
-    onRepeatChange(value) {
-        const selectedDate = this.state.selectedDate;
-        let daysToAdd = [
-            {date: selectedDate.clone()},
-            (value == 1 || value == 2 || value == 3) ? {date: selectedDate.clone().add(1, 'w')} : null,
-            (value == 2 || value == 3) ? {date: selectedDate.clone().add(2, 'w')} : null,
-            (value == 3) ? {date: selectedDate.clone().add(3, 'w')} : null,
-        ];
-        // Used to remove nulls from array.
-        daysToAdd = _.compact(daysToAdd);
-        this.setState({daysToAdd: daysToAdd})
+    onDateSelect(selectedDate) {
+        var daysToAdd = this.state.daysToAdd;
+        let index = _.findIndex(daysToAdd, {date: moment(selectedDate)});
+        if (index != -1) {
+            daysToAdd = daysToAdd.slice(0, index).concat(daysToAdd.slice(index + 1))
+        } else {
+            daysToAdd = daysToAdd.concat({date: moment(selectedDate)})
+        }
+        this.setState({
+            selectedDate: moment(selectedDate),
+            daysToAdd: daysToAdd
+        });
     },
 
     onRateChange(rate){
@@ -145,6 +145,7 @@ var SearchModal = React.createClass({
                     selectedDate: null,
                     days: this.state.days.concat(daysToAdd),
                     daysToAdd: [],
+                    showCalender: false
                 });
             }
         } else {
@@ -158,15 +159,13 @@ var SearchModal = React.createClass({
         this.setState({
             selectedDate: null,
             daysToAdd: [],
+            showCalender: false
         })
     },
 
     _addMore() {
         this.setState({
-            selectedDate: moment(),
-            startTime: null,
-            endTime: null,
-            daysToAdd: [{date: moment()}],
+            showCalender: true
         });
     },
 
@@ -178,21 +177,21 @@ var SearchModal = React.createClass({
 
     _onSubmit() {
         if (this.isValid()) {
-            this.props.createRequest({
-                days: this.state.days,
-                rate: this.state.rate
-            }, this.asyncActions);
+            if (this.props.userType == "Client") {
+                this.props.createRequest({
+                    days: this.state.days,
+                    rate: this.state.rate
+                }, this.asyncActions);
+            } else {
+                this.props.createRequest({
+                    days: this.state.days,
+                }, this.asyncActions);
+            }
         }
     },
 
 
     render: function () {
-        var repeatOptions = [
-            ['No Repeat', 0],
-            ['Next Week', 1],
-            ['2 Weeks', 2],
-            ['3 Weeks', 3]
-        ];
         const acceptedDay = _.sortBy(this.state.days, ['start', 'end']).map((day, i) => {
             return <DayBox key={i} day={day} cancel={this.removeDay} index={i}/>;
         });
@@ -209,17 +208,22 @@ var SearchModal = React.createClass({
                                   onPress={this._onSubmit} ref='postbutton'
                                   text='Submit'/>
                 </View>
-                <Text style={styles.mainTitle}>Search for a nurse</Text>
-                <View style={{padding: 15, paddingTop: 20}}>
-                    <Text>How much would you like to pay per hour?</Text>
-                    <TextInput ref="rate" style={styles.textInput}
-                               keyboardType='numeric'
-                               autoCorrect={false}
-                               placeholderTextColor='#4d4d4d' onChangeText={this.onRateChange}
-                               value={this.state.rate}
-                               placeholder="Please enter a $ amount."/>
-                </View>
-                {this.state.selectedDate ?
+                {this.props.userType == "Client" ? <View>
+                    <Text style={styles.mainTitle}>Search for a nurse</Text>
+                    <View style={{padding: 15, paddingTop: 20}}>
+                        <Text>How much would you like to pay per hour?</Text>
+                        <TextInput ref="rate" style={styles.textInput}
+                                   keyboardType='numeric'
+                                   autoCorrect={false}
+                                   placeholderTextColor='#4d4d4d' onChangeText={this.onRateChange}
+                                   value={this.state.rate}
+                                   placeholder="Please enter a $ amount."/>
+                    </View>
+                </View> :
+                    null
+                }
+
+                {this.state.showCalender ?
                     <View style={styles.dateCard}>
                         <Calendar
                             scrollEnabled={false}              // False disables swiping. Default: False
@@ -235,10 +239,6 @@ var SearchModal = React.createClass({
                             weekStart={0}
                             customStyle={calendarElementStyle} // Customize any pre-defined styles
                         />
-                        <View style={styles.repeatTop}>
-                            <Text>Repeat:</Text>
-                            <SelectInput ref="repeat" options={repeatOptions} onChange={this.onRepeatChange}/>
-                        </View>
                         <View style={styles.timePickers}>
                             <DatePicker style={{flex: 2}}
                                         mode="time"
@@ -265,7 +265,6 @@ var SearchModal = React.createClass({
                                         }}
                             />
                         </View>
-                        <Text>{this.state.selectedDate.format('dddd')}</Text>
                         {this.state.daysToAdd.map((day, index) => {
                             return (
                                 <Text key={`date-${index}`}>{day.date.format('MMM D')} </Text>
@@ -348,9 +347,6 @@ var styles = StyleSheet.create({
     dateCard: {
         borderWidth: 1,
         borderColor: '#b1aea5',
-    },
-    repeatTop: {
-        flexDirection: 'row'
     },
     timePickers: {
         height: 40,

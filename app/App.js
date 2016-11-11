@@ -25,7 +25,6 @@ import EditProfile from './containers/edit/EditProfile';
 
 import NavBar from './components/Navbar';
 import SearchModal from './components/SearchModal';
-import UpdateAvailability from './components/UpdateAvailability';
 
 
 var navigator;
@@ -50,7 +49,8 @@ const App = React.createClass({
         var SceneComponent = route.component;
         switch (route.name) {
             case 'Home':
-                return <SceneComponent navigator={ nav } route={route} {...route.passProps} openModal={this.openModal}/>;
+                return <SceneComponent navigator={ nav } route={route} {...route.passProps}
+                                       openModal={this.openModal}/>;
             // case 'CreatePoll':
             //     return <SceneComponent createPoll={this.props.actions.createPoll} navigator={ nav }
             //                            route={route}/>;
@@ -154,18 +154,13 @@ const App = React.createClass({
                                            RequestUser={this.props.RequestUser}
                                            checkInColor="red"/> }
                             />
-                            {user.type == "Worker" ?
-                                <Modal style={[styles.modal]} backdrop={false} ref={"modal1"}
-                                       swipeToClose={true}>
-                                    <UpdateAvailability closeModal={this.closeModal}
-                                                        updateAvailability={this.props.actions.updateAvailability} />
-                                </Modal> :
-                                <Modal style={[styles.modal]} backdrop={false} ref={"modal1"}
-                                       swipeToClose={false}>
-                                    <SearchModal closeModal={this.closeModal}
-                                                 createRequest={this.props.actions.createRequest} />
-                                </Modal>
-                            }
+                            <Modal style={[styles.modal]} backdrop={false} ref={"modal1"}
+                                   swipeToClose={false}>
+                                <SearchModal closeModal={this.closeModal}
+                                             userType={this.props.RequestUser.type}
+                                             updateAvailability={this.props.actions.updateAvailability}
+                                             createRequest={this.props.actions.createRequest}/>
+                            </Modal>
                         </View>
                     );
                 } else {

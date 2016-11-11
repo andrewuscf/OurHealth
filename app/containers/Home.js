@@ -57,7 +57,7 @@ const Home = React.createClass({
                 />
             );
         }
-        if (this.props.RequestUser == 'Client') {
+        if (this.props.RequestUser.type == 'Client') {
             return (
                 <View style={styles.noRequests}>
                     <Text style={styles.noRequestTitle}>You have to add a request in order to view nurses.</Text>
