@@ -33,7 +33,6 @@ const WorkRequestBox = React.createClass({
 
     render() {
         const workRequest = this.props.WorkRequest;
-        console.log(workRequest)
         let users = null;
         if (this.state.showUsers) {
             const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});

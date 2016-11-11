@@ -30,7 +30,7 @@ const Home = React.createClass({
     },
 
     onEndReached() {
-        console.log('hit')
+        console.log('End reach')
     },
 
     _redirect(routeName, props = null) {
@@ -50,6 +50,7 @@ const Home = React.createClass({
                 />
             );
         }
+        console.log(this.props.RequestUser);
         return <View><Text>You have to add a request in order to view nurses.</Text></View>
     }
 });
