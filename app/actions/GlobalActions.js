@@ -152,6 +152,28 @@ export function createRequest(data, asyncActions) {
     }
 }
 
+export function updateAvailability(data, asyncActions) {
+    asyncActions(true);
+    return (dispatch, getState) => {
+        let JSONDATA = JSON.stringify({data});
+        return fetch(`${API_ENDPOINT}request/`, fetchData('POST', JSONDATA, getState().Global.UserToken))
+            .then((response) => response.json())
+            .then((responseJson) => {
+                asyncActions(false);
+                return dispatch({type: types.UPDATE_AVAILABILITY, availability: responseJson});
+            })
+            .catch((error) => {
+                asyncActions(false);
+                return dispatch({
+                    type: types.API_ERROR, error: JSON.stringify({
+                        title: 'Request could not be performed.',
+                        text: 'Please try again later.'
+                    })
+                });
+            });
+    }
+}
+
 export function clearAPIError() {
     return {type: types.CLEAR_API_ERROR}
 }

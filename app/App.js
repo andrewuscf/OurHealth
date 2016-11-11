@@ -25,6 +25,7 @@ import EditProfile from './containers/edit/EditProfile';
 
 import NavBar from './components/Navbar';
 import SearchModal from './components/SearchModal';
+import UpdateAvailability from './components/UpdateAvailability';
 
 
 var navigator;
@@ -48,8 +49,8 @@ const App = React.createClass({
     _renderScene: function (route, nav) {
         var SceneComponent = route.component;
         switch (route.name) {
-            case 'Profile':
-                return <SceneComponent navigator={ nav } route={route} {...route.passProps}/>;
+            case 'Home':
+                return <SceneComponent navigator={ nav } route={route} {...route.passProps} openModal={this.openModal}/>;
             // case 'CreatePoll':
             //     return <SceneComponent createPoll={this.props.actions.createPoll} navigator={ nav }
             //                            route={route}/>;
@@ -156,7 +157,8 @@ const App = React.createClass({
                             {user.type == "Worker" ?
                                 <Modal style={[styles.modal]} backdrop={false} ref={"modal1"}
                                        swipeToClose={true}>
-                                    <Text style={styles.text}>Worker Check In Modal</Text>
+                                    <UpdateAvailability closeModal={this.closeModal}
+                                                        updateAvailability={this.props.actions.updateAvailability} />
                                 </Modal> :
                                 <Modal style={[styles.modal]} backdrop={false} ref={"modal1"}
                                        swipeToClose={false}>

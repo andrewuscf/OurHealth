@@ -30,7 +30,7 @@ var {width: deviceWidth} = Dimensions.get('window');
 
 const EditProfile = React.createClass({
     getInitialState() {
-        return {
+        var initData = {
             birthday: null,
             phone_number: null,
             showRoll: false,
@@ -39,10 +39,22 @@ const EditProfile = React.createClass({
             requested_rate: null,
             first_name: null,
             last_name: null,
+        };
+        if (this.props.RequestUser) {
+            initData = {
+                ...initData,
+                birthday: moment(this.props.RequestUser.profile.date_of_birth).format('MM-DD-YYYY'),
+                first_name: this.props.RequestUser.first_name,
+                last_name: this.props.RequestUser.last_name,
+                requested_rate: (this.props.RequestUser.profile.requested_rate) ? this.props.RequestUser.profile.requested_rate.toString() : null,
+                phone_number: this.props.RequestUser.profile.phone_number
+            }
         }
+        return initData;
     },
 
     componentDidUpdate(prevProps) {
+        console.log(prevProps)
         if (!prevProps.RequestUser && this.props.RequestUser) {
             this.setState({
                 birthday: moment(this.props.RequestUser.profile.date_of_birth).format('MM-DD-YYYY'),
@@ -337,14 +349,6 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         paddingLeft: 30,
         paddingRight: 30,
-        borderRadius: 21
-    },
-    submitButton: {
-        backgroundColor: '#43c279',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: 40,
-        width: 75,
         borderRadius: 21
     },
     submitText: {
