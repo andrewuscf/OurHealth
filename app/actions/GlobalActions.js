@@ -17,7 +17,7 @@ export function setTokenInRedux(token, FromAPI = false) {
     return {type: types.SET_TOKEN, token: token}
 }
 
-export function removeToken(token) {
+export function removeToken() {
     AsyncStorage.removeItem('USER_TOKEN');
     return {type: types.REMOVE_TOKEN}
 }
@@ -155,10 +155,12 @@ export function createRequest(data, asyncActions) {
 export function updateAvailability(data, asyncActions) {
     asyncActions(true);
     return (dispatch, getState) => {
-        let JSONDATA = JSON.stringify({data});
-        return fetch(`${API_ENDPOINT}request/`, fetchData('POST', JSONDATA, getState().Global.UserToken))
+        let JSONDATA = JSON.stringify(data);
+        return fetch(`${API_ENDPOINT}availability/${getState().Global.RequestUser.id}/`,
+            fetchData('PUT', JSONDATA, getState().Global.UserToken))
             .then((response) => response.json())
             .then((responseJson) => {
+                console.log(responseJson);
                 asyncActions(false);
                 return dispatch({type: types.UPDATE_AVAILABILITY, availability: responseJson});
             })

@@ -9,6 +9,7 @@ import {
     ListView
 } from 'react-native';
 import _ from 'lodash';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
 
 import AvatarImage from './AvatarImage';
@@ -56,7 +57,10 @@ const WorkRequestBox = React.createClass({
                 <TouchableHighlight style={styles.container} onPress={this._toggleShow} underlayColor='#99d9f4'>
                     <View style={styles.detailStyle}>
                         <Text style={styles.rate}>Rate: {workRequest.rate}</Text>
-                        <Text style={[styles.rate,{bottom: 10}]}>Matches: {workRequest.matches.length}</Text>
+                        <Text style={[styles.rate,{bottom: 10}]}>
+                            <Icon name="user" size={20} color="black"/>
+                            {workRequest.matches.length}
+                        </Text>
                         <View style={styles.dateSection}>
                             <View>
                                 <Text style={styles.dayMonth}>

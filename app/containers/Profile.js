@@ -9,6 +9,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {fetchData, API_ENDPOINT} from '../actions/Utils';
 
 import * as ProfileActions from '../actions/ProfileActions';
+import {removeToken} from '../actions/GlobalActions';
 
 import AvatarImage from '../components/AvatarImage';
 import HireFooter from '../components/HireFooter';
@@ -18,7 +19,7 @@ const Profile = React.createClass({
     propTypes: {
         user: React.PropTypes.object.isRequired
     },
-    
+
     getInitialState() {
         return {
             user: this.props.user
@@ -30,6 +31,10 @@ const Profile = React.createClass({
         this.props.navigator.pop();
     },
 
+    _logOut() {
+        this.props.removeToken();
+    },
+
     render() {
         const user = this.state.user;
         console.log(user)
@@ -38,10 +43,19 @@ const Profile = React.createClass({
                 <View style={styles.mainContainer}>
                     <ScrollView ref='scrollView' keyboardDismissMode='interactive'
                                 style={styles.mainContainer} contentContainerStyle={styles.contentContainerStyle}>
-                        <View style={styles.backNav}>
-                            <TouchableOpacity onPress={this._back} style={styles.backNavButton}>
-                                <Icon name="angle-left" size={28} color='#d4d4d4'/>
+                        <View style={styles.nav}>
+                            <TouchableOpacity onPress={this._back}
+                                              style={[styles.topNavButton, styles.cancelButton]}>
+                                <Icon name="arrow-left" size={17} color='#00BFFF'/>
+                                <Text style={[styles.cancel, styles.blueText]}>Back</Text>
                             </TouchableOpacity>
+                            {user.id == this.props.RequestUser.id ?
+                                <TouchableOpacity style={[styles.topNavButton, styles.submitButton]}
+                                                  onPress={this._logOut}>
+                                    <Text style={[styles.blueText]}>Sign Out</Text>
+                                </TouchableOpacity>
+                                : null
+                            }
                         </View>
                         <View style={styles.mainContent}>
                             <AvatarImage image={user.profile.avatar} style={styles.avatar}/>
@@ -53,7 +67,7 @@ const Profile = React.createClass({
         } else {
             return <Text>Loading...</Text>
         }
-        
+
     }
 });
 
@@ -62,14 +76,32 @@ const styles = StyleSheet.create({
     mainContainer: {
         flex: 1
     },
-    backNav: {
-        borderBottomWidth: .5,
-        borderBottomColor: 'rgba(0,0,0,.15)'
+    nav: {
+        borderColor: '#d4d4d4',
+        borderBottomWidth: 1,
+        flexDirection: 'row',
+        flex: 1,
+        justifyContent: 'space-between',
     },
-    backNavButton: {
+    topNavButton: {
         padding: 5,
-        paddingTop: 2,
-        paddingLeft: 12,
+        flexDirection: 'row'
+    },
+    cancelButton: {
+        left: 0,
+        alignSelf: 'center'
+    },
+    submitButton: {
+        right: 0,
+        alignSelf: 'center'
+    },
+    blueText: {
+        color: '#00BFFF'
+    },
+    cancel: {
+        marginLeft: 5,
+        color: '#d4d4d4',
+        fontSize: 15
     },
     mainContent: {
         margin: 10
@@ -98,7 +130,8 @@ const stateToProps = (state) => {
 
 const dispatchToProps = (dispatch) => {
     return {
-        actions: bindActionCreators(ProfileActions, dispatch)
+        actions: bindActionCreators(ProfileActions, dispatch),
+        removeToken: bindActionCreators(removeToken, dispatch)
     }
 };
 

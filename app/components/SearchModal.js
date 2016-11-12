@@ -32,15 +32,30 @@ var SearchModal = React.createClass({
         closeModal: React.PropTypes.func.isRequired,
         createRequest: React.PropTypes.func.isRequired,
         updateAvailability: React.PropTypes.func.isRequired,
-        userType: React.PropTypes.string.isRequired
+        RequestUser: React.PropTypes.object.isRequired
     },
 
     getInitialState() {
+        var currentAvailability = this.props.RequestUser.profile.availability;
+        let current = [];
+        if (currentAvailability.length) {
+            current = currentAvailability.map(day => {
+                    return {
+                        ...day,
+                        date: moment(day.start).local(),
+                        zonedStart: moment(day.start).local(),
+                        zonedEnd: moment(day.end).local(),
+                    }
+                }
+            );
+        }
         return {
             selectedDate: null,
             startTime: null,
             endTime: null,
-            days: [],
+            days: [
+                ...current
+            ],
             daysToAdd: [],
             rate: null,
             addError: null,
@@ -71,7 +86,7 @@ var SearchModal = React.createClass({
     },
 
     isValid() {
-        if (this.props.userType == "Client") {
+        if (this.props.RequestUser.type == "Client") {
             return (this.state.days.length && this.state.rate);
         } else {
             return (this.state.days.length);
@@ -177,14 +192,14 @@ var SearchModal = React.createClass({
 
     _onSubmit() {
         if (this.isValid()) {
-            if (this.props.userType == "Client") {
+            if (this.props.RequestUser.type == "Client") {
                 this.props.createRequest({
                     days: this.state.days,
                     rate: this.state.rate
                 }, this.asyncActions);
             } else {
-                this.props.createRequest({
-                    days: this.state.days,
+                this.props.updateAvailability({
+                    availability: this.state.days,
                 }, this.asyncActions);
             }
         }
@@ -208,7 +223,7 @@ var SearchModal = React.createClass({
                                   onPress={this._onSubmit} ref='postbutton'
                                   text='Submit'/>
                 </View>
-                {this.props.userType == "Client" ? <View>
+                {this.props.RequestUser.type == "Client" ? <View>
                     <Text style={styles.mainTitle}>Search for a nurse</Text>
                     <View style={{padding: 15, paddingTop: 20}}>
                         <Text>How much would you like to pay per hour?</Text>
