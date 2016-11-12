@@ -162,7 +162,7 @@ export function updateAvailability(data, asyncActions) {
             .then((responseJson) => {
                 console.log(responseJson);
                 asyncActions(false);
-                return dispatch({type: types.UPDATE_AVAILABILITY, availability: responseJson});
+                return dispatch({type: types.UPDATE_AVAILABILITY, availability: responseJson.availability});
             })
             .catch((error) => {
                 asyncActions(false);

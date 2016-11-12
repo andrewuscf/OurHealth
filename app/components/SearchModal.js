@@ -36,10 +36,11 @@ var SearchModal = React.createClass({
     },
 
     getInitialState() {
-        var currentAvailability = this.props.RequestUser.profile.availability;
-        let current = [];
-        if (currentAvailability.length) {
-            current = currentAvailability.map(day => {
+        return {
+            selectedDate: null,
+            startTime: null,
+            endTime: null,
+            days:this.props.RequestUser.profile.availability.map(day => {
                     return {
                         ...day,
                         date: moment(day.start).local(),
@@ -47,19 +48,11 @@ var SearchModal = React.createClass({
                         zonedEnd: moment(day.end).local(),
                     }
                 }
-            );
-        }
-        return {
-            selectedDate: null,
-            startTime: null,
-            endTime: null,
-            days: [
-                ...current
-            ],
+            ),
             daysToAdd: [],
             rate: null,
             addError: null,
-            showCalender: true
+            showCalender: false
         }
     },
 

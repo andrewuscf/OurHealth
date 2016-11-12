@@ -88,6 +88,18 @@ export default function AppReducers(state = initialState, action = null) {
                 Location: action.location
             };
 
+        case constants.UPDATE_AVAILABILITY:
+            return {
+                ...state,
+                RequestUser: {
+                    ...state.RequestUser,
+                    profile: {
+                        ...state.RequestUser.profile,
+                        availability: action.availability
+                    }
+                }
+            };
+
         default:
             return state
     }
