@@ -6,7 +6,6 @@ import React from 'react';
 import moment from 'moment';
 
 
-
 const initialState = {
     RequestUser: null,
     UserToken: '',
@@ -23,7 +22,7 @@ export default function AppReducers(state = initialState, action = null) {
                 ...state,
                 Route: action.route
             };
-        
+
         case constants.SET_TOKEN:
             return {
                 ...state,
@@ -36,7 +35,7 @@ export default function AppReducers(state = initialState, action = null) {
                 ...state,
                 UserToken: ''
             };
-        
+
         case constants.LOAD_REQUEST_USER:
             return {
                 ...state,
@@ -48,7 +47,7 @@ export default function AppReducers(state = initialState, action = null) {
                 ...state,
                 Refreshing: true
             };
-        
+
         case constants.API_ERROR:
             return {
                 ...state,
@@ -60,7 +59,7 @@ export default function AppReducers(state = initialState, action = null) {
                 ...state,
                 Error: action.message
             };
-        
+
         case constants.CLEAR_API_ERROR:
             return {
                 ...state,
@@ -89,13 +88,24 @@ export default function AppReducers(state = initialState, action = null) {
             };
 
         case constants.UPDATE_AVAILABILITY:
+            let availability = state.RequestUser.profile.availability;
+            action.remove.forEach((day)=> {
+                let index = _.findLastIndex(availability, function(o) {
+                    return o.start == day.start && o.end == day.end;
+                });
+                availability = availability.slice(0, index).concat(availability.slice(index + 1))
+            });
+            availability = [
+                ...availability,
+                ...action.add
+            ];
             return {
                 ...state,
                 RequestUser: {
                     ...state.RequestUser,
                     profile: {
                         ...state.RequestUser.profile,
-                        availability: action.availability
+                        availability: availability
                     }
                 }
             };

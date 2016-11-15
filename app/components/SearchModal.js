@@ -36,23 +36,28 @@ var SearchModal = React.createClass({
     },
 
     getInitialState() {
+        const originalDates = this.props.RequestUser.profile.availability.map(day => {
+            const zonedStart = moment(day.start).local();
+            const zonedEnd = moment(day.end).local();
+            return {
+                ...day,
+                date: moment(day.start).local(),
+                zonedStart: zonedStart,
+                zonedEnd: zonedEnd,
+                hours: zonedEnd.diff(zonedStart, 'hours')
+            }
+        });
         return {
             selectedDate: null,
             startTime: null,
             endTime: null,
-            days:this.props.RequestUser.profile.availability.map(day => {
-                    return {
-                        ...day,
-                        date: moment(day.start).local(),
-                        zonedStart: moment(day.start).local(),
-                        zonedEnd: moment(day.end).local(),
-                    }
-                }
-            ),
+            original: originalDates,
+            days: originalDates,
             daysToAdd: [],
             rate: null,
             addError: null,
-            showCalender: false
+            showCalender: false,
+            remove: []
         }
     },
 
@@ -179,6 +184,10 @@ var SearchModal = React.createClass({
 
     removeDay(index) {
         this.setState({
+            remove: [
+                ...this.state.remove,
+                this.state.days[index]
+            ],
             days: this.state.days.slice(0, index).concat(this.state.days.slice(index + 1))
         })
     },
@@ -192,7 +201,8 @@ var SearchModal = React.createClass({
                 }, this.asyncActions);
             } else {
                 this.props.updateAvailability({
-                    availability: this.state.days,
+                    remove: this.state.remove,
+                    add: _.difference(this.state.days, this.state.original),
                 }, this.asyncActions);
             }
         }

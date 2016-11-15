@@ -156,13 +156,12 @@ export function updateAvailability(data, asyncActions) {
     asyncActions(true);
     return (dispatch, getState) => {
         let JSONDATA = JSON.stringify(data);
-        return fetch(`${API_ENDPOINT}availability/${getState().Global.RequestUser.id}/`,
+        return fetch(`${API_ENDPOINT}availability/`,
             fetchData('PUT', JSONDATA, getState().Global.UserToken))
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson);
                 asyncActions(false);
-                return dispatch({type: types.UPDATE_AVAILABILITY, availability: responseJson.availability});
+                return dispatch({type: types.UPDATE_AVAILABILITY, remove: data.remove, add: data.add});
             })
             .catch((error) => {
                 asyncActions(false);
