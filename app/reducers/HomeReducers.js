@@ -36,6 +36,22 @@ export default function AppReducers(state = initialState, action = null) {
                 Refreshing: false
             };
 
+        case constants.INVITE_WORKER:
+            return {
+                ...state,
+                WorkRequests: state.WorkRequests.map(request =>
+                    (request.id === action.work_request) ?
+                    {
+                        ...request,
+                        notified: [
+                            ...request.notified,
+                            action.worker
+                        ]
+                    } :
+                        request
+                ),
+            };
+
 
         default:
             return state

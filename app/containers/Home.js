@@ -53,6 +53,7 @@ const Home = React.createClass({
                     style={styles.container} enableEmptySections={true}
                     dataSource={dataSource} onEndReached={this.onEndReached} onEndReachedThreshold={50}
                     renderRow={(WorkRequest, i) => <WorkRequestBox key={i} WorkRequest={WorkRequest}
+                                                                   inviteWorker={this.props.actions.inviteWorker}
                                                                    _redirect={this._redirect}/>}
                 />
             );

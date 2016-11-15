@@ -25,7 +25,6 @@ const WorkerBox = React.createClass({
 
     render() {
         const worker = this.props.worker;
-        console.log(worker);
         return (
             <TouchableHighlight style={styles.container} onPress={this._toProfile} underlayColor='#99d9f4'>
                 <View style={styles.inner}>
@@ -39,7 +38,7 @@ const WorkerBox = React.createClass({
                     </View>
                     {!_.isNil(this.props.notified) ?
                         (!this.props.notified ?
-                        <TouchableOpacity><Text>Invite</Text></TouchableOpacity>
+                        <TouchableOpacity onPress={this.props.inviteWorker}><Text>Invite</Text></TouchableOpacity>
                             : null
                         )
                         : null

@@ -42,6 +42,7 @@ const WorkRequestBox = React.createClass({
                 style={styles.container} enableEmptySections={true}
                 dataSource={dataSource} onEndReached={this.onEndReached} onEndReachedThreshold={50}
                 renderRow={(worker, i) => <WorkerBox key={i}
+                                                     inviteWorker={this.props.inviteWorker.bind(null, worker.id, workRequest.id)}
                                                      notified={_.indexOf(workRequest.notified, worker.id) != -1}
                                                      worker={worker} _redirect={this.props._redirect}/>}
             />;
@@ -57,7 +58,7 @@ const WorkRequestBox = React.createClass({
                 <TouchableHighlight style={styles.container} onPress={this._toggleShow} underlayColor='#99d9f4'>
                     <View style={styles.detailStyle}>
                         <Text style={styles.rate}>Rate: {workRequest.rate}</Text>
-                        <Text style={[styles.rate,{bottom: 10}]}>
+                        <Text style={[styles.rate, {bottom: 10}]}>
                             <Icon name="user" size={20} color="black"/>
                             {workRequest.matches.length}
                         </Text>

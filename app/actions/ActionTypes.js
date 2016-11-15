@@ -17,6 +17,7 @@ export const API_ERROR = 'API_ERROR';
 export const ADD_WORK_REQUEST = 'ADD_WORK_REQUEST';
 export const LOAD_WORK_REQUESTS = 'LOAD_WORK_REQUESTS';
 export const UPDATE_AVAILABILITY = 'UPDATE_AVAILABILITY';
+export const INVITE_WORKER = 'INVITE_WORKER';
 
 
 // Profile Constants
