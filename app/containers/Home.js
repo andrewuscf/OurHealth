@@ -15,6 +15,7 @@ import * as HomeActions from '../actions/HomeActions';
 
 import {getRoute} from '../Routes';
 
+import JobBox from '../components/JobBox';
 import SubmitButton from '../components/SubmitButton';
 import WorkRequestBox from '../components/WorkRequestBox';
 
@@ -23,11 +24,20 @@ const Home = React.createClass({
 
     componentDidMount() {
         if (!this.props.WorkRequests.length) {
-            this.props.actions.getWorkRequests();
+            this.getNeeded();
+        }
+    },
+    
+    getNeeded(refresh = false) {
+        if (this.props.RequestUser.type== 'Client') {
+            this.props.actions.getWorkRequests(refresh);
+        } else {
+            this.props.actions.getJobs(refresh);
         }
     },
 
     refresh() {
+        this.getNeeded(true);
     },
 
     onEndReached() {
@@ -38,15 +48,11 @@ const Home = React.createClass({
         this.props.navigator.push(getRoute(routeName, props));
     },
 
-    doNothing() {
-        console.log(this)
-    },
-
 
     render() {
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        const dataSource = ds.cloneWithRows(this.props.WorkRequests);
         if (this.props.WorkRequests.length) {
+            const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+            const dataSource = ds.cloneWithRows(this.props.WorkRequests);
             return (
                 <ListView
                     refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this.refresh}/>}
@@ -57,7 +63,19 @@ const Home = React.createClass({
                                                                    _redirect={this._redirect}/>}
                 />
             );
+        } else if (this.props.Jobs.length) {
+            const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+            const dataSource = ds.cloneWithRows(this.props.Jobs);
+            return (
+                <ListView
+                    refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this.refresh}/>}
+                    style={styles.container} enableEmptySections={true}
+                    dataSource={dataSource} onEndReached={this.onEndReached} onEndReachedThreshold={50}
+                    renderRow={(job, i) => <JobBox key={i} job={job} _redirect={this._redirect}/>}
+                />
+            );
         }
+        
         if (this.props.RequestUser.type == 'Client') {
             return (
                 <View style={styles.noRequests}>
