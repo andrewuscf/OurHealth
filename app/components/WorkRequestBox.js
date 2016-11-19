@@ -6,6 +6,7 @@ import {
     StyleSheet,
     Image,
     TouchableHighlight,
+    TouchableOpacity,
     ListView
 } from 'react-native';
 import _ from 'lodash';
@@ -39,7 +40,8 @@ const WorkRequestBox = React.createClass({
             const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
             const dataSource = ds.cloneWithRows(workRequest.matches);
             users = <ListView
-                style={styles.container} enableEmptySections={true}
+                contentContainerStyle={{flexDirection: 'row',flexWrap: 'wrap',}}
+                enableEmptySections={true}
                 dataSource={dataSource} onEndReached={this.onEndReached} onEndReachedThreshold={50}
                 renderRow={(worker, i) => <WorkerBox key={i}
                                                      inviteWorker={this.props.inviteWorker.bind(null, worker.id, workRequest.id)}
@@ -54,8 +56,8 @@ const WorkRequestBox = React.createClass({
             return o.end;
         }).end);
         return (
-            <View>
-                <TouchableHighlight style={styles.container} onPress={this._toggleShow} underlayColor='#99d9f4'>
+            <View  style={styles.container} >
+                <TouchableHighlight onPress={this._toggleShow} underlayColor='white'>
                     <View style={styles.detailStyle}>
                         <Text style={styles.rate}>Rate: {workRequest.rate}</Text>
                         <Text style={[styles.rate, {bottom: 10}]}>
@@ -82,6 +84,9 @@ const WorkRequestBox = React.createClass({
                                 </Text>
                                 <Text style={styles.dateTime}>{maxDate.format('h:mm a')}</Text>
                             </View>
+                            <TouchableOpacity onPress={this._toggleShow} underlayColor='#99d9f4' style={styles.edit}>
+                                <Icon name="ellipsis-v" size={20} color='rgba(0,0,0,.55)'/>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </TouchableHighlight>
@@ -94,8 +99,8 @@ const WorkRequestBox = React.createClass({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        borderBottomWidth: .5,
-        borderBottomColor: 'rgba(0,0,0,.15)'
+        borderBottomWidth: 3,
+        borderBottomColor: '#99d9f4'
     },
     rate: {
         position: 'absolute',
@@ -107,28 +112,38 @@ const styles = StyleSheet.create({
     dateSection: {
         flexDirection: 'row',
         alignSelf: 'flex-end',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     dayDay: {
         // fontFamily: 'OpenSans-Bold',
         fontSize: 23,
         color: '#4d4d4e',
-        paddingLeft: 6
+        alignSelf: 'center'
     },
     dayMonth: {
         // fontFamily: 'OpenSans-Bold',
         fontSize: 11,
         backgroundColor: 'transparent',
-        color: '#4d4d4e'
+        color: '#4d4d4e',
+        alignSelf: 'center'
     },
     dateDivider: {
-        paddingLeft: 10,
-        paddingRight: 10,
+        paddingLeft: 5,
+        paddingRight: 5,
         alignSelf: 'center'
     },
     dateTime: {
         fontSize: 7,
         color: '#4d4d4e',
-    }
+        alignSelf: 'center'
+    },
+    edit: {
+        paddingLeft: 15,
+        paddingRight: 5,
+        // borderWidth: 5,
+        // borderColor: 'black'
+    },
 
 });
 
