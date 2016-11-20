@@ -20,13 +20,6 @@ const JobBox = React.createClass({
 
     render() {
         const job = this.props.job;
-        console.log(job)
-        var text = 'has requested you.';
-        if (job.worker_accept) {
-            text = 'waiting for days to be accepted'
-        } else if (job.accepted) {
-            text = 'has accepted.'
-        }
         const minDate = moment(_.minBy(job.work_request.days, function (o) {
             return o.end;
         }).start);
@@ -40,8 +33,7 @@ const JobBox = React.createClass({
                     <AvatarImage image={job.work_request.user.profile.avatar} style={styles.pushDown}/>
                     <View style={[styles.details, styles.pushDown]}>
                         <Text
-                            style={styles.bold}>{job.work_request.user.first_name} {job.work_request.user.last_name}</Text>
-                        <Text>{text}</Text>
+                            style={styles.bold}>{job.work_request.user.first_name} {job.work_request.user.last_name[0]}.</Text>
                     </View>
                     <View style={styles.dateSection}>
                         <View>
