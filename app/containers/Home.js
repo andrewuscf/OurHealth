@@ -6,7 +6,8 @@ import {
     Text,
     View,
     ListView,
-    RefreshControl
+    RefreshControl,
+    ScrollView
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -27,9 +28,9 @@ const Home = React.createClass({
             this.getNeeded();
         }
     },
-    
+
     getNeeded(refresh = false) {
-        if (this.props.RequestUser.type== 'Client') {
+        if (this.props.RequestUser.type == 'Client') {
             this.props.actions.getWorkRequests(refresh);
         } else {
             this.props.actions.getJobs(refresh);
@@ -75,7 +76,7 @@ const Home = React.createClass({
                 />
             );
         }
-        
+
         if (this.props.RequestUser.type == 'Client') {
             return (
                 <View style={styles.noRequests}>
@@ -84,7 +85,8 @@ const Home = React.createClass({
             )
         } else {
             return (
-                <View style={styles.noRequests}>
+                <ScrollView contentContainerStyle={styles.noRequests}
+                            refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this.refresh}/>}>
                     <Text style={styles.noRequestTitle}>You have not matched with any jobs.</Text>
                     <Text style={styles.safeSpace}>To fix this you can:</Text>
                     <SubmitButton buttonStyle={styles.button}
@@ -93,10 +95,10 @@ const Home = React.createClass({
                     <SubmitButton buttonStyle={styles.button}
                                   textStyle={styles.submitText} onPress={this.props.openModal}
                                   text='Update your availability'/>
-                    <View style={styles.rectangle} />
+                    <View style={styles.rectangle}/>
                     <View style={styles.triangleDown}/>
 
-                </View>
+                </ScrollView>
             )
         }
     }
@@ -138,7 +140,7 @@ const styles = StyleSheet.create({
     },
     rectangle: {
         width: 10,
-        height: 20*2,
+        height: 20 * 2,
         backgroundColor: '#00BFFF'
     },
     triangleDown: {

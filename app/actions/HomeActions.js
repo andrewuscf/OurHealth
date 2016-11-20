@@ -30,12 +30,10 @@ export function inviteWorker(workerId, workRequestId) {
     return (dispatch, getState) => {
         var data = {worker: workerId, work_request: workRequestId};
         let JSONDATA = JSON.stringify(data);
-        console.log(data);
         return fetch(`${API_ENDPOINT}job/`,
             fetchData('POST', JSONDATA, getState().Global.UserToken))
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson);
                 return dispatch({type: types.INVITE_WORKER, ...data});
             })
             .catch((error) => {
@@ -58,6 +56,7 @@ export function getJobs(refresh = false) {
         return fetch(url, fetchData('GET', null, getState().Global.UserToken))
             .then((response) => response.json())
             .then((responseJson) => {
+                console.log(responseJson);
                 return dispatch({type: types.LOAD_JOBS, response: responseJson, refresh: refresh});
             })
             .catch((error) => {

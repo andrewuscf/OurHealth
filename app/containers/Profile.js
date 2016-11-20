@@ -12,6 +12,7 @@ import * as ProfileActions from '../actions/ProfileActions';
 import {removeToken} from '../actions/GlobalActions';
 
 import AvatarImage from '../components/AvatarImage';
+import BackBar from '../components/BackBar';
 import HireFooter from '../components/HireFooter';
 
 
@@ -43,12 +44,7 @@ const Profile = React.createClass({
                 <View style={styles.mainContainer}>
                     <ScrollView ref='scrollView' keyboardDismissMode='interactive'
                                 style={styles.mainContainer} contentContainerStyle={styles.contentContainerStyle}>
-                        <View style={styles.nav}>
-                            <TouchableOpacity onPress={this._back}
-                                              style={[styles.topNavButton, styles.cancelButton]}>
-                                <Icon name="arrow-left" size={17} color='#00BFFF'/>
-                                <Text style={[styles.cancel, styles.blueText]}>Back</Text>
-                            </TouchableOpacity>
+                        <BackBar back={this.props.navigator.pop}>
                             {user.id == this.props.RequestUser.id ?
                                 <TouchableOpacity style={[styles.topNavButton, styles.submitButton]}
                                                   onPress={this._logOut}>
@@ -56,7 +52,7 @@ const Profile = React.createClass({
                                 </TouchableOpacity>
                                 : null
                             }
-                        </View>
+                        </BackBar>
                         <View style={styles.mainContent}>
                             <AvatarImage image={user.profile.avatar} style={styles.avatar}/>
                             <Text style={[styles.center, styles.userName]}>{user.first_name} {user.last_name}</Text>

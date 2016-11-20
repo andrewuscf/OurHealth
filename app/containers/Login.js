@@ -83,30 +83,6 @@ const Login = React.createClass({
         });
     },
 
-    onChangeEmail(text) {
-        this.setState({
-            email: text
-        })
-    },
-
-    onChangePassword(text) {
-        this.setState({
-            password: text
-        })
-    },
-
-    onChangeFirst(text) {
-        this.setState({
-            first_name: text
-        })
-    },
-
-    onChangeLast(text) {
-        this.setState({
-            last_name: text
-        })
-    },
-
     selectType(num) {
         this.setState({
             type: num
@@ -123,7 +99,7 @@ const Login = React.createClass({
                         <TextInput ref="first" style={styles.textInput} autoCapitalize='words'
                                    keyboardType='default'
                                    autoCorrect={false}
-                                   placeholderTextColor='#4d4d4d' onChangeText={this.onChangeFirst}
+                                   placeholderTextColor='#4d4d4d' onChangeText={(text)=>this.setState({first_name: text})}
                                    value={this.state.first_name}
                                    placeholder="First Name"/>
                     </View> : null}
@@ -132,7 +108,7 @@ const Login = React.createClass({
                         <TextInput ref="last" style={styles.textInput} autoCapitalize='words'
                                    keyboardType='default'
                                    autoCorrect={false}
-                                   placeholderTextColor='#4d4d4d' onChangeText={this.onChangeLast}
+                                   placeholderTextColor='#4d4d4d' onChangeText={(text)=>this.setState({last_name: text})}
                                    value={this.state.last_name}
                                    placeholder="Last Name"/>
                     </View> : null}
@@ -141,7 +117,7 @@ const Login = React.createClass({
                         <TextInput ref="email" style={styles.textInput} autoCapitalize='none'
                                    keyboardType='email-address'
                                    autoCorrect={false}
-                                   placeholderTextColor='#4d4d4d' onChangeText={this.onChangeEmail}
+                                   placeholderTextColor='#4d4d4d' onChangeText={(text)=>this.setState({email: text})}
                                    value={this.state.email}
                                    placeholder="Email"/>
                     </View>
@@ -149,7 +125,7 @@ const Login = React.createClass({
                     {(!this.state.forgotCreds) ? <View style={styles.inputWrap}>
                         <TextInput ref="password" style={styles.textInput} autoCapitalize='none' secureTextEntry={true}
                                    autoCorrect={false}
-                                   placeholderTextColor='#4d4d4d' onChangeText={this.onChangePassword}
+                                   placeholderTextColor='#4d4d4d' onChangeText={(text)=>this.setState({password: text})}
                                    value={this.state.password}
                                    placeholder="Password"/>
                     </View> : null}

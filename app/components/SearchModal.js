@@ -17,6 +17,7 @@ import Calendar from 'react-native-calendar';
 import DatePicker from 'react-native-datepicker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import BackBar from '../components/BackBar';
 import DayBox from './DayBox';
 import SubmitButton from './SubmitButton';
 
@@ -77,7 +78,7 @@ var SearchModal = React.createClass({
                 this.state.addError,
                 this.state.addError,
                 [
-                    {text: 'OK', onPress: () => this.clearAddError()},
+                    {text: 'OK', onPress: () => this.setState({addError: null})},
                 ]
             );
         }
@@ -89,12 +90,6 @@ var SearchModal = React.createClass({
         } else {
             return (this.state.days.length);
         }
-    },
-
-    clearAddError() {
-        this.setState({
-            addError: null
-        })
     },
 
     onDateSelect(selectedDate) {
@@ -111,9 +106,6 @@ var SearchModal = React.createClass({
         });
     },
 
-    onRateChange(rate){
-        this.setState({rate: rate});
-    },
 
     _addDays() {
         if (this.state.startTime && this.state.endTime) {
@@ -215,17 +207,13 @@ var SearchModal = React.createClass({
         });
         return (
             <ScrollView style={styles.flexCenter} contentContainerStyle={styles.contentContainerStyle}>
-                <View style={styles.nav}>
-                    <TouchableOpacity onPress={this.props.closeModal}
-                                      style={[styles.topNavButton, styles.cancelButton]}>
-                        <Icon name="arrow-left" size={17} color='#00BFFF'/>
-                        <Text style={[styles.cancel, styles.blueText]}>Cancel</Text>
-                    </TouchableOpacity>
+                <BackBar back={this.props.closeModal} backText="Cancel">
                     <SubmitButton buttonStyle={[styles.topNavButton, styles.submitButton]}
                                   textStyle={[styles.cancel, this.isValid() ? styles.blueText : null]}
                                   onPress={this._onSubmit} ref='postbutton'
                                   text='Submit'/>
-                </View>
+                </BackBar>
+             
                 {this.props.RequestUser.type == "Client" ? <View>
                     <Text style={styles.mainTitle}>Search for a nurse</Text>
                     <View style={{padding: 15, paddingTop: 20}}>
@@ -233,7 +221,7 @@ var SearchModal = React.createClass({
                         <TextInput ref="rate" style={styles.textInput}
                                    keyboardType='numeric'
                                    autoCorrect={false}
-                                   placeholderTextColor='#4d4d4d' onChangeText={this.onRateChange}
+                                   placeholderTextColor='#4d4d4d' onChangeText={(rate)=>this.setState({rate: rate})}
                                    value={this.state.rate}
                                    placeholder="Please enter a $ amount."/>
                     </View>
@@ -316,20 +304,9 @@ var styles = StyleSheet.create({
         flex: 1,
         width: deviceWidth
     },
-    nav: {
-        borderColor: '#d4d4d4',
-        borderBottomWidth: 1,
-        flexDirection: 'row',
-        flex: 1,
-        justifyContent: 'space-between',
-    },
     topNavButton: {
         padding: 5,
         flexDirection: 'row'
-    },
-    cancelButton: {
-        left: 0,
-        alignSelf: 'center'
     },
     submitButton: {
         right: 0,
