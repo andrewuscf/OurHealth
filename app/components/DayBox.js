@@ -13,19 +13,12 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 var {width: deviceWidth} = Dimensions.get('window');
 
+const IconSize = 25;
+
 const DayBox = React.createClass({
     propTypes: {
         day: React.PropTypes.object.isRequired,
     },
-
-    remove() {
-
-    },
-
-    // remove() {
-    //
-    // },
-
 
     render() {
         let endDay = '';
@@ -39,9 +32,23 @@ const DayBox = React.createClass({
                     <Text>{`Start: ${this.props.day.zonedStart.format('MMM Do YYYY, h:mm a')}`}</Text>
                     <Text>{`End: ${this.props.day.zonedEnd.format('MMM Do YYYY, h:mm a')}`}</Text>
                 </View>
-                <TouchableOpacity style={styles.removeCircle} onPress={this.props.cancel.bind(null, this.props.index)}>
-                    <Icon name="times-circle" size={25} color='red'/>
-                </TouchableOpacity>
+                {this.props.accept ?
+                    this.props.acceptedDay == false ?
+                        <TouchableOpacity style={styles.removeCircle}
+                                          onPress={this.props.accept.bind(null, this.props.day)}>
+                            <Icon name="plus-circle" size={IconSize} color='rgba(0,0,0,.15)'/>
+                        </TouchableOpacity>
+                        :
+                        <TouchableOpacity style={styles.removeCircle}
+                                          onPress={this.props.cancel.bind(null, this.props.day.id)}>
+                            <Icon name="minus-circle" size={IconSize} color='red'/>
+                        </TouchableOpacity>
+                    :
+                    <TouchableOpacity style={styles.removeCircle}
+                                      onPress={this.props.cancel.bind(null, this.props.index)}>
+                        <Icon name="minus-circle" size={IconSize} color='red'/>
+                    </TouchableOpacity>
+                }
             </View>
         )
     }

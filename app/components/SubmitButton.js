@@ -11,11 +11,7 @@ const MiddleButton = React.createClass({
         }
     },
     onPress: function () {
-        if (this.state.busy) {
-            console.log('This button is busy -- onPress blocked');
-        } else if (this.state.disabled) {
-            console.log('This button is disabled -- onPress blocked');
-        } else {
+        if (!this.state.busy && !this.state.disabled) {
             this.props.onPress();
         }
     },
@@ -39,7 +35,8 @@ const MiddleButton = React.createClass({
                 <View style={styles.wrapper}>
                     {this.state.busy ?
                         <View style={[styles.iconWrapper]}>
-                            <Image style={[styles.icon, this.props.iconStyle]} source={require('../assets/images/wait-white.gif')}/>
+                            <Image style={[styles.icon, this.props.iconStyle]}
+                                   source={require('../assets/images/wait-white.gif')}/>
                         </View> :
                         <Text style={[this.props.textStyle]}>
                             {content}

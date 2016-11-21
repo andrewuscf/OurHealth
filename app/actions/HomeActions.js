@@ -56,10 +56,32 @@ export function getJobs(refresh = false) {
         return fetch(url, fetchData('GET', null, getState().Global.UserToken))
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson);
                 return dispatch({type: types.LOAD_JOBS, response: responseJson, refresh: refresh});
             })
             .catch((error) => {
+                return dispatch({
+                    type: types.API_ERROR, error: JSON.stringify({
+                        title: 'Request could not be performed.',
+                        text: 'Please try again later.'
+                    })
+                });
+            });
+    }
+}
+
+
+export function acceptJob(jobId, data, asyncActions) {
+    asyncActions(true);
+    let url = `${API_ENDPOINT}job/${jobId}/`;
+    return (dispatch, getState) => {
+        return fetch(url, fetchData('PATCH', JSON.stringify(data), getState().Global.UserToken))
+            .then((response) => response.json())
+            .then((responseJson) => {
+                asyncActions(false);
+                return dispatch({type: types.ACCEPT_JOB, response: responseJson});
+            })
+            .catch((error) => {
+                asyncActions(false);
                 return dispatch({
                     type: types.API_ERROR, error: JSON.stringify({
                         title: 'Request could not be performed.',

@@ -46,6 +46,12 @@ const Home = React.createClass({
     },
 
     _redirect(routeName, props = null) {
+        if (routeName == 'JobDetail') {
+            props = {
+                ...props,
+                acceptJob: this.props.actions.acceptJob
+            }
+        }
         this.props.navigator.push(getRoute(routeName, props));
     },
 

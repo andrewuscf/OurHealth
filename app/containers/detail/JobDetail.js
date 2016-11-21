@@ -3,6 +3,7 @@
 import React from 'react';
 import {StyleSheet, Text, View, ListView, Platform} from 'react-native';
 import moment from 'moment';
+import _ from 'lodash';
 // import {bindActionCreators} from 'redux';
 // import {connect} from 'react-redux';
 
@@ -12,15 +13,28 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import AvatarImage from '../../components/AvatarImage';
 import BackBar from '../../components/BackBar';
 import DayBox from '../../components/DayBox';
+import SubmitButton from '../../components/SubmitButton';
 
 
 const JobDetail = React.createClass({
     propTypes: {
         job: React.PropTypes.object.isRequired,
+        acceptJob: React.PropTypes.func.isRequired
     },
 
     getInitialState() {
-        const workDaysWanted = this.props.job.work_request.days.map(day => {
+        const workDaysWanted = this.props.job.work_request.days_user_can_work.map(day => {
+            const zonedStart = moment(day.start).local();
+            const zonedEnd = moment(day.end).local();
+            return {
+                ...day,
+                date: moment(day.start).local(),
+                zonedStart: zonedStart,
+                zonedEnd: zonedEnd,
+                hours: zonedEnd.diff(zonedStart, 'hours')
+            }
+        });
+        const daysAccepted = this.props.job.work_days.map(day => {
             const zonedStart = moment(day.start).local();
             const zonedEnd = moment(day.end).local();
             return {
@@ -32,17 +46,32 @@ const JobDetail = React.createClass({
             }
         });
         return {
-            daysAccepted: [],
+            daysAccepted: daysAccepted,
             workDaysWanted: workDaysWanted
         }
     },
 
-    removeDay() {
-        console.log('remove');
+    asyncActions(start){
+        if (start) {
+            this.refs.postbutton.setState({busy: true});
+        } else {
+            this.refs.postbutton.setState({busy: false});
+        }
     },
 
-    accept() {
-        console.log('accept');
+    cancel(dayId) {
+        const index = _.findIndex(this.state.daysAccepted, (day)=> {
+            return day.id == dayId
+        });
+        this.setState({
+            daysAccepted: this.state.daysAccepted.slice(0, index).concat(this.state.daysAccepted.slice(index + 1))
+        });
+    },
+
+    accept(day) {
+        this.setState({
+            daysAccepted: this.state.daysAccepted.concat(day)
+        });
     },
 
     _renderHeader() {
@@ -54,17 +83,28 @@ const JobDetail = React.createClass({
                     <View style={styles.name}>
                         <Text style={styles.nameText}>{client.first_name} {client.last_name}</Text>
                         <Text>has requested you.</Text>
-                        <Text>${this.props.job.work_request.rate}/Hour</Text>
                     </View>
+                    <Text
+                        style={[{alignSelf: 'center'}, styles.nameText]}>${this.props.job.work_request.rate}/Hour</Text>
                 </View>
+                <Text>Select the days you would like to work:</Text>
             </View>
         )
+    },
+
+    _onSubmit() {
+        if (this.state.daysAccepted.length) {
+            let data = {
+                work_days: this.state.daysAccepted,
+                worker_accept: true
+            };
+            this.props.acceptJob(this.props.job.id, data, this.asyncActions);
+        }
     },
 
 
     render() {
         const job = this.props.job;
-        console.log(job);
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         const dataSource = ds.cloneWithRows(this.state.workDaysWanted);
         return (
@@ -74,8 +114,15 @@ const JobDetail = React.createClass({
                           renderHeader={this._renderHeader}
                           enableEmptySections={true}
                           dataSource={dataSource} onEndReached={this.onEndReached} onEndReachedThreshold={50}
-                          renderRow={(day, i) => <DayBox key={i} day={day} cancel={this.removeDay} accept={this.accept} index={i}/>}
+                          renderRow={(day, i) => <DayBox key={i} day={day}
+                                                         acceptedDay={_.indexOf(this.state.daysAccepted, day) != -1}
+                                                         cancel={this.cancel}
+                                                         accept={this.accept}
+                                                         index={i}/>}
                 />
+                <SubmitButton buttonStyle={styles.button}
+                              textStyle={styles.submitText} onPress={this._onSubmit} ref='postbutton'
+                              text='Accept'/>
             </View>
         );
     }
@@ -85,7 +132,7 @@ const JobDetail = React.createClass({
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1
-    },topCard: {
+    }, topCard: {
         elevation: 8,
         marginBottom: 16,
         backgroundColor: 'white'
@@ -106,9 +153,26 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         width: 110,
         height: 110,
-        borderRadius: 110/2,
+        borderRadius: 110 / 2,
         zIndex: 1,
         marginTop: 10
+    },
+    button: {
+        backgroundColor: '#00BFFF',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 30,
+        paddingRight: 30,
+        borderRadius: 21,
+        width: 200,
+        alignSelf: 'center'
+    },
+    submitText: {
+        color: 'white',
+        fontSize: 15,
+        // fontFamily: 'OpenSans-Bold',
     },
 });
 
@@ -121,7 +185,6 @@ const styles = StyleSheet.create({
 //         actions: bindActionCreators(GlobalActions, dispatch)
 //     }
 // };
-
 // export default connect(stateToProps, dispatchToProps)(Calendar);
 
 export default JobDetail;

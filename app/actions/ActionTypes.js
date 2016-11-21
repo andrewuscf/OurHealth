@@ -19,6 +19,7 @@ export const LOAD_WORK_REQUESTS = 'LOAD_WORK_REQUESTS';
 export const UPDATE_AVAILABILITY = 'UPDATE_AVAILABILITY';
 export const INVITE_WORKER = 'INVITE_WORKER';
 export const LOAD_JOBS = 'LOAD_JOBS';
+export const ACCEPT_JOB = 'ACCEPT_JOB';
 
 
 // Profile Constants

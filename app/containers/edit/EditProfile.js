@@ -311,11 +311,6 @@ const styles = StyleSheet.create({
         fontSize: 17,
         textAlignVertical: 'top',
     },
-    buttonText: {
-        color: 'white',
-        fontSize: 15
-        // fontFamily: 'OpenSans-Bold',
-    },
     button: {
         marginTop: 80,
         backgroundColor: '#00BFFF',

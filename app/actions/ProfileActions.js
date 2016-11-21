@@ -37,7 +37,7 @@ export function updateProfile(data, asyncActions) {
                 return dispatch({type: types.UPDATE_PROFILE, profile: responseJson});
             })
             .catch((error) => {
-                asyncActions(false);asyncActions(false);
+                asyncActions(false);
                 console.log(error);
                 return dispatch({
                     type: types.API_ERROR, error: JSON.stringify({
