@@ -20,10 +20,10 @@ const JobBox = React.createClass({
 
     render() {
         const job = this.props.job;
-        const minDate = moment(_.minBy(job.work_request.days, function (o) {
+        const minDate = moment(_.minBy(job.work_request.days_needed, function (o) {
             return o.end;
         }).start);
-        const maxDate = moment(_.maxBy(job.work_request.days, function (o) {
+        const maxDate = moment(_.maxBy(job.work_request.days_needed, function (o) {
             return o.end;
         }).end);
         return (

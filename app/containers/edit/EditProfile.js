@@ -54,7 +54,6 @@ const EditProfile = React.createClass({
     },
 
     componentDidUpdate(prevProps) {
-        console.log(prevProps)
         if (!prevProps.RequestUser && this.props.RequestUser) {
             this.setState({
                 birthday: moment(this.props.RequestUser.profile.date_of_birth).format('MM-DD-YYYY'),
@@ -94,33 +93,8 @@ const EditProfile = React.createClass({
         });
     },
 
-
     _back() {
         this.props.navigator.pop();
-    },
-
-    _onPhoneChange(number) {
-        this.setState({
-            phone_number: number
-        })
-    },
-
-    _onAverageChange(number) {
-        this.setState({
-            requested_rate: number
-        })
-    },
-
-    _onFirstChange(text) {
-        this.setState({
-            first_name: text
-        })
-    },
-
-    _onLastChange(text) {
-        this.setState({
-            last_name: text
-        })
     },
 
     checkAllRequired() {
@@ -199,7 +173,7 @@ const EditProfile = React.createClass({
                                                keyboardType='default'
                                                autoCorrect={false}
                                                placeholderTextColor='#4d4d4d'
-                                               onChangeText={this._onFirstChange}
+                                               onChangeText={(text) =>this.setState({first_name: text})}
                                                value={this.state.first_name}
                                                placeholder="First Name"/>
                                     <TextInput style={styles.textInput}
@@ -208,7 +182,7 @@ const EditProfile = React.createClass({
                                                keyboardType='default'
                                                autoCorrect={false}
                                                placeholderTextColor='#4d4d4d'
-                                               onChangeText={this._onLastChange}
+                                               onChangeText={(text) =>this.setState({last_name: text})}
                                                value={this.state.last_name}
                                                placeholder="Last Name"/>
                                 </View>
@@ -237,7 +211,8 @@ const EditProfile = React.createClass({
                                            underlineColorAndroid='transparent'
                                            keyboardType="phone-pad"
                                            maxLength={10}
-                                           placeholderTextColor='#4d4d4d' onChangeText={this._onPhoneChange}
+                                           placeholderTextColor='#4d4d4d'
+                                           onChangeText={(number) =>this.setState({phone_number: number})}
                                            value={this.state.phone_number}
                                            placeholder="Add Phone Number"/>
                             </View>
@@ -248,7 +223,8 @@ const EditProfile = React.createClass({
                                                underlineColorAndroid='transparent'
                                                keyboardType="phone-pad"
                                                maxLength={6}
-                                               placeholderTextColor='#4d4d4d' onChangeText={this._onAverageChange}
+                                               placeholderTextColor='#4d4d4d'
+                                               onChangeText={(number) =>this.setState({requested_rate: number})}
                                                value={this.state.requested_rate}
                                                placeholder="Add Average Rate"/>
                                 </View>
