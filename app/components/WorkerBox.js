@@ -28,6 +28,7 @@ const WorkerBox = React.createClass({
 
     render() {
         const worker = this.props.worker;
+        console.log(worker);
         return (
             <TouchableHighlight style={styles.container} onPress={this._toProfile} underlayColor='white'>
                 <View style={styles.inner}>

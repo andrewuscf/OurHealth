@@ -24,7 +24,7 @@ import WorkRequestBox from '../components/WorkRequestBox';
 const Home = React.createClass({
 
     componentDidMount() {
-        if (!this.props.WorkRequests.length) {
+        if (!this.props.WorkRequests.length && !this.props.Jobs.length) {
             this.getNeeded();
         }
     },
@@ -36,6 +36,7 @@ const Home = React.createClass({
             this.props.actions.getJobs(refresh);
         }
     },
+
 
     refresh() {
         this.getNeeded(true);

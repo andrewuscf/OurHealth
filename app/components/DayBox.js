@@ -22,8 +22,17 @@ const DayBox = React.createClass({
 
     render() {
         let endDay = '';
+        let cancelButton = null;
         if (this.props.day.zonedStart.format('dddd') != this.props.day.zonedEnd.format('dddd')) {
             endDay = ` - ${this.props.day.zonedEnd.format('dddd')}`
+        }
+        if (this.props.cancel) {
+            cancelButton = (
+                <TouchableOpacity style={styles.removeCircle}
+                                  onPress={this.props.cancel.bind(null, this.props.index)}>
+                    <Icon name="minus-circle" size={IconSize} color='red'/>
+                </TouchableOpacity>
+            )
         }
         return (
             <View style={[styles.DayBox, this.props.style]}>
@@ -43,11 +52,7 @@ const DayBox = React.createClass({
                                           onPress={this.props.cancel.bind(null, this.props.day.id)}>
                             <Icon name="minus-circle" size={IconSize} color='red'/>
                         </TouchableOpacity>
-                    :
-                    <TouchableOpacity style={styles.removeCircle}
-                                      onPress={this.props.cancel.bind(null, this.props.index)}>
-                        <Icon name="minus-circle" size={IconSize} color='red'/>
-                    </TouchableOpacity>
+                    : cancelButton
                 }
             </View>
         )
