@@ -26,7 +26,6 @@ const JobBox = React.createClass({
         const maxDate = moment(_.maxBy(job.work_request.days, function (o) {
             return o.end;
         }).end);
-        console.log(job);
         return (
             <TouchableHighlight style={styles.container} onPress={this.props._redirect.bind(null, 'JobDetail', {job: job})}
                                 underlayColor='#99d9f4'>

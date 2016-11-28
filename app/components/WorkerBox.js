@@ -64,11 +64,6 @@ const WorkerBox = React.createClass({
 
 const styles = StyleSheet.create({
     container: {
-        // borderWidth: 3,
-        // borderLeftWidth: 1,
-        // borderRightWidth: 3,
-        borderTopWidth: 3,
-        borderColor: 'rgba(0,0,0,.15)',
         height: 150,
         width: deviceWidth/2,
         alignItems: 'center',
@@ -81,7 +76,6 @@ const styles = StyleSheet.create({
         width: 70,
         height: 70,
         borderRadius: 35,
-        // marginLeft: 5
     },
     details: {
         flex: 1,

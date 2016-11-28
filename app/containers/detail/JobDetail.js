@@ -37,17 +37,20 @@ const JobDetail = React.createClass({
         const daysAccepted = this.props.job.work_days.map(day => {
             const zonedStart = moment(day.start).local();
             const zonedEnd = moment(day.end).local();
-            return {
+            const updatedDay = {
                 ...day,
                 date: moment(day.start).local(),
                 zonedStart: zonedStart,
                 zonedEnd: zonedEnd,
                 hours: zonedEnd.diff(zonedStart, 'hours')
-            }
+            };
+            workDaysWanted.push(updatedDay);
+            return updatedDay;
         });
         return {
             daysAccepted: daysAccepted,
-            workDaysWanted: workDaysWanted
+            workDaysWanted: workDaysWanted,
+            worker_accept: this.props.job.worker_accept
         }
     },
 
@@ -99,6 +102,7 @@ const JobDetail = React.createClass({
                 worker_accept: true
             };
             this.props.acceptJob(this.props.job.id, data, this.asyncActions);
+            this.setState({worker_accept: true});
         }
     },
 
@@ -113,16 +117,18 @@ const JobDetail = React.createClass({
                 <ListView removeClippedSubviews={(Platform.OS === 'ios') ? false : true}
                           renderHeader={this._renderHeader}
                           enableEmptySections={true}
-                          dataSource={dataSource} onEndReached={this.onEndReached} onEndReachedThreshold={50}
+                          dataSource={dataSource}
                           renderRow={(day, i) => <DayBox key={i} day={day}
                                                          acceptedDay={_.indexOf(this.state.daysAccepted, day) != -1}
                                                          cancel={this.cancel}
                                                          accept={this.accept}
                                                          index={i}/>}
                 />
-                <SubmitButton buttonStyle={styles.button}
-                              textStyle={styles.submitText} onPress={this._onSubmit} ref='postbutton'
-                              text='Accept'/>
+                {!job.accepted ? <SubmitButton buttonStyle={styles.button}
+                                  textStyle={styles.submitText} onPress={this._onSubmit} ref='postbutton'
+                                  text={this.state.worker_accept ? 'Update': 'Accept'}/>
+                    : null
+                }
             </View>
         );
     }
@@ -132,7 +138,8 @@ const JobDetail = React.createClass({
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1
-    }, topCard: {
+    },
+    topCard: {
         elevation: 8,
         marginBottom: 16,
         backgroundColor: 'white'
@@ -163,11 +170,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingTop: 10,
         paddingBottom: 10,
-        paddingLeft: 30,
-        paddingRight: 30,
-        borderRadius: 21,
-        width: 200,
-        alignSelf: 'center'
     },
     submitText: {
         color: 'white',

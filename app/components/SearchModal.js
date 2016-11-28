@@ -213,7 +213,7 @@ var SearchModal = React.createClass({
                                   onPress={this._onSubmit} ref='postbutton'
                                   text='Submit'/>
                 </BackBar>
-             
+
                 {this.props.RequestUser.type == "Client" ? <View>
                     <Text style={styles.mainTitle}>Search for a nurse</Text>
                     <View style={{padding: 15, paddingTop: 20}}>
@@ -289,7 +289,9 @@ var SearchModal = React.createClass({
                     </View>
                     :
                     <TouchableOpacity style={styles.addDays} onPress={this._addMore}>
-                        <Text style={styles.buttonText}>Add Days</Text>
+                        <Text style={styles.buttonText}>
+                            {this.props.RequestUser.type == "Client" ? 'Days Needed' : 'Add Availability'}
+                        </Text>
                     </TouchableOpacity>
                 }
                 {acceptedDay}

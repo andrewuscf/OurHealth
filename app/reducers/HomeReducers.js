@@ -61,6 +61,18 @@ export default function AppReducers(state = initialState, action = null) {
                 Refreshing: false
             };
 
+        case constants.ACCEPT_JOB:
+            return {
+                ...state,
+                Jobs: state.Jobs.map(job =>
+                    (job.id == action.response.id) ?
+                    {
+                        ...action.response
+                    } :
+                        job
+                )
+            };
+
 
         default:
             return state
