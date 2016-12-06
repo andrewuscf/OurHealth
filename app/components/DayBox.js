@@ -11,6 +11,8 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import AvatarImage from './AvatarImage';
+
 var {width: deviceWidth} = Dimensions.get('window');
 
 const IconSize = 25;
@@ -36,11 +38,15 @@ const DayBox = React.createClass({
         }
         return (
             <View style={[styles.DayBox, this.props.style]}>
-                <View style={styles.boxDetail}>
+                <View style={[styles.boxDetail, this.props.day.worker? {width: deviceWidth * .85}: null]}>
                     <Text style={styles.daysTitle}>{this.props.day.zonedStart.format('dddd') + endDay}</Text>
                     <Text>{`Start: ${this.props.day.zonedStart.format('MMM Do YYYY, h:mm a')}`}</Text>
                     <Text>{`End: ${this.props.day.zonedEnd.format('MMM Do YYYY, h:mm a')}`}</Text>
                 </View>
+                {this.props.day.worker ?
+                    <AvatarImage image={this.props.day.worker.profile.avatar}
+                                 style={[styles.removeCircle]}/> : null
+                }
                 {this.props.accept ?
                     this.props.acceptedDay == false ?
                         <TouchableOpacity style={styles.removeCircle}

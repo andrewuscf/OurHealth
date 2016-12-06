@@ -157,7 +157,7 @@ export function updateAvailability(data, asyncActions) {
     return (dispatch, getState) => {
         let JSONDATA = JSON.stringify(data);
         return fetch(`${API_ENDPOINT}availability/`,
-            fetchData('PUT', JSONDATA, getState().Global.UserToken))
+            fetchData('POST', JSONDATA, getState().Global.UserToken))
             .then((response) => response.json())
             .then((responseJson) => {
                 asyncActions(false);

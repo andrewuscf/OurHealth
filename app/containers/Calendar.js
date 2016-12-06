@@ -26,7 +26,6 @@ const Calendar = React.createClass({
     updateSchedule(jobs) {
         const schedule = [];
         jobs.forEach(job => {
-            console.log(job);
             job.work_days.forEach(work_day => {
                 const zonedStart = moment(work_day.start).local();
                 const zonedEnd = moment(work_day.end).local();
@@ -35,7 +34,8 @@ const Calendar = React.createClass({
                     date: moment(work_day.start).local(),
                     zonedStart: zonedStart,
                     zonedEnd: zonedEnd,
-                    hours: zonedEnd.diff(zonedStart, 'hours')
+                    hours: zonedEnd.diff(zonedStart, 'hours'),
+                    worker: job.worker
                 };
                 schedule.push(updatedDay);
             })
