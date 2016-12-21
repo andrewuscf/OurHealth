@@ -25,3 +25,7 @@ export const ACCEPT_JOB = 'ACCEPT_JOB';
 // Profile Constants
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
 export const UPDATE_USER = 'UPDATE_USER';
+
+
+// Chat Constants
+export const LOAD_ROOMS = 'LOAD_ROOMS';

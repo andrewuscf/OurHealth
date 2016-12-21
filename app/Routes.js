@@ -5,13 +5,13 @@ import Calendar from './containers/Calendar';
 import EditProfile from './containers/edit/EditProfile';
 import Home from './containers/Home';
 import JobDetail from './containers/detail/JobDetail';
-import Messages from './containers/Messages';
+import Chat from './containers/Chat';
 import Profile from './containers/Profile';
 
 var MAIN_ROUTES = [
     {component: Home, name: 'Home'},
     {component: Calendar, name: 'Calendar'},
-    {component: Messages, name: 'Messages'},
+    {component: Chat, name: 'Chat'},
     {component: Profile, name: 'Profile'},
     {component: EditProfile, name: 'EditProfile'},
     {component: JobDetail, name: 'JobDetail'},

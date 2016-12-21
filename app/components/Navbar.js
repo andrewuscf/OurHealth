@@ -65,10 +65,10 @@ var NavBar = React.createClass({
                         }
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonWrap} onPress={this._onPress.bind(null, 'Messages')}>
+                <TouchableOpacity style={styles.buttonWrap} onPress={this._onPress.bind(null, 'Chat')}>
                     <View style={styles.button}>
                         <Icon name="comment-o" size={20}
-                              color={ (!this.isActiveRoute('Messages')) ? iconColor : iconColorActive }/>
+                              color={ (!this.isActiveRoute('Chat')) ? iconColor : iconColorActive }/>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonWrap} onPress={this._onPress.bind(null, 'Profile')}>

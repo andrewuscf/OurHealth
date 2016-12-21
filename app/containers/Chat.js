@@ -5,12 +5,18 @@ import {StyleSheet, Text, View} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
-import * as GlobalActions from '../actions/GlobalActions';
+import * as ChatActions from '../actions/ChatActions';
 
 
-const Messages = React.createClass({
+const Chat = React.createClass({
+    componentDidMount() {
+        if (!this.props.Rooms.length) {
+            this.props.actions.getChatRooms();
+        }
+    },
 
     render() {
+        console.log(this.props.Rooms)
         return (
             <View style={styles.mainContainer}>
                 <Text>Messages</Text>
@@ -27,13 +33,16 @@ const styles = StyleSheet.create({
 });
 
 const stateToProps = (state) => {
-    return state;
+    return {
+        RequestUser: state.Global.RequestUser,
+        ...state.Chat
+    };
 };
 
 const dispatchToProps = (dispatch) => {
     return {
-        actions: bindActionCreators(GlobalActions, dispatch)
+        actions: bindActionCreators(ChatActions, dispatch)
     }
 };
 
-export default connect(stateToProps, dispatchToProps)(Messages);
+export default connect(stateToProps, dispatchToProps)(Chat);
