@@ -10,7 +10,6 @@ import {
     Dimensions
 } from 'react-native';
 import _ from 'lodash';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
 
 import AvatarImage from './AvatarImage';
@@ -28,7 +27,7 @@ const ChatRoomBox = React.createClass({
     },
 
     _toRoom() {
-        this.props._redirect('Messages', {roomId: this.props.roomId});
+        this.props._redirect('ChatRoom', {roomId: this.props.room.id});
     },
 
     trimToLength(text, m) {
@@ -40,7 +39,6 @@ const ChatRoomBox = React.createClass({
     render() {
         const room = this.props.room;
         const sender = (room.job.worker.id != this.props.RequestUser.id) ? room.job.worker : room.job.work_request.user;
-        console.log(room)
         return (
             <TouchableHighlight style={styles.container} onPress={this._toRoom} underlayColor='white'>
                 <View style={styles.inner}>

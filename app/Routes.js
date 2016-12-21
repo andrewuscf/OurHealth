@@ -6,6 +6,7 @@ import EditProfile from './containers/edit/EditProfile';
 import Home from './containers/Home';
 import JobDetail from './containers/detail/JobDetail';
 import Chat from './containers/Chat';
+import ChatRoom from './containers/detail/ChatRoom';
 import Profile from './containers/Profile';
 
 var MAIN_ROUTES = [
@@ -15,6 +16,7 @@ var MAIN_ROUTES = [
     {component: Profile, name: 'Profile'},
     {component: EditProfile, name: 'EditProfile'},
     {component: JobDetail, name: 'JobDetail'},
+    {component: ChatRoom, name: 'ChatRoom'}
 ];
 
 export function getRoute(routeName, props = null) {
