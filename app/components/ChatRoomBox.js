@@ -11,10 +11,15 @@ import {
 } from 'react-native';
 import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import moment from 'moment';
 
 import AvatarImage from './AvatarImage';
 
-var {height: deviceHeight, width: deviceWidth} = Dimensions.get('window');
+moment.updateLocale('en', {
+    relativeTime : {
+        mm: "%d mins"
+    }
+});
 
 const ChatRoomBox = React.createClass({
     propTypes: {
@@ -22,17 +27,34 @@ const ChatRoomBox = React.createClass({
         _redirect: React.PropTypes.func.isRequired,
     },
 
-    _toProfile() {
-        this.props._redirect('Messages', {room: this.props.room});
+    _toRoom() {
+        this.props._redirect('Messages', {roomId: this.props.roomId});
+    },
+
+    trimToLength(text, m) {
+        return (text.length > m)
+            ? text.substring(0, m).split(" ").slice(0, -1).join(" ") + "..."
+            : text;
     },
 
     render() {
-        const worker = this.props.worker;
-        console.log(worker);
+        const room = this.props.room;
+        const sender = (room.job.worker.id != this.props.RequestUser.id) ? room.job.worker : room.job.work_request.user;
+        console.log(room)
         return (
-            <TouchableHighlight style={styles.container} onPress={this._toProfile} underlayColor='white'>
+            <TouchableHighlight style={styles.container} onPress={this._toRoom} underlayColor='white'>
                 <View style={styles.inner}>
-
+                    <AvatarImage image={sender.profile.avatar}/>
+                    <View style={[styles.details]}>
+                        <Text style={styles.bold}>{sender.first_name} {sender.last_name}</Text>
+                        <View style={styles.lastMessageSection}>
+                            <Text style={styles.lastMessage}>{this.trimToLength(room.last_message.message, 25)}</Text>
+                            {(room.last_message.message) ?
+                                <Text style={styles.timeAgo}>{moment(room.last_message.timestamp).fromNow(false)}</Text>
+                                : null
+                            }
+                        </View>
+                    </View>
                 </View>
             </TouchableHighlight>
         )
@@ -41,13 +63,36 @@ const ChatRoomBox = React.createClass({
 
 const styles = StyleSheet.create({
     container: {
-        height: 150,
-        width: deviceWidth/2,
-        alignItems: 'center',
-        justifyContent: 'center',
+        flex: 1,
+        borderBottomWidth: .5,
+        borderBottomColor: 'rgba(0,0,0,.15)'
     },
     inner: {
-        marginTop: 20,
+        flex: 1,
+        flexDirection: 'row',
+        margin: 15,
+        flexWrap: 'wrap'
+    },
+    details: {
+        flex: 1,
+        flexDirection: 'column',
+        paddingLeft: 10,
+        paddingTop: 5
+    },
+    bold: {
+        fontWeight: 'bold'
+    },
+    lastMessageSection: {
+        flex: 1,
+        flexDirection: 'row',
+        paddingTop: 5
+    },
+    lastMessage: {
+        color: 'rgba(0,0,0,.45)'
+    },
+    timeAgo: {
+        paddingLeft:6,
+        color: 'rgba(0,0,0,.45)'
     }
 });
 

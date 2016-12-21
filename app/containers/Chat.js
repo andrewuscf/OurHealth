@@ -1,11 +1,15 @@
 'use strict';
 
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, RefreshControl, ListView} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
+import {getRoute} from '../Routes';
+
 import * as ChatActions from '../actions/ChatActions';
+
+import ChatRoomBox from '../components/ChatRoomBox';
 
 
 const Chat = React.createClass({
@@ -15,11 +19,31 @@ const Chat = React.createClass({
         }
     },
 
+    _refresh() {
+        this.props.actions.getChatRooms(true);
+    },
+
+    _redirect(routeName, props = null) {
+        this.props.navigator.push(getRoute(routeName, props));
+    },
+
     render() {
-        console.log(this.props.Rooms)
+        if (this.props.Rooms.length) {
+            const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+            const dataSource = ds.cloneWithRows(this.props.Rooms);
+            return (
+                <ListView
+                    refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}
+                    style={styles.container} enableEmptySections={true}
+                    dataSource={dataSource} onEndReached={this.onEndReached} onEndReachedThreshold={50}
+                    renderRow={(room, i) => <ChatRoomBox key={i} room={room} RequestUser={this.props.RequestUser} 
+                                             _redirect={this._redirect} />}
+                />
+            );
+        }
         return (
             <View style={styles.mainContainer}>
-                <Text>Messages</Text>
+                <Text>No Messages</Text>
             </View>
         );
     }

@@ -34,7 +34,7 @@ export default function AppReducers(state = initialState, action = null) {
                 ...state,
                 WorkRequests: (action.refresh) ? action.response.results :state.WorkRequests.concat(action.response.results),
                 WorkRequestsNext: action.response.next,
-                Refreshing: action.refresh
+                Refreshing: false
             };
 
         case constants.INVITE_WORKER:
@@ -58,7 +58,7 @@ export default function AppReducers(state = initialState, action = null) {
             return {
                 ...state,
                 Jobs: (action.refresh) ? action.response.results :state.Jobs.concat(action.response.results),
-                Refreshing: action.refresh
+                Refreshing: false
             };
 
         case constants.ACCEPT_JOB:

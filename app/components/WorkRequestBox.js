@@ -13,7 +13,6 @@ import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
 
-import AvatarImage from './AvatarImage';
 import TriangleCorner from './TriangleCorner';
 import WorkerBox from './WorkerBox';
 
