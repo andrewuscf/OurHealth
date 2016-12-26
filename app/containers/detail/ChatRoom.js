@@ -4,22 +4,19 @@ import {
     View,
     Text,
     StyleSheet,
-    RefreshControl,
-    ListView,
-    AsyncStorage
+    ScrollView,
+    AsyncStorage,
+    TouchableHighlight,
+    Dimensions,
+    TextInput
 } from 'react-native';
-import _ from 'lodash';
-import moment from 'moment';
 
 import {fetchData, API_ENDPOINT} from '../../actions/Utils';
 
 import AvatarImage from '../../components/AvatarImage';
+import MessageBox from '../../components/MessageBox';
 
-moment.updateLocale('en', {
-    relativeTime: {
-        mm: "%d mins"
-    }
-});
+var windowSize = Dimensions.get('window');
 
 const ChatRoom = React.createClass({
     propTypes: {
@@ -60,70 +57,112 @@ const ChatRoom = React.createClass({
     },
 
     render() {
-        console.log(this.state.messages)
-
-        if (this.state.messages.length) {
-            const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-            const dataSource = ds.cloneWithRows(this.state.messages);
+        var list = this.state.messages.map((message, index) => {
             return (
-                <ListView
-                    refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}
-                    style={styles.container} enableEmptySections={true}
-                    dataSource={dataSource} onEndReached={this.onEndReached} onEndReachedThreshold={50}
-                    renderRow={(message, i) => (
-                    <View style={styles.inner}>
-                        <AvatarImage image={message.user.profile.avatar}/>
-                        <View style={[styles.details]}>
-                            <Text style={styles.bold}>{message.user.first_name} {message.user.last_name}</Text>
-
-                        </View>
-                    </View>
-                    )
-           }
-                />
-            );
-        }
+                <MessageBox key={index} message={message}/>
+            )
+        });
         return (
             <View style={styles.container}>
-                <Text>Start Chatting</Text>
+                <View style={styles.topContainer}>
+                    <TouchableHighlight
+                        underlayColor={'#4e4273'}
+                        onPress={this.onBackPress}
+                        style={{marginLeft: 15}}
+                    >
+                        <Text style={{color: '#fff'}}>&lt; Back</Text>
+                    </TouchableHighlight>
+                </View>
+                <View style={styles.chatContainer}>
+                    <ScrollView
+                        ref={(c) => this._scrollView = c}
+                        scrollEventThrottle={16}
+                        onContentSizeChange={(e) => {
+                        }}>
+                        {list}
+                    </ScrollView>
+                </View>
+                <View style={styles.inputContainer}>
+                    <View style={styles.textContainer}>
+                        <TextInput
+                            style={styles.input}
+                            value={this.state.message}
+                            onChangeText={(text) => this.setState({message: text})}
+                        />
+                    </View>
+                    <View style={styles.sendContainer}>
+                        <TouchableHighlight
+                            underlayColor={'#4e4273'}
+                            onPress={() => this.onSendPress()}
+                        >
+                            <Text style={styles.sendLabel}>SEND</Text>
+                        </TouchableHighlight>
+                    </View>
+                </View>
             </View>
         );
+        // }
+        // return (
+        //     <View style={styles.container}>
+        //         <Text>Start Chatting</Text>
+        //     </View>
+        // );
     }
 });
+
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        borderBottomWidth: .5,
-        borderBottomColor: 'rgba(0,0,0,.15)'
+        justifyContent: 'center',
+        alignItems: 'stretch',
+        backgroundColor: '#ffffff'
     },
-    inner: {
+    topContainer: {
         flex: 1,
         flexDirection: 'row',
-        margin: 15,
-        flexWrap: 'wrap'
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        backgroundColor: '#6E5BAA',
+        paddingTop: 20,
     },
-    details: {
+    chatContainer: {
+        flex: 11,
+        justifyContent: 'center',
+        alignItems: 'stretch'
+    },
+    inputContainer: {
         flex: 1,
-        flexDirection: 'column',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        backgroundColor: '#6E5BAA'
+    },
+    textContainer: {
+        flex: 1,
+        justifyContent: 'center'
+    },
+    sendContainer: {
+        justifyContent: 'flex-end',
+        paddingRight: 10
+    },
+    sendLabel: {
+        color: '#ffffff',
+        fontSize: 15
+    },
+    input: {
+        width: windowSize.width - 70,
+        color: '#555555',
+        paddingRight: 10,
         paddingLeft: 10,
-        paddingTop: 5
+        paddingTop: 5,
+        height: 32,
+        borderColor: '#6E5BAA',
+        borderWidth: 1,
+        borderRadius: 2,
+        alignSelf: 'center',
+        backgroundColor: '#ffffff'
     },
-    bold: {
-        fontWeight: 'bold'
-    },
-    lastMessageSection: {
-        flex: 1,
-        flexDirection: 'row',
-        paddingTop: 5
-    },
-    lastMessage: {
-        color: 'rgba(0,0,0,.45)'
-    },
-    timeAgo: {
-        paddingLeft: 6,
-        color: 'rgba(0,0,0,.45)'
-    }
 });
 
 export default ChatRoom;
