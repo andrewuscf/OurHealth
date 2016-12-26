@@ -20,15 +20,19 @@ var {height: deviceHeight, width: deviceWidth} = Dimensions.get('window');
 const MessageBox = React.createClass({
     propTypes: {
         message: React.PropTypes.object.isRequired,
-        // _redirect: React.PropTypes.func.isRequired,
+        position: React.PropTypes.string.isRequired,
     },
 
     render() {
         const message = this.props.message;
         return (
-            <View style={[styles.left.container]}>
+            <View style={[styles[this.props.position].container]}>
+                {this.props.position == 'left' ?
+                    <AvatarImage image={message.user.profile.avatar} style={styles.left.messageAvatar}/>
+                    : null
+                }
                 <View style={[styles.left.wrapper]}>
-                    <Text style={styles.messageLabel}>{message.message}</Text>
+                    <Text>{message.message}</Text>
                 </View>
             </View>
         )
@@ -39,37 +43,43 @@ const styles = {
     left: StyleSheet.create({
         container: {
             flex: 1,
+            margin: 5,
+            flexDirection: 'row',
             alignItems: 'flex-start',
-            width : deviceWidth * .75,
-            paddingTop: 10,
-            // paddingTop: 10,
         },
         wrapper: {
             borderRadius: 15,
             backgroundColor: '#f0f0f0',
-            marginRight: 60,
-            minHeight: 20,
-            justifyContent: 'flex-end'
+            maxWidth: deviceWidth * .75,
+            marginLeft: 10,
+            justifyContent: 'flex-end',
+            padding: 10
+        },
+        messageAvatar: {
+            height: 30,
+            width: 30,
+            borderRadius: 15
         }
     }),
     right: StyleSheet.create({
         container: {
             flex: 1,
+            margin: 5,
             alignItems: 'flex-end',
         },
         wrapper: {
             borderRadius: 15,
-            backgroundColor: '#0084ff',
-            marginLeft: 60,
-            minHeight: 20,
+            maxWidth: deviceWidth * .75,
+            backgroundColor: '#f0f0f0',
+            marginLeft: 10,
             justifyContent: 'flex-end',
+            padding: 10
         },
-        containerToNext: {
-            borderBottomRightRadius: 3,
-        },
-        containerToPrevious: {
-            borderTopRightRadius: 3,
-        },
+        messageAvatar: {
+            height: 30,
+            width: 30,
+            borderRadius: 15
+        }
     }),
 };
 

@@ -10,10 +10,15 @@ import {
     Dimensions,
     TextInput
 } from 'react-native';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 
 import {fetchData, API_ENDPOINT} from '../../actions/Utils';
 
+import * as ChatActions from '../../actions/ChatActions';
+
 import AvatarImage from '../../components/AvatarImage';
+import BackBar from '../../components/BackBar';
 import MessageBox from '../../components/MessageBox';
 
 var windowSize = Dimensions.get('window');
@@ -26,12 +31,17 @@ const ChatRoom = React.createClass({
     getInitialState() {
         return {
             messages: [],
-            next: null
+            next: null,
+            message: null
         }
     },
 
     componentDidMount() {
         this.getMessages();
+    },
+
+    _back() {
+        this.props.navigator.pop();
     },
 
     getMessages(refresh = false) {
@@ -56,23 +66,22 @@ const ChatRoom = React.createClass({
         });
     },
 
+    onSendPress() {
+        return {
+
+        }
+    },
+
     render() {
         var list = this.state.messages.map((message, index) => {
             return (
-                <MessageBox key={index} message={message}/>
+                <MessageBox key={index} message={message}
+                            position={message.user.id == this.props.RequestUser.id ? 'right': 'left'}/>
             )
         });
         return (
             <View style={styles.container}>
-                <View style={styles.topContainer}>
-                    <TouchableHighlight
-                        underlayColor={'#4e4273'}
-                        onPress={this.onBackPress}
-                        style={{marginLeft: 15}}
-                    >
-                        <Text style={{color: '#fff'}}>&lt; Back</Text>
-                    </TouchableHighlight>
-                </View>
+                <BackBar back={this._back} backText="Cancel"/>
                 <View style={styles.chatContainer}>
                     <ScrollView
                         ref={(c) => this._scrollView = c}
@@ -85,6 +94,12 @@ const ChatRoom = React.createClass({
                 <View style={styles.inputContainer}>
                     <View style={styles.textContainer}>
                         <TextInput
+                            ref="newcomment"
+                            autoCapitalize='none'
+                            underlineColorAndroid='transparent'
+                            autoCorrect={true}
+                            placeholder="Write a message..."
+                            placeholderTextColor="#b1aea5"
                             style={styles.input}
                             value={this.state.message}
                             onChangeText={(text) => this.setState({message: text})}
@@ -93,7 +108,7 @@ const ChatRoom = React.createClass({
                     <View style={styles.sendContainer}>
                         <TouchableHighlight
                             underlayColor={'#4e4273'}
-                            onPress={() => this.onSendPress()}
+                            onPress={this.onSendPress}
                         >
                             <Text style={styles.sendLabel}>SEND</Text>
                         </TouchableHighlight>
@@ -101,12 +116,6 @@ const ChatRoom = React.createClass({
                 </View>
             </View>
         );
-        // }
-        // return (
-        //     <View style={styles.container}>
-        //         <Text>Start Chatting</Text>
-        //     </View>
-        // );
     }
 });
 
@@ -118,14 +127,6 @@ const styles = StyleSheet.create({
         alignItems: 'stretch',
         backgroundColor: '#ffffff'
     },
-    topContainer: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        backgroundColor: '#6E5BAA',
-        paddingTop: 20,
-    },
     chatContainer: {
         flex: 11,
         justifyContent: 'center',
@@ -136,7 +137,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
-        backgroundColor: '#6E5BAA'
+        backgroundColor: 'white'
     },
     textContainer: {
         flex: 1,
@@ -147,17 +148,17 @@ const styles = StyleSheet.create({
         paddingRight: 10
     },
     sendLabel: {
-        color: '#ffffff',
+        color: '#00BFFF',
         fontSize: 15
     },
     input: {
         width: windowSize.width - 70,
-        color: '#555555',
+        color: 'black',
         paddingRight: 10,
         paddingLeft: 10,
         paddingTop: 5,
         height: 32,
-        borderColor: '#6E5BAA',
+        borderColor: '#b1aea5',
         borderWidth: 1,
         borderRadius: 2,
         alignSelf: 'center',
@@ -165,4 +166,17 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ChatRoom;
+const stateToProps = (state) => {
+    return {
+        RequestUser: state.Global.RequestUser
+    };
+};
+
+const dispatchToProps = (dispatch) => {
+    return {
+        actions: bindActionCreators(ChatActions, dispatch)
+    }
+};
+
+
+export default connect(stateToProps, dispatchToProps)(ChatRoom);
