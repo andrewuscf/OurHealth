@@ -29,3 +29,4 @@ export const UPDATE_USER = 'UPDATE_USER';
 
 // Chat Constants
 export const LOAD_ROOMS = 'LOAD_ROOMS';
+export const SEND_MESSAGE = 'SEND_MESSAGE';

@@ -51,7 +51,7 @@ const ChatRoom = React.createClass({
                 url = this.state.next;
             }
             if (result) {
-                fetch(`${API_ENDPOINT}messages/${this.props.roomId}/`, fetchData('GET', null, result))
+                fetch(url, fetchData('GET', null, result))
                     .then((response) => response.json())
                     .then((responseJson) => {
                         this.setState({
@@ -67,16 +67,27 @@ const ChatRoom = React.createClass({
     },
 
     onSendPress() {
-        return {
-
-        }
+        const data = {room: this.props.roomId, message: this.state.message};
+        let url = `${API_ENDPOINT}messages/${this.props.roomId}/`;
+        fetch(url, fetchData('POST', JSON.stringify(data), this.props.UserToken))
+            .then((response) => response.json())
+            .then((responseJson) => {
+                console.log(responseJson)
+                this.props.actions.sendMessage(responseJson);
+                this.setState({
+                    messages: [
+                        ...this.state.messages,
+                        responseJson
+                    ]
+                })
+            });
     },
 
     render() {
         var list = this.state.messages.map((message, index) => {
             return (
                 <MessageBox key={index} message={message}
-                            position={message.user.id == this.props.RequestUser.id ? 'right': 'left'}/>
+                            position={message.user.id == this.props.RequestUser.id ? 'right' : 'left'}/>
             )
         });
         return (
@@ -168,7 +179,8 @@ const styles = StyleSheet.create({
 
 const stateToProps = (state) => {
     return {
-        RequestUser: state.Global.RequestUser
+        RequestUser: state.Global.RequestUser,
+        UserToken: state.Global.UserToken
     };
 };
 
