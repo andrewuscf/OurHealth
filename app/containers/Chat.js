@@ -1,5 +1,3 @@
-'use strict';
-
 import React from 'react';
 import {StyleSheet, Text, View, RefreshControl, ListView} from 'react-native';
 import {bindActionCreators} from 'redux';

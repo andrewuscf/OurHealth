@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import {StyleSheet, Text, View, TouchableOpacity, ScrollView} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, ScrollView, ListView} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -13,6 +13,7 @@ import {removeToken} from '../actions/GlobalActions';
 
 import AvatarImage from '../components/AvatarImage';
 import BackBar from '../components/BackBar';
+import CredentialBox from '../components/CredentialBox';
 import HireFooter from '../components/HireFooter';
 
 
@@ -39,6 +40,13 @@ const Profile = React.createClass({
     render() {
         const user = this.state.user;
         console.log(user)
+        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        const dataSource = ds.cloneWithRows(user.credentials);
+        const credentials = (
+            <ListView enableEmptySections={true} dataSource={dataSource}
+                renderRow={(credential, i) => <CredentialBox key={i} credential={credential} />}
+            />
+        );
         if (user) {
             return (
                 <View style={styles.mainContainer}>
@@ -56,6 +64,7 @@ const Profile = React.createClass({
                         <View style={styles.mainContent}>
                             <AvatarImage image={user.profile.avatar} style={styles.avatar}/>
                             <Text style={[styles.center, styles.userName]}>{user.first_name} {user.last_name}</Text>
+                            {credentials}
                         </View>
                     </ScrollView>
                 </View>

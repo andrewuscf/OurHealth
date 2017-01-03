@@ -2,7 +2,6 @@
 import _ from 'lodash';
 
 import Calendar from './containers/Calendar';
-import EditCredentials from './containers/edit/EditCredentials';
 import EditProfile from './containers/edit/EditProfile';
 import Home from './containers/Home';
 import JobDetail from './containers/detail/JobDetail';
@@ -17,8 +16,7 @@ var MAIN_ROUTES = [
     {component: Profile, name: 'Profile'},
     {component: EditProfile, name: 'EditProfile'},
     {component: JobDetail, name: 'JobDetail'},
-    {component: ChatRoom, name: 'ChatRoom'},
-    {component: EditCredentials, name: 'EditCredentials'}
+    {component: ChatRoom, name: 'ChatRoom'}
 ];
 
 export function getRoute(routeName, props = null) {
