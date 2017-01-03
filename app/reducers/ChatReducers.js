@@ -23,6 +23,19 @@ export default function AppReducers(state = initialState, action = null) {
                 Refreshing: action.refresh
             };
 
+        case constants.SEND_MESSAGE:
+            return {
+                ...state,
+                Rooms: state.Rooms.map(room =>
+                    (parseInt(room.id) == action.response.room) ?
+                    {
+                        ...room,
+                        last_message: action.response
+                    } :
+                        room
+                )
+            };
+
         default:
             return state
     }

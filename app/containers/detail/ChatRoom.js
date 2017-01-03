@@ -55,7 +55,7 @@ const ChatRoom = React.createClass({
                     .then((response) => response.json())
                     .then((responseJson) => {
                         this.setState({
-                            messages: (refresh) ? responseJson.results : this.state.messages.concat(responseJson.results),
+                            messages: (refresh) ? responseJson.results : this.state.messages.concat(responseJson.results.reverse()),
                             next: responseJson.next
                         })
                     })
@@ -72,13 +72,13 @@ const ChatRoom = React.createClass({
         fetch(url, fetchData('POST', JSON.stringify(data), this.props.UserToken))
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson)
                 this.props.actions.sendMessage(responseJson);
                 this.setState({
                     messages: [
                         ...this.state.messages,
                         responseJson
-                    ]
+                    ],
+                    message: null
                 })
             });
     },
@@ -95,7 +95,6 @@ const ChatRoom = React.createClass({
                 <BackBar back={this._back} backText="Cancel"/>
                 <View style={styles.chatContainer}>
                     <ScrollView
-                        ref={(c) => this._scrollView = c}
                         scrollEventThrottle={16}
                         onContentSizeChange={(e) => {
                         }}>

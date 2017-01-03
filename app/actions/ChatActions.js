@@ -27,5 +27,5 @@ export function getChatRooms(refresh = false) {
 }
 
 export function sendMessage(data) {
-    return {type: types.SEND_MESSAGE, response: JSON.stringify(data)};
+    return {type: types.SEND_MESSAGE, response: data};
 }

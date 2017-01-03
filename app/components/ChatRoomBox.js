@@ -38,6 +38,7 @@ const ChatRoomBox = React.createClass({
 
     render() {
         const room = this.props.room;
+        console.log(room)
         const sender = (room.job.worker.id != this.props.RequestUser.id) ? room.job.worker : room.job.work_request.user;
         return (
             <TouchableHighlight style={styles.container} onPress={this._toRoom} underlayColor='white'>
