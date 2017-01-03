@@ -97,10 +97,7 @@ const ChatRoom = React.createClass({
             <View style={styles.container}>
                 <BackBar back={this._back} backText="Cancel"/>
                 <View style={styles.chatContainer}>
-                    <ScrollView
-                        scrollEventThrottle={16}
-                        onContentSizeChange={(e) => {
-                        }}>
+                    <ScrollView scrollEventThrottle={16}>
                         {list}
                     </ScrollView>
                 </View>
