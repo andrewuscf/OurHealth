@@ -67,20 +67,23 @@ const ChatRoom = React.createClass({
     },
 
     onSendPress() {
-        const data = {room: this.props.roomId, message: this.state.message};
-        let url = `${API_ENDPOINT}messages/${this.props.roomId}/`;
-        fetch(url, fetchData('POST', JSON.stringify(data), this.props.UserToken))
-            .then((response) => response.json())
-            .then((responseJson) => {
-                this.props.actions.sendMessage(responseJson);
-                this.setState({
-                    messages: [
-                        ...this.state.messages,
-                        responseJson
-                    ],
-                    message: null
-                })
-            });
+        if (this.state.message) {
+            const data = {room: this.props.roomId, message: this.state.message};
+            let url = `${API_ENDPOINT}messages/${this.props.roomId}/`;
+            fetch(url, fetchData('POST', JSON.stringify(data), this.props.UserToken))
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    this.props.actions.sendMessage(responseJson);
+                    this.setState({
+                        messages: [
+                            ...this.state.messages,
+                            responseJson
+                        ],
+                        message: null
+                    });
+                    this.refs.newcomment.blur();
+                });
+        }
     },
 
     render() {
@@ -117,7 +120,7 @@ const ChatRoom = React.createClass({
                     </View>
                     <View style={styles.sendContainer}>
                         <TouchableHighlight
-                            underlayColor={'#4e4273'}
+                            underlayColor={'white'}
                             onPress={this.onSendPress}
                         >
                             <Text style={styles.sendLabel}>SEND</Text>
