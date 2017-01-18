@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply plugin: "com.google.gms.google-services"
 
 import com.android.build.OutputFile
 
@@ -126,6 +127,8 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-fcm')
+    compile 'com.google.firebase:firebase-core:10.0.1'
     compile project(':react-native-vector-icons')
     compile project(':react-native-mauron85-background-geolocation')
     compile fileTree(dir: "libs", include: ["*.jar"])

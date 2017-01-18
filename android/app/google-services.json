@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1079952635288",
+    "firebase_url": "https://caretent-c0573.firebaseio.com",
+    "project_id": "caretent-c0573",
+    "storage_bucket": "caretent-c0573.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1079952635288:android:1145ddd8335bc7f7",
+        "android_client_info": {
+          "package_name": "com.caretent"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1079952635288-06fngv51dovmiaqal8a2sbnrbs3pgflc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBStFqp5lNG1t5JBU63-Wkt-ZpFL9ccX2k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
