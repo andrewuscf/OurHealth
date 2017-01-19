@@ -5,6 +5,7 @@ import {StyleSheet, Text, View, TouchableOpacity, ScrollView, ListView} from 're
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import FCM from 'react-native-fcm';
 
 import {fetchData, API_ENDPOINT} from '../actions/Utils';
 
@@ -34,7 +35,10 @@ const Profile = React.createClass({
     },
 
     _logOut() {
-        this.props.removeToken();
+        const self = this;
+        FCM.getFCMToken().then(token => {
+            self.props.removeToken(token);
+        });
     },
 
     render() {

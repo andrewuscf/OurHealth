@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import FCM from 'react-native-fcm';
 
 import * as HomeActions from '../actions/HomeActions';
 
@@ -27,6 +28,7 @@ const Home = React.createClass({
         if (!this.props.WorkRequests.length && !this.props.Jobs.length) {
             this.getNeeded();
         }
+        this.getToken();
     },
 
     getNeeded(refresh = false) {
@@ -35,6 +37,14 @@ const Home = React.createClass({
         } else {
             this.props.actions.getJobs(refresh);
         }
+    },
+
+    getToken() {
+        const self = this;
+        FCM.requestPermissions(); // for iOS
+        FCM.getFCMToken().then(token => {
+            if (token) self.props.actions.setDeviceForNotification(token);
+        });
     },
 
 

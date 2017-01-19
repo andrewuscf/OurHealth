@@ -17,9 +17,18 @@ export function setTokenInRedux(token, FromAPI = false) {
     return {type: types.SET_TOKEN, token: token}
 }
 
-export function removeToken() {
-    AsyncStorage.removeItem('USER_TOKEN');
-    return {type: types.REMOVE_TOKEN}
+export function removeDeviceNotification(token) {
+    return (dispatch, getState) => {
+        return fetch(`${API_ENDPOINT}devices/${token}/`, fetchData('DELETE', null, getState().Global.UserToken));
+    }
+}
+
+export function removeToken(token) {
+    return (dispatch) => {
+        AsyncStorage.removeItem('USER_TOKEN');
+        if (token) dispatch(removeDeviceNotification(token));
+        dispatch({type: types.REMOVE_TOKEN});
+    };
 }
 
 export function login(email, pass) {

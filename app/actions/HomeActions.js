@@ -2,6 +2,7 @@
 
 import * as types from './ActionTypes';
 import {fetchData, API_ENDPOINT, refreshPage} from './Utils';
+import {Platform} from 'react-native';
 
 
 export function getWorkRequests(refresh = false) {
@@ -88,6 +89,24 @@ export function acceptJob(jobId, data, asyncActions) {
                         text: 'Please try again later.'
                     })
                 });
+            });
+    }
+}
+
+export function setDeviceForNotification(token) {
+    return (dispatch, getState) => {
+        const thisUser = getState().Global.RequestUser;
+        let JSONData = {
+            name: `${thisUser.first_name}-${thisUser.last_name}-${Platform.OS}`,
+            registration_id: token,
+            is_active: true,
+            type: Platform.OS
+        };
+        const sendData = JSON.stringify(JSONData);
+        return fetch(`${API_ENDPOINT}devices/`, fetchData('POST', sendData, getState().Global.UserToken))
+            .then((response) => response.json())
+            .catch((error) => {
+                console.log(error);
             });
     }
 }
