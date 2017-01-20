@@ -25,6 +25,7 @@ import EditProfile from './containers/edit/EditProfile';
 
 import NavBar from './components/Navbar';
 import SearchModal from './components/SearchModal';
+import CheckInModal from './components/CheckInModal';
 
 
 var navigator;
@@ -50,10 +51,10 @@ const App = React.createClass({
         switch (route.name) {
             case 'Home':
                 return <SceneComponent navigator={ nav } route={route} {...route.passProps}
-                                       openModal={this.openModal}/>;
-            // case 'CreatePoll':
-            //     return <SceneComponent createPoll={this.props.actions.createPoll} navigator={ nav }
-            //                            route={route}/>;
+                                       openModal={this.openSearchModal}/>;
+            case 'Calendar':
+                return <SceneComponent navigator={ nav } route={route} {...route.passProps}
+                                       openModal={this.openCheckInModal}/>;
             default :
                 return <SceneComponent navigator={ nav } route={route} {...route.passProps}/>;
 
@@ -84,29 +85,24 @@ const App = React.createClass({
     setupLocationService() {
         // Need to change these settings before release!!!!
         BackgroundGeolocation.configure({
-            desiredAccuracy: 10,
-            stationaryRadius: 50,
-            distanceFilter: 50,
+            desiredAccuracy: 100,
+            stationaryRadius: 30,
+            distanceFilter: 30,
             locationTimeout: 30,
             notificationTitle: 'Background tracking',
             notificationText: 'enabled',
-            debug: true,
-            startOnBoot: false,
-            stopOnTerminate: false,
+            notificationIconColor: '#4CAF50',
+            debug: true, // Set to false to not make sound.
+            stopOnTerminate: true,
             locationProvider: BackgroundGeolocation.provider.ANDROID_ACTIVITY_PROVIDER,
-            interval: 10000,
-            fastestInterval: 5000,
-            activitiesInterval: 10000,
-            stopOnStillActivity: false,
+            interval: 60000,
+            fastestInterval: 60000,
+            activitiesInterval: 60000,
         });
         BackgroundGeolocation.on('location', (location) => {
             //handle your locations here
             this.props.actions.updateLocation(location);
         });
-        // BackgroundGeolocation.on('stationary', (stationaryLocation) => {
-        //     //handle stationary locations here
-        //     console.log(stationaryLocation)
-        // });
         BackgroundGeolocation.on('error', (error) => {
             console.log('[ERROR] BackgroundGeolocation error:', error);
         });
@@ -127,12 +123,20 @@ const App = React.createClass({
         });
     },
 
-    openModal() {
-        this.refs.modal1.open();
+    openCheckInModal() {
+        this.refs.check_in_modal.open();
     },
 
-    closeModal() {
-        this.refs.modal1.close();
+    closeCheckInModal() {
+        this.refs.check_in_modal.close();
+    },
+
+    openSearchModal() {
+        this.refs.search_modal.open();
+    },
+
+    closeSearchModal() {
+        this.refs.search_modal.close();
     },
 
     render() {
@@ -150,16 +154,20 @@ const App = React.createClass({
                                        onDidFocus={this.itemChangedFocus}
                                        navigationBar={<NavBar
                                            activeRoute={this.props.Route}
-                                           openModal={this.openModal}
+                                           openModal={this.openSearchModal}
                                            RequestUser={this.props.RequestUser}
                                            checkInColor="red"/> }
                             />
-                            <Modal style={[styles.modal]} backdrop={false} ref={"modal1"}
+                            <Modal style={[styles.modal]} backdrop={false} ref={"search_modal"}
                                    swipeToClose={false}>
-                                <SearchModal closeModal={this.closeModal}
+                                <SearchModal closeModal={this.closeSearchModal}
                                              RequestUser={this.props.RequestUser}
                                              updateAvailability={this.props.actions.updateAvailability}
                                              createRequest={this.props.actions.createRequest}/>
+                            </Modal>
+                            <Modal style={[styles.modal]} backdrop={false} ref={"check_in_modal"}
+                                   swipeToClose={false}>
+                                <CheckInModal closeModal={this.closeCheckInModal} job={this.state.SelectedJob}/>
                             </Modal>
                         </View>
                     );

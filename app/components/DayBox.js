@@ -34,16 +34,22 @@ const DayBox = React.createClass({
                 </TouchableOpacity>
             )
         }
+        console.log(this.props.day)
         return (
             <View style={[styles.DayBox, this.props.style]}>
-                <View style={[styles.boxDetail, this.props.day.worker? {width: deviceWidth * .85}: null]}>
+                <View style={[styles.boxDetail, this.props.day.worker ? {width: deviceWidth * .85} : null]}>
                     <Text style={styles.daysTitle}>{this.props.day.zonedStart.format('dddd') + endDay}</Text>
                     <Text>{`Start: ${this.props.day.zonedStart.format('MMM Do YYYY, h:mm a')}`}</Text>
                     <Text>{`End: ${this.props.day.zonedEnd.format('MMM Do YYYY, h:mm a')}`}</Text>
                 </View>
-                {this.props.day.worker ?
-                    <AvatarImage image={this.props.day.worker.profile.avatar}
-                                 style={[styles.removeCircle]}/> : null
+                {this.props.day.job ?
+                    (this.props.day.job.worker.id != this.props.RequestUser.id) ?
+                        <AvatarImage image={this.props.day.job.worker.profile.avatar}
+                                     style={[styles.removeCircle]}/> :
+                        <TouchableOpacity onPress={this.props.checkInModal.bind(null, this.props.day.job)}>
+                            <Text>test</Text>
+                        </TouchableOpacity>
+                    : null
                 }
                 {this.props.accept ?
                     this.props.acceptedDay == false ?

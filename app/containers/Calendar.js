@@ -35,7 +35,7 @@ const Calendar = React.createClass({
                     zonedStart: zonedStart,
                     zonedEnd: zonedEnd,
                     hours: zonedEnd.diff(zonedStart, 'hours'),
-                    worker: job.worker
+                    job: job
                 };
                 schedule.push(updatedDay);
             })
@@ -49,6 +49,11 @@ const Calendar = React.createClass({
         }
     },
 
+    checkInModal(job) {
+        this.props.actions.selectJob(job);
+        this.props.openModal();
+    },
+
     render() {
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         const dataSource = ds.cloneWithRows(this.state.schedule);
@@ -58,7 +63,8 @@ const Calendar = React.createClass({
                 <ListView removeClippedSubviews={(Platform.OS === 'ios') ? false : true}
                           enableEmptySections={true}
                           dataSource={dataSource}
-                          renderRow={(day, i) => <DayBox key={i} day={day}
+                          renderRow={(day, i) => <DayBox key={i} day={day} RequestUser={this.props.RequestUser}
+                                                         checkInModal={this.checkInModal}
                                                          index={i}/>}
                 />
             </View>

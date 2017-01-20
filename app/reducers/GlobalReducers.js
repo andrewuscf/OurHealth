@@ -13,6 +13,7 @@ const initialState = {
     Refreshing: false,
     Error: null,
     Location: null,
+    SelectedJob: null
 };
 
 export default function AppReducers(state = initialState, action = null) {
@@ -108,6 +109,12 @@ export default function AppReducers(state = initialState, action = null) {
                         availability: availability
                     }
                 }
+            };
+
+        case constants.SELECTED_JOB:
+            return {
+                ...state,
+                SelectedJob: action.job
             };
 
         default:

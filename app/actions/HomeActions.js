@@ -110,3 +110,7 @@ export function setDeviceForNotification(token) {
             });
     }
 }
+
+export function selectJob(job) {
+    return {type: types.SELECTED_JOB, job: job};
+}
