@@ -77,9 +77,9 @@ const App = React.createClass({
                 ]
             );
         }
-        if (!prevProps.RequestUser && this.props.RequestUser) {
-            this.setupLocationService();
-        }
+        // if (!prevProps.RequestUser && this.props.RequestUser) {
+        //     this.setupLocationService();
+        // }
     },
 
     setupLocationService() {
@@ -167,7 +167,7 @@ const App = React.createClass({
                             </Modal>
                             <Modal style={[styles.modal]} backdrop={false} ref={"check_in_modal"}
                                    swipeToClose={false}>
-                                <CheckInModal closeModal={this.closeCheckInModal} job={this.state.SelectedJob}/>
+                                <CheckInModal closeModal={this.closeCheckInModal} day={this.props.SelectedDay}/>
                             </Modal>
                         </View>
                     );

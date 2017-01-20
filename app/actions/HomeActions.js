@@ -111,6 +111,6 @@ export function setDeviceForNotification(token) {
     }
 }
 
-export function selectJob(job) {
-    return {type: types.SELECTED_JOB, job: job};
+export function selectDay(day) {
+    return {type: types.SELECTED_DAY, day: day};
 }

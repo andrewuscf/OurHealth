@@ -49,8 +49,8 @@ const Calendar = React.createClass({
         }
     },
 
-    checkInModal(job) {
-        this.props.actions.selectJob(job);
+    checkInModal(day) {
+        this.props.actions.selectDay(day);
         this.props.openModal();
     },
 

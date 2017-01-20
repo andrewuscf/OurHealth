@@ -13,7 +13,7 @@ const initialState = {
     Refreshing: false,
     Error: null,
     Location: null,
-    SelectedJob: null
+    SelectedDay: null
 };
 
 export default function AppReducers(state = initialState, action = null) {
@@ -111,10 +111,10 @@ export default function AppReducers(state = initialState, action = null) {
                 }
             };
 
-        case constants.SELECTED_JOB:
+        case constants.SELECTED_DAY:
             return {
                 ...state,
-                SelectedJob: action.job
+                SelectedDay: action.day
             };
 
         default:

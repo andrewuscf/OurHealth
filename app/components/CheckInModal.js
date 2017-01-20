@@ -20,7 +20,7 @@ var {width: deviceWidth} = Dimensions.get('window');
 var CheckInModal = React.createClass({
     propTypes: {
         closeModal: React.PropTypes.func.isRequired,
-        job: React.PropTypes.object
+        day: React.PropTypes.object
     },
 
 
@@ -58,6 +58,7 @@ var CheckInModal = React.createClass({
 
 
     render: function () {
+        console.log(this.props)
         return (
             <ScrollView style={styles.flexCenter} contentContainerStyle={styles.contentContainerStyle}>
                 <BackBar back={this.props.closeModal} backText="Cancel">

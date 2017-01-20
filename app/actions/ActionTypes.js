@@ -20,7 +20,7 @@ export const UPDATE_AVAILABILITY = 'UPDATE_AVAILABILITY';
 export const INVITE_WORKER = 'INVITE_WORKER';
 export const LOAD_JOBS = 'LOAD_JOBS';
 export const ACCEPT_JOB = 'ACCEPT_JOB';
-export const SELECTED_JOB = 'SELECTED_JOB';
+export const SELECTED_DAY = 'SELECTED_DAY';
 
 
 // Profile Constants

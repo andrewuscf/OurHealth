@@ -34,7 +34,6 @@ const DayBox = React.createClass({
                 </TouchableOpacity>
             )
         }
-        console.log(this.props.day)
         return (
             <View style={[styles.DayBox, this.props.style]}>
                 <View style={[styles.boxDetail, this.props.day.worker ? {width: deviceWidth * .85} : null]}>
@@ -46,8 +45,8 @@ const DayBox = React.createClass({
                     (this.props.day.job.worker.id != this.props.RequestUser.id) ?
                         <AvatarImage image={this.props.day.job.worker.profile.avatar}
                                      style={[styles.removeCircle]}/> :
-                        <TouchableOpacity onPress={this.props.checkInModal.bind(null, this.props.day.job)}>
-                            <Text>test</Text>
+                        <TouchableOpacity onPress={this.props.checkInModal.bind(null, this.props.day)}>
+                            <Text>Check In</Text>
                         </TouchableOpacity>
                     : null
                 }
