@@ -204,29 +204,32 @@ var SearchModal = React.createClass({
             return <DayBox key={i} day={day} cancel={this.removeDay} index={i}/>;
         });
         return (
-            <ScrollView style={styles.flexCenter} contentContainerStyle={styles.contentContainerStyle}>
-                <BackBar back={this.props.closeModal} backText="Cancel">
-                    <SubmitButton buttonStyle={[styles.topNavButton, styles.submitButton]}
-                                  textStyle={[styles.cancel, this.isValid() ? styles.blueText : null]}
-                                  onPress={this._onSubmit} ref='postbutton'
-                                  text='Submit'/>
-                </BackBar>
+            <View style={styles.mainContainer}>
+                <ScrollView style={styles.flexCenter} contentContainerStyle={styles.contentContainerStyle}>
+                    <BackBar back={this.props.closeModal} backText="Cancel">
+                        <SubmitButton buttonStyle={[styles.topNavButton, styles.submitButton]}
+                                      textStyle={[styles.cancel, this.isValid() ? styles.blueText : null]}
+                                      onPress={this._onSubmit} ref='postbutton'
+                                      text='Submit'/>
+                    </BackBar>
 
-                {this.props.RequestUser.type == "Client" ? <View>
-                    <Text style={styles.mainTitle}>Search for a nurse</Text>
-                    <View style={{padding: 15, paddingTop: 20}}>
-                        <Text>How much would you like to pay per hour?</Text>
-                        <TextInput ref="rate" style={styles.textInput}
-                                   keyboardType='numeric'
-                                   autoCorrect={false}
-                                   placeholderTextColor='#4d4d4d' onChangeText={(rate)=>this.setState({rate: rate})}
-                                   value={this.state.rate}
-                                   placeholder="Please enter a $ amount."/>
-                    </View>
-                </View> :
-                    null
-                }
+                    {this.props.RequestUser.type == "Client" ? <View>
+                        <Text style={styles.mainTitle}>POST A JOB</Text>
+                        <View style={[{paddingTop: 20, flexDirection: 'row'}, styles.section]}>
+                            <Text style={{marginTop: 8, width: 12, marginLeft: 5, fontSize: 18}}>$</Text>
+                            <TextInput ref="rate" style={[styles.textInput,{ flex: 1}]}
+                                       keyboardType='numeric'
+                                       autoCorrect={false}
+                                       onChangeText={(rate)=>this.setState({rate: rate})}
+                                       value={this.state.rate}
+                                       placeholder="Per Hour"/>
+                        </View>
+                    </View> :
+                        null
+                    }
 
+                    {acceptedDay}
+                </ScrollView>
                 {this.state.showCalender ?
                     <View style={styles.dateCard}>
                         <Calendar
@@ -288,18 +291,20 @@ var SearchModal = React.createClass({
                     :
                     <TouchableOpacity style={styles.addDays} onPress={this._addMore}>
                         <Text style={styles.buttonText}>
-                            {this.props.RequestUser.type == "Client" ? 'Days Needed' : 'Add Availability'}
+                            {this.props.RequestUser.type == "Client" ? 'ADD DAYS NEEDED' : 'ADD AVAILABILITY'}
                         </Text>
                     </TouchableOpacity>
                 }
-                {acceptedDay}
-            </ScrollView>
+            </View>
         )
     }
 });
 
 
 var styles = StyleSheet.create({
+    mainContainer: {
+        flex: 1
+    },
     flexCenter: {
         flex: 1,
         width: deviceWidth
@@ -314,10 +319,14 @@ var styles = StyleSheet.create({
     },
     mainTitle: {
         fontSize: 20,
+        paddingTop: 10,
         alignSelf: 'center',
-        textDecorationLine: "underline",
-        textDecorationStyle: "solid",
-        textDecorationColor: "#000"
+        color: '#4d4d4d',
+        fontWeight: 'bold'
+    },
+    section: {
+        borderBottomWidth: 1,
+        borderColor: '#b1aea5'
     },
     cancel: {
         marginLeft: 5,
@@ -332,12 +341,12 @@ var styles = StyleSheet.create({
     },
     textInput: {
         color: '#4d4d4e',
-        fontSize: 17,
         // fontFamily: 'OpenSans-Semibold',
         borderBottomWidth: 0,
         borderBottomColor: '#4d4d4e',
         backgroundColor: 'transparent',
-        height: 40
+        height: 40,
+        marginLeft: 10
     },
     dateCard: {
         borderWidth: 1,
@@ -369,13 +378,14 @@ var styles = StyleSheet.create({
         backgroundColor: '#00BFFF',
         justifyContent: 'center',
         alignItems: 'center',
-        paddingTop: 10,
-        paddingBottom: 10,
+        paddingTop: 15,
+        paddingBottom: 15,
         paddingLeft: 40,
         paddingRight: 40,
-        borderRadius: 70,
-        marginTop: 10,
-        marginBottom: 10
+        position: 'absolute',
+        bottom:0,
+        left:0,
+        width: deviceWidth
     }
 });
 

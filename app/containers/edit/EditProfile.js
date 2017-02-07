@@ -149,7 +149,7 @@ const EditProfile = React.createClass({
                         : null
                     }
                     <ScrollView ref='_scrollView' keyboardDismissMode='interactive'
-                                style={styles.mainContainer} contentContainerStyle={styles.contentContainerStyle}>
+                                style={styles.mainContainer}>
                         {this.props.RequestUser.profile.completed ? <View style={styles.backNav}>
                             <TouchableOpacity onPress={this._back} style={styles.backNavButton}>
                                 <Icon name="angle-left" size={28} color='#d4d4d4'/>
@@ -318,8 +318,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#00BFFF',
         justifyContent: 'center',
         alignItems: 'center',
-        paddingTop: 20,
-        paddingBottom: 20,
+        paddingTop: 15,
+        paddingBottom: 15,
         paddingLeft: 30,
         paddingRight: 30,
         width: deviceWidth,

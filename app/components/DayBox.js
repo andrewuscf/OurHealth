@@ -71,7 +71,7 @@ const DayBox = React.createClass({
 var styles = StyleSheet.create({
     DayBox: {
         height: 60,
-        borderTopWidth: 1,
+        borderBottomWidth: 1,
         borderColor: '#b1aea5',
         flexDirection: 'row',
     },
