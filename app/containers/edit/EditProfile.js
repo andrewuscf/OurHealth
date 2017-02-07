@@ -12,10 +12,10 @@ import {
 } from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import moment from 'moment';
-import DatePicker from 'react-native-datepicker';
 import CameraRollPicker from 'react-native-camera-roll-picker';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import DatePicker from 'react-native-datepicker';
+import moment from 'moment';
 
 import {fetchData, API_ENDPOINT} from '../../actions/Utils';
 
@@ -166,30 +166,31 @@ const EditProfile = React.createClass({
                                 </TouchableOpacity>
                             </View> : null}
                             {this.state.showEditName ?
-                                <View style={styles.section}>
-                                    <TextInput style={styles.textInput}
+                                <View style={[styles.section, styles.twoColumn]}>
+                                    <TextInput style={[styles.textInput, styles.nameInput]}
                                                underlineColorAndroid='transparent'
                                                autoCapitalize='words'
                                                keyboardType='default'
                                                autoCorrect={false}
-                                               placeholderTextColor='#4d4d4d'
                                                onChangeText={(text) =>this.setState({first_name: text})}
                                                value={this.state.first_name}
                                                placeholder="First Name"/>
-                                    <TextInput style={styles.textInput}
+                                    <View style={{width: 1, backgroundColor: '#C7C7CD', marginBottom: 5, marginTop: 5, marginRight: 5}} />
+                                    <TextInput style={[styles.textInput, styles.nameInput]}
                                                underlineColorAndroid='transparent'
                                                autoCapitalize='words'
                                                keyboardType='default'
                                                autoCorrect={false}
-                                               placeholderTextColor='#4d4d4d'
                                                onChangeText={(text) =>this.setState({last_name: text})}
                                                value={this.state.last_name}
                                                placeholder="Last Name"/>
                                 </View>
                                 : null
                             }
-                            <View style={styles.section}>
-                                <Text>Birthday</Text>
+                            <View style={[styles.section, styles.twoColumn]}>
+                                <Text style={[styles.nameInput,{marginTop: 10, fontSize: 18}]}>
+                                    Date of Birth:
+                                </Text>
                                 <DatePicker
                                     style={{width: 200}}
                                     date={this.state.birthday}
@@ -206,35 +207,32 @@ const EditProfile = React.createClass({
                                 />
                             </View>
                             <View style={styles.section}>
-                                <Text>Phone Number</Text>
                                 <TextInput ref="phone_number" style={styles.textInput}
                                            underlineColorAndroid='transparent'
                                            keyboardType="phone-pad"
                                            maxLength={10}
-                                           placeholderTextColor='#4d4d4d'
                                            onChangeText={(number) =>this.setState({phone_number: number})}
                                            value={this.state.phone_number}
-                                           placeholder="Add Phone Number"/>
+                                           placeholder="Phone Number"/>
                             </View>
                             {user.type == 'Worker' ?
-                                <View style={styles.section}>
-                                    <Text>Average Rate($)</Text>
+                                <View style={[styles.section, styles.twoColumn]}>
+                                    <Text style={{marginTop: 10}}>$</Text>
                                     <TextInput ref="requested_rate" style={styles.textInput}
                                                underlineColorAndroid='transparent'
                                                keyboardType="phone-pad"
                                                maxLength={6}
-                                               placeholderTextColor='#4d4d4d'
                                                onChangeText={(number) =>this.setState({requested_rate: number})}
                                                value={this.state.requested_rate}
-                                               placeholder="Add Average Rate"/>
+                                               placeholder="Your charge per hour?"/>
                                 </View>
                                 : null
                             }
-                            <SubmitButton buttonStyle={styles.button}
-                                          textStyle={styles.submitText} onPress={this._onSubmit} ref='postbutton'
-                                          text='Save'/>
                         </View>
                     </ScrollView>
+                    <SubmitButton buttonStyle={styles.button}
+                                  textStyle={styles.submitText} onPress={this._onSubmit} ref='postbutton'
+                                  text='Save'/>
                 </View>
             );
         } else {
@@ -254,9 +252,6 @@ const DatePickerStyle = {
     },
     dateInput: {
         borderWidth: 0,
-        borderBottomWidth: 1,
-        borderBottomColor: '#e1e3df',
-        backgroundColor: 'transparent',
     }
 };
 
@@ -283,7 +278,9 @@ const styles = StyleSheet.create({
         borderRadius: 50
     },
     section: {
-        marginTop: 20
+        marginTop: 20,
+        borderBottomWidth: 1,
+        borderColor: '#b1aea5'
     },
     userName: {
         flex: 1,
@@ -302,6 +299,12 @@ const styles = StyleSheet.create({
         fontWeight: "400",
         paddingTop: 15
     },
+    twoColumn: {
+        flexDirection: 'row',
+    },
+    nameInput: {
+        flex: 2
+    },
     textInput: {
         flex: 1,
         height: 35,
@@ -312,15 +315,17 @@ const styles = StyleSheet.create({
         textAlignVertical: 'top',
     },
     button: {
-        marginTop: 80,
         backgroundColor: '#00BFFF',
         justifyContent: 'center',
         alignItems: 'center',
-        paddingTop: 10,
-        paddingBottom: 10,
+        paddingTop: 20,
+        paddingBottom: 20,
         paddingLeft: 30,
         paddingRight: 30,
-        borderRadius: 21
+        width: deviceWidth,
+        position: 'absolute',
+        bottom:0,
+        left:0,
     },
     submitText: {
         color: 'white',
