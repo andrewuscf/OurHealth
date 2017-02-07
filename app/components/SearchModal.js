@@ -291,7 +291,7 @@ var SearchModal = React.createClass({
                     :
                     <TouchableOpacity style={styles.addDays} onPress={this._addMore}>
                         <Text style={styles.buttonText}>
-                            {this.props.RequestUser.type == "Client" ? 'ADD DAYS NEEDED' : 'ADD AVAILABILITY'}
+                            {this.props.RequestUser.type == "Client" ? 'ADD DAYS' : 'ADD AVAILABILITY'}
                         </Text>
                     </TouchableOpacity>
                 }

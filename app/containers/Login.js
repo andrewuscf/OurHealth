@@ -95,6 +95,8 @@ const Login = React.createClass({
             <View style={styles.container}>
                 <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
 
+                    <Image style={styles.logo} source={require('../assets/images/small-white-logo.png')}/>
+
                     {(this.state.signUp) ? <View style={[styles.inputWrap, styles.nameFields]}>
                         <TextInput ref="first" style={[styles.textInput, styles.nameInput]} autoCapitalize='words'
                                    keyboardType='default'
@@ -104,6 +106,7 @@ const Login = React.createClass({
                                    onSubmitEditing={(event) => {
                                         this.refs.last.focus();
                                    }}
+                                   placeholderTextColor="white"
                                    placeholder="First Name"/>
                         <View style={{width: 1, backgroundColor: '#C7C7CD', marginBottom: 5, marginTop: 5, marginRight: 5}} />
                         <TextInput ref="last" style={[styles.textInput, styles.nameInput]} autoCapitalize='words'
@@ -114,6 +117,7 @@ const Login = React.createClass({
                                    onSubmitEditing={(event) => {
                                         this.refs.email.focus();
                                    }}
+                                   placeholderTextColor="white"
                                    placeholder="Last Name"/>
                     </View> : null}
 
@@ -127,6 +131,7 @@ const Login = React.createClass({
                                    onSubmitEditing={(event) => {
                                         this.refs.password.focus();
                                    }}
+                                   placeholderTextColor="white"
                                    placeholder="Email"/>
                     </View>
 
@@ -138,6 +143,7 @@ const Login = React.createClass({
                                    onSubmitEditing={(event) => {
                                         this.onPress();
                                    }}
+                                   placeholderTextColor="white"
                                    placeholder="Password"/>
                     </View> : null}
 
@@ -159,7 +165,7 @@ const Login = React.createClass({
                     </TouchableHighlight>
                 </ScrollView>
                 <View style={styles.extraButtons}>
-                    <TouchableOpacity style={styles.bottomButtons} onPress={this.toggleForgotCreds}>
+                    <TouchableOpacity style={styles.bottomButtons} onPress={this.toggleForgotCreds} focusedOpacity={1} activeOpacity={1}>
                         <Text style={styles.buttonForgotText}>{(!this.state.forgotCreds) ? 'Forgot?' : 'Cancel'}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.bottomButtons} onPress={this.toggleSignUp}>
@@ -174,7 +180,7 @@ const Login = React.createClass({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#00BFFF',
     },
     contentContainer: {
         justifyContent: 'center',
@@ -183,18 +189,18 @@ const styles = StyleSheet.create({
     },
     logo: {
         width: 154,
-        height: 40,
+        height: 70,
         marginTop: 100,
         marginBottom: 100,
     },
     inputWrap: {
         alignSelf: 'stretch',
-        marginTop: 12,
+        // marginTop: 5,
         marginBottom: 12,
         paddingLeft: 3,
         height: 40,
         borderBottomWidth: 1,
-        borderColor: '#b1aea5'
+        borderColor: 'white'
     },
     nameFields: {
         flexDirection: 'row',
@@ -203,7 +209,7 @@ const styles = StyleSheet.create({
         flex: 2
     },
     textInput: {
-        color: '#4d4d4e',
+        color: 'white',
         fontSize: 17,
         // fontFamily: 'OpenSans-Semibold',
         // borderWidth: 0,
@@ -220,31 +226,31 @@ const styles = StyleSheet.create({
     },
     notSelected: {
         borderWidth: 1,
-        borderColor: 'grey',
+        borderColor: 'white',
     },
     selectedType: {
-        backgroundColor: '#00BFFF'
+        backgroundColor: 'white'
     },
     selectedText: {
-        color: 'white',
+        color: '#00BFFF',
         fontSize: 14
         // fontFamily: 'OpenSans-Bold',
         // textDecorationLine: 'none'
     },
     notSelectedText: {
-        color: 'grey',
+        color: 'white',
         fontSize: 14
         // fontFamily: 'OpenSans-Bold',
         // textDecorationLine: 'none'
     },
     buttonText: {
-        color: 'white',
+        color: '#00BFFF',
         fontSize: 15
         // fontFamily: 'OpenSans-Bold',
     },
     button: {
-        marginTop: 80,
-        backgroundColor: '#00BFFF',
+        marginTop: 20,
+        backgroundColor: 'white',
         justifyContent: 'center',
         alignItems: 'center',
         paddingTop: 10,
@@ -257,7 +263,7 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 14,
         // fontFamily: 'OpenSans-Bold',
-        textDecorationLine: 'underline'
+        // textDecorationLine: 'underline'
     },
     extraButtons: {
         height: 50,
@@ -267,7 +273,10 @@ const styles = StyleSheet.create({
     },
     bottomButtons: {
         flex: 2,
-        backgroundColor: '#00BFFF',
+        backgroundColor: '#1fc8fc',
+        opacity: .5,
+        borderWidth:1,
+        borderColor: '#84defa',
         alignItems: 'center',
         justifyContent: 'center'
     }
