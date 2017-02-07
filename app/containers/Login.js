@@ -95,38 +95,49 @@ const Login = React.createClass({
             <View style={styles.container}>
                 <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
 
-                    {(this.state.signUp) ? <View style={styles.inputWrap}>
-                        <TextInput ref="first" style={styles.textInput} autoCapitalize='words'
+                    {(this.state.signUp) ? <View style={[styles.inputWrap, styles.nameFields]}>
+                        <TextInput ref="first" style={[styles.textInput, styles.nameInput]} autoCapitalize='words'
                                    keyboardType='default'
                                    autoCorrect={false}
-                                   placeholderTextColor='#4d4d4d' onChangeText={(text)=>this.setState({first_name: text})}
+                                   onChangeText={(text)=>this.setState({first_name: text})}
                                    value={this.state.first_name}
+                                   onSubmitEditing={(event) => {
+                                        this.refs.last.focus();
+                                   }}
                                    placeholder="First Name"/>
-                    </View> : null}
-
-                    {(this.state.signUp) ? <View style={styles.inputWrap}>
-                        <TextInput ref="last" style={styles.textInput} autoCapitalize='words'
+                        <View style={{width: 1, backgroundColor: '#C7C7CD', marginBottom: 5, marginTop: 5, marginRight: 5}} />
+                        <TextInput ref="last" style={[styles.textInput, styles.nameInput]} autoCapitalize='words'
                                    keyboardType='default'
                                    autoCorrect={false}
-                                   placeholderTextColor='#4d4d4d' onChangeText={(text)=>this.setState({last_name: text})}
+                                   onChangeText={(text)=>this.setState({last_name: text})}
                                    value={this.state.last_name}
+                                   onSubmitEditing={(event) => {
+                                        this.refs.email.focus();
+                                   }}
                                    placeholder="Last Name"/>
                     </View> : null}
+
 
                     <View style={styles.inputWrap}>
                         <TextInput ref="email" style={styles.textInput} autoCapitalize='none'
                                    keyboardType='email-address'
                                    autoCorrect={false}
-                                   placeholderTextColor='#4d4d4d' onChangeText={(text)=>this.setState({email: text})}
+                                   onChangeText={(text)=>this.setState({email: text})}
                                    value={this.state.email}
+                                   onSubmitEditing={(event) => {
+                                        this.refs.password.focus();
+                                   }}
                                    placeholder="Email"/>
                     </View>
 
                     {(!this.state.forgotCreds) ? <View style={styles.inputWrap}>
                         <TextInput ref="password" style={styles.textInput} autoCapitalize='none' secureTextEntry={true}
                                    autoCorrect={false}
-                                   placeholderTextColor='#4d4d4d' onChangeText={(text)=>this.setState({password: text})}
+                                   onChangeText={(text)=>this.setState({password: text})}
                                    value={this.state.password}
+                                   onSubmitEditing={(event) => {
+                                        this.onPress();
+                                   }}
                                    placeholder="Password"/>
                     </View> : null}
 
@@ -181,7 +192,15 @@ const styles = StyleSheet.create({
         marginTop: 12,
         marginBottom: 12,
         paddingLeft: 3,
-        height: 40
+        height: 40,
+        borderBottomWidth: 1,
+        borderColor: '#b1aea5'
+    },
+    nameFields: {
+        flexDirection: 'row',
+    },
+    nameInput: {
+        flex: 2
     },
     textInput: {
         color: '#4d4d4e',
