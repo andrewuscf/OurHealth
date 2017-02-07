@@ -23,6 +23,7 @@ import * as ProfileActions from '../../actions/ProfileActions';
 
 import AvatarImage from '../../components/AvatarImage';
 import {EMPTY_AVATAR} from '../../assets/constants';
+import Loading from '../../components/Loading';
 import SubmitButton from '../../components/SubmitButton';
 
 var {width: deviceWidth} = Dimensions.get('window');
@@ -236,7 +237,7 @@ const EditProfile = React.createClass({
                 </View>
             );
         } else {
-            return <Text>Loading...</Text>
+            return <Loading />
         }
 
     }

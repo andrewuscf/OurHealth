@@ -24,8 +24,9 @@ import Home from './containers/Home';
 import EditProfile from './containers/edit/EditProfile';
 
 import NavBar from './components/Navbar';
-import SearchModal from './components/SearchModal';
 import CheckInModal from './components/CheckInModal';
+import Loading from './components/Loading';
+import SearchModal from './components/SearchModal';
 
 
 var navigator;
@@ -184,7 +185,7 @@ const App = React.createClass({
                        error={this.props.Error}/></View>;
         }
         // Should replace this with a splash art.
-        return null;
+        return <Loading />;
     }
 });
 

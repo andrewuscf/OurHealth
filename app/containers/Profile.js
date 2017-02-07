@@ -16,6 +16,7 @@ import AvatarImage from '../components/AvatarImage';
 import BackBar from '../components/BackBar';
 import CredentialBox from '../components/CredentialBox';
 import HireFooter from '../components/HireFooter';
+import Loading from '../components/Loading';
 
 
 const Profile = React.createClass({
@@ -89,7 +90,7 @@ const Profile = React.createClass({
                 </View>
             );
         } else {
-            return <Text>Loading...</Text>
+            return <Loading />
         }
 
     }
