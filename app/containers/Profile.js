@@ -44,31 +44,46 @@ const Profile = React.createClass({
     render() {
         const user = this.state.user;
         console.log(user)
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        const dataSource = ds.cloneWithRows(user.credentials);
-        const credentials = (
-            <ListView enableEmptySections={true} dataSource={dataSource}
-                renderRow={(credential, i) => <CredentialBox key={i} credential={credential} />}
-            />
-        );
+        // const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        // const dataSource = ds.cloneWithRows(user.credentials);
+        // const credentials = (
+        //     <ListView enableEmptySections={true} dataSource={dataSource}
+        //         renderRow={(credential, i) => <CredentialBox key={i} credential={credential} />}
+        //     />
+        // );
         if (user) {
             return (
                 <View style={styles.mainContainer}>
+                    <BackBar back={this.props.navigator.pop}>
+                        {user.id == this.props.RequestUser.id ?
+                            <TouchableOpacity style={[styles.topNavButton, styles.submitButton]}
+                                              onPress={this._logOut}>
+                                <Text style={[styles.blueText]}>Sign Out</Text>
+                            </TouchableOpacity>
+                            : null
+                        }
+                    </BackBar>
                     <ScrollView ref='scrollView' keyboardDismissMode='interactive'
                                 style={styles.mainContainer} contentContainerStyle={styles.contentContainerStyle}>
-                        <BackBar back={this.props.navigator.pop}>
-                            {user.id == this.props.RequestUser.id ?
-                                <TouchableOpacity style={[styles.topNavButton, styles.submitButton]}
-                                                  onPress={this._logOut}>
-                                    <Text style={[styles.blueText]}>Sign Out</Text>
-                                </TouchableOpacity>
-                                : null
-                            }
-                        </BackBar>
                         <View style={styles.mainContent}>
                             <AvatarImage image={user.profile.avatar} style={styles.avatar}/>
-                            <Text style={[styles.center, styles.userName]}>{user.first_name} {user.last_name}</Text>
-                            {credentials}
+                            <Text style={styles.userName}>{user.first_name} {user.last_name[0]}.</Text>
+                            <View style={styles.details}>
+                                <Text style={styles.small}>
+                                    6 miles away | {user.profile.age} yrs old
+                                </Text>
+                                <Text style={styles.small}>
+                                    10 yrs experience | {user.jobs_completed} Jobs Finished
+                                </Text>
+                                <View style={styles.starSection}>
+                                    <Icon name="star-o" size={starSize} color={starColor}/>
+                                    <Icon name="star-o" size={starSize} color={starColor}/>
+                                    <Icon name="star-o" size={starSize} color={starColor}/>
+                                    <Icon name="star-o" size={starSize} color={starColor}/>
+                                    <Icon name="star-o" size={starSize} color={starColor}/>
+                                    <Text style={styles.starRating}>(4)</Text>
+                                </View>
+                            </View>
                         </View>
                     </ScrollView>
                 </View>
@@ -79,6 +94,9 @@ const Profile = React.createClass({
 
     }
 });
+
+const starSize = 18;
+const starColor = '#99d9f4';
 
 
 const styles = StyleSheet.create({
@@ -113,21 +131,41 @@ const styles = StyleSheet.create({
         fontSize: 15
     },
     mainContent: {
-        margin: 10
+        margin: 10,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     avatar: {
-        alignSelf: 'center',
-        height: 200,
-        width: 200,
-        borderRadius: 100
-    },
-    center: {
-        alignSelf: 'center'
+        height: 100,
+        width: 100,
+        borderRadius: 50
     },
     userName: {
         fontSize: 18,
-        fontWeight: "400",
+        fontWeight: 'bold',
+        color: 'black',
         paddingTop: 15
+    },
+    details: {
+        flexDirection: 'column',
+    },
+    small: {
+        fontSize: 11,
+        color: 'gray',
+        textAlign: 'center',
+        paddingTop: 2,
+    },
+    starSection: {
+        flexDirection: 'row',
+        paddingTop: 5,
+        alignSelf: 'center',
+    },
+    starRating:{
+        color: starColor,
+        paddingLeft: 5,
+        fontSize: starSize-1,
+        top: 3,
+        position: 'absolute'
     }
 });
 

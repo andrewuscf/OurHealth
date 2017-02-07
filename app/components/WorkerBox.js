@@ -36,7 +36,7 @@ const WorkerBox = React.createClass({
                     <View style={styles.details}>
                         <Text style={styles.name}>{worker.first_name} {worker.last_name[0]}.</Text>
                         <Text style={styles.small}>
-                            City, State: 6 mi | {worker.profile.age} yrs old
+                            6 miles away | {worker.profile.age} yrs old
                         </Text>
                         <Text style={styles.small}>
                             10 yrs experience | {worker.jobs_completed} Jobs Finished
