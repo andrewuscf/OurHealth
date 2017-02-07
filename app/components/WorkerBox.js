@@ -23,86 +23,95 @@ const WorkerBox = React.createClass({
     },
 
     _toProfile() {
+        console.log(this.props.worker);
         this.props._redirect('Profile', {user: this.props.worker});
     },
 
     render() {
         const worker = this.props.worker;
-        console.log(worker);
         return (
             <TouchableHighlight style={styles.container} onPress={this._toProfile} underlayColor='white'>
                 <View style={styles.inner}>
+                    <AvatarImage image={worker.profile.avatar} style={[styles.avatar]}/>
+                    <View style={styles.details}>
+                        <Text style={styles.name}>{worker.first_name} {worker.last_name[0]}.</Text>
+                        <Text style={styles.small}>
+                            City, State: 6 mi | {worker.profile.age} yrs old
+                        </Text>
+                        <Text style={styles.small}>
+                            10 yrs experience | {worker.jobs_completed} Jobs Finished
+                        </Text>
+                        <View style={styles.starSection}>
+                            <Icon name="star-o" size={starSize} color={starColor}/>
+                            <Icon name="star-o" size={starSize} color={starColor}/>
+                            <Icon name="star-o" size={starSize} color={starColor}/>
+                            <Icon name="star-o" size={starSize} color={starColor}/>
+                            <Icon name="star-o" size={starSize} color={starColor}/>
+                        </View>
+                    </View>
                     {!_.isNil(this.props.notified) ?
                         (!this.props.notified ?
                                 <TouchableOpacity
-                                    onPress={this.props.inviteWorker}>
-                                    <Icon name="plus-circle" size={40} color='rgba(0,0,0,.15)' style={styles.invite}/>
+                                    onPress={this.props.inviteWorker} style={styles.invite}>
+                                    <Icon name="plus-circle" size={40} color='rgba(0,0,0,.15)'/>
                                 </TouchableOpacity>
                                 : <Icon name="check-circle" size={40} color='#99d9f4' style={styles.invite}/>
                         )
                         : null
                     }
-                    <AvatarImage image={worker.profile.avatar} style={[styles.avatar]}/>
-                    <View style={[styles.details]}>
-                        <Text style={styles.name}>{worker.first_name} {worker.last_name[0]}.</Text>
-                        <Text style={styles.small}>
-                            <Text><Text style={styles.bold}>Cred: </Text>1</Text>
-                            <Text style={styles.safeSpace}><Text style={styles.bold}>Cred: </Text>1</Text>
-                        </Text>
-                        <View style={styles.starSection}>
-                            <Icon name="star-o" size={12} color='#99d9f4'/>
-                            <Icon name="star-o" size={12} color='#99d9f4'/>
-                            <Icon name="star-o" size={12} color='#99d9f4'/>
-                            <Icon name="star-o" size={12} color='#99d9f4'/>
-                            <Icon name="star-o" size={12} color='#99d9f4'/>
-                        </View>
-                    </View>
                 </View>
             </TouchableHighlight>
         )
     }
 });
 
+const starSize = 12;
+const starColor = '#99d9f4';
+
 const styles = StyleSheet.create({
     container: {
-        height: 150,
-        width: deviceWidth/2,
-        alignItems: 'center',
-        justifyContent: 'center',
+        // height: 150,
+        flex: 1,
+        borderTopWidth: 1,
+        borderColor: '#C7C7CD'
     },
     inner: {
-        marginTop: 20,
+        paddingTop: 5,
+        margin: 10,
+        flexDirection: 'row',
     },
     avatar: {
-        width: 70,
-        height: 70,
-        borderRadius: 35,
+        width: 40,
+        height: 40,
+        borderRadius: 20,
     },
     details: {
-        flex: 1,
+        // flex: 1,
         flexDirection: 'column',
-        paddingTop: 5
+        paddingTop: 5,
+        paddingLeft: 10,
     },
     small: {
         fontSize: 11,
-        alignSelf: 'center'
+        color: 'gray'
     },
     name: {
         fontSize: 12,
-        alignSelf: 'center'
+        fontWeight: 'bold',
+        color: 'black'
     },
     safeSpace: {
         paddingLeft: 5
     },
+
     invite: {
-        top: -10,
-        right: -40,
+        top: 10,
+        right: 10,
         position: 'absolute'
     },
     starSection: {
         flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center'
+        paddingTop: 2
     }
 });
 

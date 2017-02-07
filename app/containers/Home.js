@@ -12,6 +12,7 @@ import {
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import FCM from 'react-native-fcm';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import * as HomeActions from '../actions/HomeActions';
 
@@ -97,7 +98,14 @@ const Home = React.createClass({
         if (this.props.RequestUser.type == 'Client') {
             return (
                 <View style={styles.noRequests}>
-                    <Text style={styles.noRequestTitle}>You have to add a request in order to view nurses.</Text>
+                        <Icon name="th-list" size={60}
+                              color='#b1aea5'/>
+                    <Text style={styles.noRequestTitle}>
+                        You don't have any job requests. As soon as you request a job you will be matched with the best care givers.
+                    </Text>
+                    <SubmitButton buttonStyle={styles.button}
+                                  textStyle={styles.submitText} onPress={this.props.openModal}
+                                  text='Post a Job'/>
                 </View>
             )
         } else {
@@ -129,12 +137,14 @@ const styles = StyleSheet.create({
     noRequests: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        margin: 20
         // alignSelf: 'center'
     },
     noRequestTitle: {
-        fontSize: 20,
-        color: '#494949',
+        fontSize: 15,
+        color: '#b1aeb9',
+        textAlign: 'center',
         // fontFamily: 'OpenSans-Semibold'
     },
     safeSpace: {

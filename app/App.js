@@ -77,10 +77,11 @@ const App = React.createClass({
                 ]
             );
         }
-        // if (!prevProps.RequestUser && this.props.RequestUser) {
-        //     this.setupLocationService();
-        // }
+        if (!prevProps.RequestUser && this.props.RequestUser) {
+            this.setupLocationService();
+        }
     },
+
 
     setupLocationService() {
         // Need to change these settings before release!!!!
@@ -97,7 +98,7 @@ const App = React.createClass({
             locationProvider: BackgroundGeolocation.provider.ANDROID_ACTIVITY_PROVIDER,
             interval: 60000,
             fastestInterval: 60000,
-            activitiesInterval: 60000,
+            activitiesInterval: 60000
         });
         BackgroundGeolocation.on('location', (location) => {
             //handle your locations here

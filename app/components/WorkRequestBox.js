@@ -98,8 +98,8 @@ const WorkRequestBox = React.createClass({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        borderBottomWidth: 3,
-        borderBottomColor: '#99d9f4'
+        borderBottomWidth: 1,
+        borderBottomColor: '#b1aeb9'
     },
     rate: {
         position: 'absolute',
