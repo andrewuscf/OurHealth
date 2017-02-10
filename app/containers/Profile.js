@@ -42,17 +42,41 @@ const Profile = React.createClass({
         });
     },
 
+    _addCredential() {
+        console.log('add credential')
+    },
+
     render() {
         const user = this.state.user;
+        let canEdit = false;
         console.log(user)
-        // const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        // const dataSource = ds.cloneWithRows(user.credentials);
-        // const credentials = (
-        //     <ListView enableEmptySections={true} dataSource={dataSource}
-        //         renderRow={(credential, i) => <CredentialBox key={i} credential={credential} />}
-        //     />
-        // );
         if (user) {
+            canEdit = user.id == this.props.RequestUser.id;
+            let credentialSection;
+            if (user.type != 'Client') {
+                const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+                const dataSource = ds.cloneWithRows(user.credentials);
+                const credentials = (
+                    <ListView enableEmptySections={true} dataSource={dataSource}
+                              renderRow={(credential, i) => <CredentialBox key={i} credential={credential}
+                                                                           canEdit={canEdit}/>}
+                    />
+                );
+                credentialSection =(
+                    <View style={styles.section}>
+                        <View style={styles.sectionItem}>
+                            <Text style={styles.sectionTitle}>Credentials</Text>
+                            {canEdit ?
+                                <TouchableOpacity onPress={this._addCredential} underlayColor='#99d9f4' style={styles.editCredential}>
+                                    <Icon name="plus" size={20} color='rgba(0,0,0,.55)'/>
+                                </TouchableOpacity>
+                                : null
+                            }
+                        </View>
+                        {credentials}
+                    </View>
+                );
+            }
             return (
                 <View style={styles.mainContainer}>
                     <BackBar back={this.props.navigator.pop}>
@@ -87,17 +111,7 @@ const Profile = React.createClass({
                             </View>
                         </View>
                         <View style={styles.mainDetails}>
-                            <View style={styles.section}>
-                                <View style={styles.sectionItem}>
-                                    <Text style={styles.sectionTitle}>Crendentials</Text>
-                                </View>
-                                <View style={styles.sectionItem}>
-                                    <Text>Crendentials</Text>
-                                </View>
-                                <View style={styles.sectionItem}>
-                                    <Text>Crendentials</Text>
-                                </View>
-                            </View>
+                            {credentialSection}
                         </View>
                     </ScrollView>
                 </View>
@@ -166,14 +180,14 @@ const styles = StyleSheet.create({
         paddingTop: 5,
         alignSelf: 'center',
     },
-    starRating:{
+    starRating: {
         color: starColor,
         paddingLeft: 5,
-        fontSize: starSize-1,
+        fontSize: starSize - 1,
         top: 3,
         position: 'absolute'
     },
-    mainDetails:{
+    mainDetails: {
         flex: 1,
         backgroundColor: '#edebe6'
     },
@@ -203,6 +217,11 @@ const styles = StyleSheet.create({
         paddingTop: 5,
         // fontFamily: 'OpenSans-Semibold',
         // color: '#fee0d4',
+    },
+    editCredential: {
+        right: 10,
+        top: 10,
+        position: 'absolute'
     }
 });
 
