@@ -10,7 +10,7 @@ const BackBar = React.createClass({
     propTypes: {
         back: React.PropTypes.func.isRequired,
         backText: React.PropTypes.string,
-        navStyle: React.PropTypes.object
+        navStyle: React.PropTypes.object,
     },
 
     render() {
@@ -18,8 +18,8 @@ const BackBar = React.createClass({
             <View style={[styles.nav, this.props.navStyle]}>
                 <TouchableOpacity onPress={this.props.back}
                                   style={[styles.topNavButton, styles.cancelButton]}>
-                    <Icon name="arrow-left" size={17} color='#00BFFF'/>
-                    <Text style={[styles.cancel, styles.blueText]}>
+                    <Icon name="arrow-left" size={17} color='#00BFFF' style={this.props.textStyle}/>
+                    <Text style={[styles.cancel, styles.blueText, this.props.textStyle]}>
                         {this.props.backText ? this.props.backText: 'Back'}
                     </Text>
                 </TouchableOpacity>

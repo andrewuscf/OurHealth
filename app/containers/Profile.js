@@ -55,18 +55,18 @@ const Profile = React.createClass({
         if (user) {
             return (
                 <View style={styles.mainContainer}>
-                    <BackBar back={this.props.navigator.pop}>
+                    <BackBar back={this.props.navigator.pop} textStyle={styles.whiteText}>
                         {user.id == this.props.RequestUser.id ?
                             <TouchableOpacity style={[styles.topNavButton, styles.submitButton]}
                                               onPress={this._logOut}>
-                                <Text style={[styles.blueText]}>Sign Out</Text>
+                                <Text style={[styles.whiteText]}>Sign Out</Text>
                             </TouchableOpacity>
                             : null
                         }
                     </BackBar>
                     <ScrollView ref='scrollView' keyboardDismissMode='interactive'
                                 style={styles.mainContainer} contentContainerStyle={styles.contentContainerStyle}>
-                        <View style={styles.mainContent}>
+                        <View style={styles.topDetails}>
                             <AvatarImage image={user.profile.avatar} style={styles.avatar}/>
                             <Text style={styles.userName}>{user.first_name} {user.last_name[0]}.</Text>
                             <View style={styles.details}>
@@ -86,6 +86,9 @@ const Profile = React.createClass({
                                 </View>
                             </View>
                         </View>
+                        <View style={styles.mainDetails}>
+                            <Text>test</Text>
+                        </View>
                     </ScrollView>
                 </View>
             );
@@ -102,7 +105,8 @@ const starColor = '#99d9f4';
 
 const styles = StyleSheet.create({
     mainContainer: {
-        flex: 1
+        flex: 1,
+        backgroundColor: '#00BFFF'
     },
     nav: {
         borderColor: '#d4d4d4',
@@ -115,23 +119,14 @@ const styles = StyleSheet.create({
         padding: 5,
         flexDirection: 'row'
     },
-    cancelButton: {
-        left: 0,
-        alignSelf: 'center'
-    },
     submitButton: {
         right: 0,
-        alignSelf: 'center'
+        alignSelf: 'center',
     },
-    blueText: {
-        color: '#00BFFF'
+    whiteText: {
+        color: 'white'
     },
-    cancel: {
-        marginLeft: 5,
-        color: '#d4d4d4',
-        fontSize: 15
-    },
-    mainContent: {
+    topDetails: {
         margin: 10,
         justifyContent: 'center',
         alignItems: 'center'
@@ -144,7 +139,7 @@ const styles = StyleSheet.create({
     userName: {
         fontSize: 18,
         fontWeight: 'bold',
-        color: 'black',
+        color: 'white',
         paddingTop: 15
     },
     details: {
@@ -152,7 +147,7 @@ const styles = StyleSheet.create({
     },
     small: {
         fontSize: 11,
-        color: 'gray',
+        color: '#eaebed',
         textAlign: 'center',
         paddingTop: 2,
     },
@@ -167,6 +162,10 @@ const styles = StyleSheet.create({
         fontSize: starSize-1,
         top: 3,
         position: 'absolute'
+    },
+    mainDetails:{
+        flex: 1,
+        backgroundColor: 'white'
     }
 });
 
