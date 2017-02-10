@@ -7,7 +7,7 @@ import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import FCM from 'react-native-fcm';
 
-import {fetchData, API_ENDPOINT} from '../actions/Utils';
+import {fetchData, API_ENDPOINT, getFontSize} from '../actions/Utils';
 
 import * as ProfileActions from '../actions/ProfileActions';
 import {removeToken} from '../actions/GlobalActions';
@@ -55,11 +55,11 @@ const Profile = React.createClass({
         if (user) {
             return (
                 <View style={styles.mainContainer}>
-                    <BackBar back={this.props.navigator.pop} textStyle={styles.whiteText}>
+                    <BackBar back={this.props.navigator.pop}>
                         {user.id == this.props.RequestUser.id ?
                             <TouchableOpacity style={[styles.topNavButton, styles.submitButton]}
                                               onPress={this._logOut}>
-                                <Text style={[styles.whiteText]}>Sign Out</Text>
+                                <Text style={[styles.blueText, {fontWeight: 'bold'}]}>Sign Out</Text>
                             </TouchableOpacity>
                             : null
                         }
@@ -87,7 +87,17 @@ const Profile = React.createClass({
                             </View>
                         </View>
                         <View style={styles.mainDetails}>
-                            <Text>test</Text>
+                            <View style={styles.section}>
+                                <View style={styles.sectionItem}>
+                                    <Text style={styles.sectionTitle}>Crendentials</Text>
+                                </View>
+                                <View style={styles.sectionItem}>
+                                    <Text>Crendentials</Text>
+                                </View>
+                                <View style={styles.sectionItem}>
+                                    <Text>Crendentials</Text>
+                                </View>
+                            </View>
                         </View>
                     </ScrollView>
                 </View>
@@ -106,7 +116,6 @@ const starColor = '#99d9f4';
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
-        backgroundColor: '#00BFFF'
     },
     nav: {
         borderColor: '#d4d4d4',
@@ -123,13 +132,14 @@ const styles = StyleSheet.create({
         right: 0,
         alignSelf: 'center',
     },
-    whiteText: {
-        color: 'white'
+    blueText: {
+        color: '#00BFFF'
     },
     topDetails: {
-        margin: 10,
+        padding: 10,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: '#00BFFF'
     },
     avatar: {
         height: 100,
@@ -147,7 +157,7 @@ const styles = StyleSheet.create({
     },
     small: {
         fontSize: 11,
-        color: '#eaebed',
+        color: '#f2f3f4',
         textAlign: 'center',
         paddingTop: 2,
     },
@@ -165,7 +175,34 @@ const styles = StyleSheet.create({
     },
     mainDetails:{
         flex: 1,
-        backgroundColor: 'white'
+        backgroundColor: '#edebe6'
+    },
+    section: {
+        borderTopLeftRadius: 8,
+        borderTopRightRadius: 8,
+        backgroundColor: 'white',
+        marginTop: 5,
+        borderTopWidth: 0.5,
+        borderColor: '#d6d7da',
+        // alignItems: 'center',
+        // paddingTop: 13,
+        // paddingBottom: 13
+    },
+    sectionItem: {
+        borderBottomWidth: 0.5,
+        borderColor: '#d6d7da',
+        paddingBottom: 5,
+        paddingTop: 5,
+    },
+    sectionTitle: {
+        fontSize: getFontSize(22),
+        lineHeight: getFontSize(26),
+        backgroundColor: 'transparent',
+        alignSelf: 'center',
+        paddingBottom: 5,
+        paddingTop: 5,
+        // fontFamily: 'OpenSans-Semibold',
+        // color: '#fee0d4',
     }
 });
 

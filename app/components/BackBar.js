@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     topNavButton: {
-        padding: 5,
+        padding: 10,
         flexDirection: 'row'
     },
     cancelButton: {
@@ -48,7 +48,8 @@ const styles = StyleSheet.create({
     cancel: {
         marginLeft: 5,
         color: '#d4d4d4',
-        fontSize: 15
+        fontSize: 15,
+        fontWeight: 'bold'
     },
     blueText: {
         color: '#00BFFF'

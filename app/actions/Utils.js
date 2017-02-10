@@ -34,3 +34,7 @@ export function fetchData(method, body = null, token = null, headers = null, get
 export function refreshPage() {
     return {type: REFRESHING}
 }
+
+export function getFontSize(size = 22) {
+    return Math.floor(size * 0.7);
+}
