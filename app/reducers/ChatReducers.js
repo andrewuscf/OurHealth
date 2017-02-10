@@ -20,7 +20,7 @@ export default function AppReducers(state = initialState, action = null) {
                 ...state,
                 Rooms: (action.refresh) ? action.response.results :state.Rooms.concat(action.response.results),
                 RoomsNext: action.response.next,
-                Refreshing: action.refresh
+                Refreshing: false
             };
 
         case constants.SEND_MESSAGE:

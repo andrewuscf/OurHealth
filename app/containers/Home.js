@@ -49,7 +49,7 @@ const Home = React.createClass({
     },
 
 
-    refresh() {
+    _refresh() {
         this.getNeeded(true);
     },
 
@@ -74,7 +74,7 @@ const Home = React.createClass({
             const dataSource = ds.cloneWithRows(this.props.WorkRequests);
             return (
                 <ListView
-                    refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this.refresh}/>}
+                    refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}
                     style={styles.container} enableEmptySections={true}
                     dataSource={dataSource} onEndReached={this.onEndReached} onEndReachedThreshold={50}
                     renderRow={(WorkRequest, i) => <WorkRequestBox key={i} WorkRequest={WorkRequest}
@@ -87,7 +87,7 @@ const Home = React.createClass({
             const dataSource = ds.cloneWithRows(this.props.Jobs);
             return (
                 <ListView
-                    refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this.refresh}/>}
+                    refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}
                     style={styles.container} enableEmptySections={true}
                     dataSource={dataSource} onEndReached={this.onEndReached} onEndReachedThreshold={50}
                     renderRow={(job, i) => <JobBox key={i} job={job} _redirect={this._redirect}/>}
@@ -111,7 +111,7 @@ const Home = React.createClass({
         } else {
             return (
                 <ScrollView contentContainerStyle={styles.noRequests}
-                            refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this.refresh}/>}>
+                            refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}>
                     <Text style={styles.noRequestTitle}>You have not matched with any jobs.</Text>
                     <Text style={styles.safeSpace}>To fix this you can:</Text>
                     <SubmitButton buttonStyle={styles.button}
@@ -145,6 +145,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: '#b1aeb9',
         textAlign: 'center',
+        paddingTop: 20,
         // fontFamily: 'OpenSans-Semibold'
     },
     safeSpace: {

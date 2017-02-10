@@ -1,7 +1,8 @@
 import React from 'react';
-import {StyleSheet, Text, View, RefreshControl, ListView} from 'react-native';
+import {StyleSheet, Text, View, RefreshControl, ListView, ScrollView} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {getRoute} from '../Routes';
 
@@ -40,9 +41,17 @@ const Chat = React.createClass({
             );
         }
         return (
-            <View style={styles.mainContainer}>
-                <Text>No Messages</Text>
-            </View>
+            <ScrollView contentContainerStyle={styles.scrollContainer}
+                        refreshControl={<RefreshControl refreshing={this.props.Refreshing} onRefresh={this._refresh}/>}>
+                <View style={styles.noRequests}>
+                    <Icon name="comment-o" size={60}
+                          color='#b1aea5'/>
+                    <Text style={styles.noRequestTitle}>
+                        You don't have any matched jobs. As soon as you are matched with a job you can message care
+                        givers.
+                    </Text>
+                </View>
+            </ScrollView>
         );
     }
 });
@@ -50,8 +59,26 @@ const Chat = React.createClass({
 
 const styles = StyleSheet.create({
     mainContainer: {
-        flex: 1,
+        flex: 1
     },
+    scrollContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    noRequests: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: 20
+    },
+    noRequestTitle: {
+        fontSize: 15,
+        color: '#b1aeb9',
+        textAlign: 'center',
+        paddingTop: 20,
+        // fontFamily: 'OpenSans-Semibold'
+    }
 });
 
 const stateToProps = (state) => {
