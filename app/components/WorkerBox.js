@@ -29,6 +29,7 @@ const WorkerBox = React.createClass({
 
     render() {
         const worker = this.props.worker;
+        console.log(worker);
         return (
             <TouchableHighlight style={styles.container} onPress={this._toProfile} underlayColor='white'>
                 <View style={styles.inner}>
@@ -36,10 +37,11 @@ const WorkerBox = React.createClass({
                     <View style={styles.details}>
                         <Text style={styles.name}>{worker.first_name} {worker.last_name[0]}.</Text>
                         <Text style={styles.small}>
-                            6 miles away | {worker.profile.age} yrs old
+                            {worker.distance_away ? `${Math.round(worker.distance_away * 100) / 100} miles away | ` : null}
+                            {worker.profile.age} years old
                         </Text>
                         <Text style={styles.small}>
-                            10 yrs experience | {worker.jobs_completed} Jobs Finished
+                            {worker.jobs_completed} {worker.jobs_completed == 1? `Job`: 'Jobs' } Finished
                         </Text>
                         <View style={styles.starSection}>
                             <Icon name="star-o" size={starSize} color={starColor}/>
